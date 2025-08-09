@@ -1,0 +1,168 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:form_builder_validators/form_builder_validators.dart';
+import 'package:sheba_ai/presentation/screen/auth/widget/auth_divider.dart';
+import 'package:sheba_ai/presentation/screen/auth/widget/auth_header.dart';
+import 'package:sheba_ai/presentation/screen/auth/widget/auth_toggle_link.dart';
+import 'package:sheba_ai/presentation/screen/auth/widget/social_login_section.dart';
+import 'package:sheba_ai/presentation/theme/color.dart';
+import 'package:sheba_ai/presentation/theme/text_styles.dart';
+import 'package:sheba_ai/presentation/widget/custom_button.dart';
+import 'package:sheba_ai/presentation/widget/custom_form_field.dart';
+
+import '../../util/routes.dart';
+
+class SignInScreen extends ConsumerStatefulWidget {
+  const SignInScreen({super.key});
+
+  @override
+  ConsumerState<SignInScreen> createState() => _SignInScreenState();
+}
+
+class _SignInScreenState extends ConsumerState<SignInScreen> {
+  final _formKey = GlobalKey<FormBuilderState>();
+
+  void _handleSignIn() async {
+    final isValid = _formKey.currentState?.saveAndValidate() ?? false;
+    if (!isValid) return;
+
+    final phone = _formKey.currentState?.fields['phone']?.value;
+    final password = _formKey.currentState?.fields['password']?.value;
+
+    Navigator.pushNamed(context, Routes.main);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: AppColors.background,
+      body: SafeArea(
+        child: Stack(
+          children: [
+            // Positioned(
+            //   top: 16.h,
+            //   right: 16.w,
+            //   child: IconButton(
+            //     icon: Icon(
+            //       Icons.close,
+            //       color: AppColors.grayscaleBorderDisabled,
+            //       size: 24.sp,
+            //     ),
+            //     onPressed: () {
+            //       Navigator.of(context).pop();
+            //     },
+            //   ),
+            // ),
+
+            Padding(
+              padding: EdgeInsets.all(20.h),
+              child: SingleChildScrollView(
+                child: Center(
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints(
+                      minHeight: MediaQuery.of(context).size.height - 40.h,
+                    ),
+                    child: IntrinsicHeight(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const AuthHeader(title: "Sing In To Your Account"),
+                          SizedBox(height: 32.h),
+
+                          FormBuilder(
+                            key: _formKey,
+                            child: Column(
+                              children: [
+                                CustomFormField(
+                                  name: 'phone',
+                                  labelText: 'Phone Number',
+                                  hintText: '+8801XXXXXXXXX',
+                                  iconPath: 'assets/icons/ic-phone.svg',
+                                  keyboardType: TextInputType.phone,
+                                  textInputAction: TextInputAction.next,
+                                  validators: [
+                                    FormBuilderValidators.required(
+                                      errorText: 'Phone number is required',
+                                    ),
+                                    FormBuilderValidators.phoneNumber(
+                                      errorText: 'Enter a valid phone number',
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(height: 16.h),
+                                CustomFormField(
+                                  name: 'password',
+                                  labelText: 'Password',
+                                  hintText: '*********',
+                                  iconPath: 'assets/icons/ic-password.svg',
+                                  isPassword: true,
+                                  keyboardType: TextInputType.visiblePassword,
+                                  textInputAction: TextInputAction.done,
+                                  validators: [
+                                    FormBuilderValidators.required(
+                                      errorText: 'Password is required',
+                                    ),
+                                    FormBuilderValidators.minLength(
+                                      6,
+                                      errorText: 'At least 6 characters',
+                                    ),
+                                  ],
+                                  onSubmitted: _handleSignIn,
+                                ),
+                              ],
+                            ),
+                          ),
+
+                          SizedBox(height: 2.h),
+
+                          Align(
+                            alignment: Alignment.centerRight,
+                            child: TextButton(
+                              onPressed: () {
+                                // Navigator.pushNamed(context, Routes.otpSend);
+                              },
+                              child: Text(
+                                "Forgot Password?",
+                                style: AppTextStyles.labelL6Regular.copyWith(
+                                  color: AppColors.colorPrimary,
+                                ),
+                              ),
+                            ),
+                          ),
+
+                          SizedBox(height: 12.h),
+                          CustomButton.primary(
+                            width: double.infinity,
+                            borderRadius: 6.r,
+                            text: "Sign In",
+                            onPressed: _handleSignIn,
+                          ),
+
+                          SizedBox(height: 24.h),
+                          const AuthDivider(),
+                          SizedBox(height: 24.h),
+                          const SocialLoginSection(),
+                          SizedBox(height: 24.h),
+
+                          AuthToggleLink(
+                            prompt: "Don't have an account? ",
+                            linkText: "Sign Up",
+                            onTap: () {
+                              Navigator.pushNamed(context, Routes.signUp);
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
