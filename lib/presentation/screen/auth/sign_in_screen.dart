@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
+import 'package:sheba_ai/presentation/screen/auth/notifier/provider.dart';
+import 'package:sheba_ai/presentation/screen/auth/state/login_ui_state.dart';
 import 'package:sheba_ai/presentation/screen/auth/widget/auth_divider.dart';
 import 'package:sheba_ai/presentation/screen/auth/widget/auth_header.dart';
 import 'package:sheba_ai/presentation/screen/auth/widget/auth_toggle_link.dart';
@@ -28,10 +30,21 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
     final isValid = _formKey.currentState?.saveAndValidate() ?? false;
     if (!isValid) return;
 
-    final phone = _formKey.currentState?.fields['phone']?.value;
+    final username = _formKey.currentState?.fields['username']?.value;
     final password = _formKey.currentState?.fields['password']?.value;
 
-    Navigator.pushNamed(context, Routes.main);
+    await ref
+        .read(loginNotifierProvider.notifier)
+        .login(username: username, password: password);
+
+    final state = ref.read(loginNotifierProvider);
+    if (state is SuccessState) {
+      Navigator.pushNamedAndRemoveUntil(context, Routes.main, (route) => false);
+    } else if (state is ErrorState) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(state.message)));
+    }
   }
 
   @override
@@ -55,7 +68,6 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
             //     },
             //   ),
             // ),
-
             Padding(
               padding: EdgeInsets.all(20.h),
               child: SingleChildScrollView(
@@ -76,18 +88,15 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                             child: Column(
                               children: [
                                 CustomFormField(
-                                  name: 'phone',
-                                  labelText: 'Phone Number',
-                                  hintText: '+8801XXXXXXXXX',
-                                  iconPath: 'assets/icons/ic-phone.svg',
-                                  keyboardType: TextInputType.phone,
+                                  name: 'username',
+                                  labelText: 'Username',
+                                  hintText: 'Enter your username',
+                                  iconPath: 'assets/icons/ic-user.svg',
+                                  keyboardType: TextInputType.name,
                                   textInputAction: TextInputAction.next,
                                   validators: [
                                     FormBuilderValidators.required(
-                                      errorText: 'Phone number is required',
-                                    ),
-                                    FormBuilderValidators.phoneNumber(
-                                      errorText: 'Enter a valid phone number',
+                                      errorText: 'Username is required',
                                     ),
                                   ],
                                 ),
@@ -138,6 +147,9 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                             borderRadius: 6.r,
                             text: "Sign In",
                             onPressed: _handleSignIn,
+                            isLoading:
+                                ref.watch(loginNotifierProvider)
+                                    is LoadingState,
                           ),
 
                           SizedBox(height: 24.h),
