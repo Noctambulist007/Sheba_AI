@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_onboarding_slider/flutter_onboarding_slider.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:lottie/lottie.dart';
 import 'package:sheba_ai/presentation/screen/intro/widget/intro_page_body.dart';
 import 'package:sheba_ai/presentation/theme/color.dart';
 import 'package:sheba_ai/presentation/util/routes.dart';
@@ -44,23 +45,20 @@ class IntroScreen extends StatelessWidget {
       },
       controllerColor: AppColors.primaryColour,
       background: [
-        Image.asset(
-          'assets/images/intro-first.png',
+        Lottie.asset(
+          'assets/anims/safety.json',
           height: 200.h,
           width: 200.w,
-          fit: BoxFit.contain,
         ),
-        Image.asset(
-          'assets/images/intro-second.png',
+        Lottie.asset(
+          'assets/anims/safety.json',
           height: 200.h,
           width: 200.w,
-          fit: BoxFit.contain,
         ),
-        Image.asset(
-          'assets/images/intro-third.png',
+        Lottie.asset(
+          'assets/anims/safety.json',
           height: 200.h,
           width: 200.w,
-          fit: BoxFit.contain,
         ),
       ],
       pageBodies: [

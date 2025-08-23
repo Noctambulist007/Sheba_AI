@@ -1,4 +1,6 @@
+import 'package:sheba_ai/data/datasource/remote/model/response/identity/register_response.dart';
 import 'package:sheba_ai/domain/model/identity/token_data.dart';
+import 'package:sheba_ai/domain/model/identity/user.dart';
 
 abstract class IdentityRepository {
   Future<TokenData?> getToken();
@@ -8,4 +10,14 @@ abstract class IdentityRepository {
     required String password,
   });
 
+  Future<RegisterResponse> register({
+    required String firstName,
+    required String lastName,
+    required String phone,
+    required String address,
+    required String username,
+    required String email,
+    required String password,
+    required String confirmPassword,
+  });
 }

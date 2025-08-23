@@ -1,9 +1,11 @@
 import 'package:flutter/foundation.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
+import 'package:sheba_ai/data/datasource/remote/model/response/identity/register_response.dart';
 import 'package:sheba_ai/data/mapper/identity/token_response_mapper.dart';
 import 'package:sheba_ai/data/repository/source/local/identity_local_data_source.dart';
 import 'package:sheba_ai/data/repository/source/remote/identity_remote_data_source.dart';
 import 'package:sheba_ai/domain/model/identity/token_data.dart';
+import 'package:sheba_ai/domain/model/identity/user.dart';
 import 'package:sheba_ai/domain/repository/identity_repository.dart';
 
 class IdentityRepositoryImpl implements IdentityRepository {
@@ -43,8 +45,9 @@ class IdentityRepositoryImpl implements IdentityRepository {
         return null;
       }
 
-      final response =
-      await identityRemoteDataSource.refreshToken(refreshToken);
+      final response = await identityRemoteDataSource.refreshToken(
+        refreshToken,
+      );
       await identityLocalDataSource.saveAccessToken(response.accessToken);
       await identityLocalDataSource.saveRefreshToken(response.refreshToken);
 
@@ -76,5 +79,30 @@ class IdentityRepositoryImpl implements IdentityRepository {
     debugPrint(decodedToken.toString());
 
     return Future.value(decodedToken.toTokenData());
+  }
+
+  @override
+  Future<RegisterResponse> register({
+    required String firstName,
+    required String lastName,
+    required String phone,
+    required String address,
+    required String username,
+    required String email,
+    required String password,
+    required String confirmPassword,
+  }) async {
+    var response = await identityRemoteDataSource.register(
+      firstName: firstName,
+      lastName: lastName,
+      phone: phone,
+      address: address,
+      username: username,
+      email: email,
+      password: password,
+      confirmPassword: confirmPassword,
+    );
+    
+    return response;
   }
 }
