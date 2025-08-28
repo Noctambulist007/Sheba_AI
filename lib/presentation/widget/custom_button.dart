@@ -57,12 +57,9 @@ class CustomButton extends StatelessWidget {
     return CustomButton(
       key: key,
       text: text,
-      borderRadius: borderRadius ?? 25.r,
+      borderRadius: borderRadius ?? 24.r,
       gradient: const LinearGradient(
-        colors: [
-          Color(0xFF454A9F),
-          Color(0xFF6A70D1),
-        ],
+        colors: [Color(0xFF0D47A1), Color(0xFF007BDC)],
         begin: Alignment.centerLeft,
         end: Alignment.centerRight,
       ),
@@ -151,79 +148,88 @@ class CustomButton extends StatelessWidget {
 
     Widget buttonChild = isLoading
         ? SizedBox(
-      width: 20.w,
-      height: 20.h,
-      child: CircularProgressIndicator(
-        strokeWidth: 2.w,
-        valueColor: AlwaysStoppedAnimation<Color>(
-          loadingColor ?? textColor ?? Colors.white,
-        ),
-      ),
-    )
+            width: 20.w,
+            height: 20.h,
+            child: CircularProgressIndicator(
+              strokeWidth: 2.w,
+              valueColor: AlwaysStoppedAnimation<Color>(
+                loadingColor ?? textColor ?? Colors.white,
+              ),
+            ),
+          )
         : Row(
-      mainAxisSize: MainAxisSize.min,
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        if (icon != null) ...[
-          icon!,
-          SizedBox(width: 8.w),
-        ],
-        Text(
-          text,
-          style: textStyle ?? TextStyle(
-            fontSize: fontSize ?? 16.sp,
-            fontWeight: fontWeight ?? FontWeight.w600,
-          ),
-        ),
-      ],
-    );
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              if (icon != null) ...[icon!, SizedBox(width: 8.w)],
+              Text(
+                text,
+                style:
+                    textStyle ??
+                    TextStyle(
+                      fontSize: fontSize ?? 16.sp,
+                      fontWeight: fontWeight ?? FontWeight.w600,
+                    ),
+              ),
+            ],
+          );
 
     return SizedBox(
       width: width,
       height: height ?? 50.h,
       child: gradient != null
           ? Container(
-        decoration: BoxDecoration(
-          gradient: isLoading ? null : gradient,
-          color: isLoading ? Colors.grey.withOpacity(0.6) : null,
-          borderRadius: BorderRadius.circular(borderRadius ?? 25.r),
-          border: borderColor != null
-              ? Border.all(color: borderColor!, width: borderWidth ?? 1.5.w)
-              : null,
-        ),
-        child: ElevatedButton(
-          onPressed: isLoading ? null : onPressed,
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.transparent,
-            foregroundColor: textColor ?? Colors.white,
-            elevation: 0,
-            shadowColor: Colors.transparent,
-            padding: padding ?? EdgeInsets.symmetric(horizontal: 24.w, vertical: 12.h),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(borderRadius ?? 25.r),
-            ),
-          ),
-          child: buttonChild,
-        ),
-      )
+              decoration: BoxDecoration(
+                gradient: isLoading ? null : gradient,
+                color: isLoading ? Colors.grey.withOpacity(0.6) : null,
+                borderRadius: BorderRadius.circular(borderRadius ?? 25.r),
+                border: borderColor != null
+                    ? Border.all(
+                        color: borderColor!,
+                        width: borderWidth ?? 1.5.w,
+                      )
+                    : null,
+              ),
+              child: ElevatedButton(
+                onPressed: isLoading ? null : onPressed,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.transparent,
+                  foregroundColor: textColor ?? Colors.white,
+                  elevation: 0,
+                  shadowColor: Colors.transparent,
+                  padding:
+                      padding ??
+                      EdgeInsets.symmetric(horizontal: 24.w, vertical: 12.h),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(borderRadius ?? 25.r),
+                  ),
+                ),
+                child: buttonChild,
+              ),
+            )
           : ElevatedButton(
-        onPressed: isLoading ? null : onPressed,
-        style: ElevatedButton.styleFrom(
-          backgroundColor: backgroundColor ?? theme.primaryColor,
-          foregroundColor: textColor ?? Colors.white,
-          elevation: 0,
-          padding: padding ?? EdgeInsets.symmetric(horizontal: 24.w, vertical: 12.h),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(borderRadius ?? 25.r),
-            side: borderColor != null
-                ? BorderSide(color: borderColor!, width: borderWidth ?? 1.5.w)
-                : BorderSide.none,
-          ),
-          disabledBackgroundColor: backgroundColor?.withOpacity(0.6),
-          disabledForegroundColor: textColor?.withOpacity(0.6),
-        ),
-        child: buttonChild,
-      ),
+              onPressed: isLoading ? null : onPressed,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: backgroundColor ?? theme.primaryColor,
+                foregroundColor: textColor ?? Colors.white,
+                elevation: 0,
+                padding:
+                    padding ??
+                    EdgeInsets.symmetric(horizontal: 24.w, vertical: 12.h),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(borderRadius ?? 25.r),
+                  side: borderColor != null
+                      ? BorderSide(
+                          color: borderColor!,
+                          width: borderWidth ?? 1.5.w,
+                        )
+                      : BorderSide.none,
+                ),
+                disabledBackgroundColor: backgroundColor?.withOpacity(0.6),
+                disabledForegroundColor: textColor?.withOpacity(0.6),
+              ),
+              child: buttonChild,
+            ),
     );
   }
 }

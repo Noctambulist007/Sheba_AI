@@ -1,9 +1,17 @@
-// Provider for LoginNotifier
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:sheba_ai/presentation/screen/auth/notifier/auth_notifier.dart';
 import 'package:sheba_ai/presentation/screen/auth/notifier/login_notifier.dart';
 import 'package:sheba_ai/presentation/screen/auth/notifier/register_notifier.dart';
+import 'package:sheba_ai/presentation/screen/auth/state/auth_ui_state.dart';
 import 'package:sheba_ai/presentation/screen/auth/state/login_ui_state.dart';
 import 'package:sheba_ai/presentation/screen/auth/state/register_ui_state.dart';
+
+// region :: AuthNotifierProvider
+typedef AuthNotifierProvider //
+= StateNotifierProvider<AuthNotifier, AuthUiState>;
+
+final AuthNotifierProvider authNotifierProvider =
+StateNotifierProvider((ref) => AuthNotifier());
 
 typedef LoginNotifierProvider =
     StateNotifierProvider<LoginNotifier, LoginUiState>;

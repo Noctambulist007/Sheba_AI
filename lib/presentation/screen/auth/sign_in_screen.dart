@@ -51,126 +51,93 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.background,
-      body: SafeArea(
-        child: Stack(
+      body: Padding(
+        padding: EdgeInsets.all(16.h),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            // Positioned(
-            //   top: 16.h,
-            //   right: 16.w,
-            //   child: IconButton(
-            //     icon: Icon(
-            //       Icons.close,
-            //       color: AppColors.grayscaleBorderDisabled,
-            //       size: 24.sp,
-            //     ),
-            //     onPressed: () {
-            //       Navigator.of(context).pop();
-            //     },
-            //   ),
-            // ),
-            Padding(
-              padding: EdgeInsets.all(20.h),
-              child: SingleChildScrollView(
-                child: Center(
-                  child: ConstrainedBox(
-                    constraints: BoxConstraints(
-                      minHeight: MediaQuery.of(context).size.height - 40.h,
-                    ),
-                    child: IntrinsicHeight(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const AuthHeader(title: "Sing In To Your Account"),
-                          SizedBox(height: 32.h),
+            const AuthHeader(title: "Sign In to Sheba.AI"),
+            SizedBox(height: 32.h),
 
-                          FormBuilder(
-                            key: _formKey,
-                            child: Column(
-                              children: [
-                                CustomFormField(
-                                  name: 'username',
-                                  labelText: 'Username',
-                                  hintText: 'Enter your username',
-                                  iconPath: 'assets/icons/ic-user.svg',
-                                  keyboardType: TextInputType.name,
-                                  textInputAction: TextInputAction.next,
-                                  validators: [
-                                    FormBuilderValidators.required(
-                                      errorText: 'Username is required',
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(height: 16.h),
-                                CustomFormField(
-                                  name: 'password',
-                                  labelText: 'Password',
-                                  hintText: '*********',
-                                  iconPath: 'assets/icons/ic-password.svg',
-                                  isPassword: true,
-                                  keyboardType: TextInputType.visiblePassword,
-                                  textInputAction: TextInputAction.done,
-                                  validators: [
-                                    FormBuilderValidators.required(
-                                      errorText: 'Password is required',
-                                    ),
-                                    FormBuilderValidators.minLength(
-                                      6,
-                                      errorText: 'At least 6 characters',
-                                    ),
-                                  ],
-                                  onSubmitted: _handleSignIn,
-                                ),
-                              ],
-                            ),
-                          ),
-
-                          SizedBox(height: 2.h),
-
-                          Align(
-                            alignment: Alignment.centerRight,
-                            child: TextButton(
-                              onPressed: () {
-                                // Navigator.pushNamed(context, Routes.otpSend);
-                              },
-                              child: Text(
-                                "Forgot Password?",
-                                style: AppTextStyles.labelL6Regular.copyWith(
-                                  color: AppColors.colorPrimary,
-                                ),
-                              ),
-                            ),
-                          ),
-
-                          SizedBox(height: 12.h),
-                          CustomButton.primary(
-                            width: double.infinity,
-                            borderRadius: 6.r,
-                            text: "Sign In",
-                            onPressed: _handleSignIn,
-                            isLoading:
-                                ref.watch(loginNotifierProvider)
-                                    is LoadingState,
-                          ),
-
-                          SizedBox(height: 24.h),
-                          const AuthDivider(),
-                          SizedBox(height: 24.h),
-                          const SocialLoginSection(),
-                          SizedBox(height: 24.h),
-
-                          AuthToggleLink(
-                            prompt: "Don't have an account? ",
-                            linkText: "Sign Up",
-                            onTap: () {
-                              Navigator.pushNamed(context, Routes.signUp);
-                            },
-                          ),
-                        ],
+            FormBuilder(
+              key: _formKey,
+              child: Column(
+                children: [
+                  CustomFormField(
+                    name: 'username',
+                    labelText: 'Username',
+                    hintText: 'Enter your username',
+                    iconPath: 'assets/icons/ic-user.svg',
+                    keyboardType: TextInputType.name,
+                    textInputAction: TextInputAction.next,
+                    validators: [
+                      FormBuilderValidators.required(
+                        errorText: 'Username is required',
                       ),
-                    ),
+                    ],
+                  ),
+                  SizedBox(height: 16.h),
+                  CustomFormField(
+                    name: 'password',
+                    labelText: 'Password',
+                    hintText: '*********',
+                    iconPath: 'assets/icons/ic-password.svg',
+                    isPassword: true,
+                    keyboardType: TextInputType.visiblePassword,
+                    textInputAction: TextInputAction.done,
+                    validators: [
+                      FormBuilderValidators.required(
+                        errorText: 'Password is required',
+                      ),
+                      FormBuilderValidators.minLength(
+                        6,
+                        errorText: 'At least 6 characters',
+                      ),
+                    ],
+                    onSubmitted: _handleSignIn,
+                  ),
+                ],
+              ),
+            ),
+
+            SizedBox(height: 2.h),
+
+            Align(
+              alignment: Alignment.centerRight,
+              child: TextButton(
+                onPressed: () {
+                  // Navigator.pushNamed(context, Routes.otpSend);
+                },
+                child: Text(
+                  "Forgot Password?",
+                  style: AppTextStyles.labelL6Regular.copyWith(
+                    color: AppColors.colorPrimary,
                   ),
                 ),
               ),
+            ),
+
+            SizedBox(height: 12.h),
+            CustomButton.primary(
+              width: double.infinity,
+              text: "Sign In",
+              onPressed: _handleSignIn,
+              isLoading: ref.watch(loginNotifierProvider) is LoadingState,
+            ),
+
+            SizedBox(height: 24.h),
+
+            // const AuthDivider(),
+            // SizedBox(height: 24.h),
+            // const SocialLoginSection(),
+            // SizedBox(height: 24.h),
+            AuthToggleLink(
+              prompt: "Don't have an account? ",
+              linkText: "Sign Up",
+              onTap: () {
+                Navigator.pushNamed(context, Routes.signUp);
+              },
             ),
           ],
         ),

@@ -6,8 +6,10 @@ import 'package:sheba_ai/injection.dart';
 import 'package:sheba_ai/sheba_ai.dart';
 
 Future<void> main() async {
+  //
   WidgetsFlutterBinding.ensureInitialized();
 
+  //
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(
       statusBarBrightness: Brightness.light,
@@ -16,14 +18,14 @@ Future<void> main() async {
     ),
   );
 
+  //
   await ScreenUtil.ensureScreenSize();
 
-  // Initialize dependency injection
+  //
   await setup();
 
+  //
   runApp(
       ProviderScope(
-          child: const ShebaAi(),
-      ),
-  );
+      child: const ShebaAi(),),);
 }

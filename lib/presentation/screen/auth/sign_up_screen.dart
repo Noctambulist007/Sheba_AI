@@ -5,10 +5,8 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:sheba_ai/presentation/screen/auth/notifier/provider.dart';
 import 'package:sheba_ai/presentation/screen/auth/state/register_ui_state.dart';
-import 'package:sheba_ai/presentation/screen/auth/widget/auth_divider.dart';
 import 'package:sheba_ai/presentation/screen/auth/widget/auth_header.dart';
 import 'package:sheba_ai/presentation/screen/auth/widget/auth_toggle_link.dart';
-import 'package:sheba_ai/presentation/screen/auth/widget/social_login_section.dart';
 import 'package:sheba_ai/presentation/theme/color.dart';
 import 'package:sheba_ai/presentation/util/routes.dart';
 import 'package:sheba_ai/presentation/widget/custom_button.dart';
@@ -81,232 +79,195 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
         ),
       ),
       body: SafeArea(
-        child: Stack(
-          children: [
-            // Positioned(
-            //   top: 16.h,
-            //   right: 16.w,
-            //   child: IconButton(
-            //     icon: Icon(
-            //       Icons.close,
-            //       color: AppColors.grayscaleBorderDisabled,
-            //       size: 24.sp,
-            //     ),
-            //     onPressed: () {
-            //       Navigator.of(context).pop();
-            //     },
-            //   ),
-            // ),
-            Padding(
-              padding: EdgeInsets.all(20.h),
-              child: SingleChildScrollView(
-                child: Center(
-                  child: ConstrainedBox(
-                    constraints: BoxConstraints(
-                      minHeight: MediaQuery.of(context).size.height - 40.h,
-                    ),
-                    child: IntrinsicHeight(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const AuthHeader(title: "Sign Up For An Account"),
-                          SizedBox(height: 32.h),
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: EdgeInsets.all(16.h),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                const AuthHeader(title: "Sign Up to Sheba.AI"),
+                SizedBox(height: 32.h),
 
-                          FormBuilder(
-                            key: _formKey,
-                            child: Column(
-                              children: [
-                               Row(
-                                 children: [
-                                   Expanded(
-                                     child: CustomFormField(
-                                       name: 'first_name',
-                                       labelText: 'First Name',
-                                       hintText: 'John',
-                                       iconPath: 'assets/icons/ic-user.svg',
-                                       keyboardType: TextInputType.name,
-                                       textInputAction: TextInputAction.next,
-                                       validators: [
-                                         FormBuilderValidators.required(
-                                           errorText: 'First name is required',
-                                         ),
-                                         FormBuilderValidators.minLength(
-                                           2,
-                                           errorText: 'At least 2 characters',
-                                         ),
-                                       ],
-                                     ),
-                                   ),
-                                   SizedBox(width: 16.h),
-                                   Expanded(
-                                     child: CustomFormField(
-                                       name: 'last_name',
-                                       labelText: 'Last Name',
-                                       hintText: 'Doe',
-                                       iconPath: 'assets/icons/ic-user.svg',
-                                       keyboardType: TextInputType.name,
-                                       textInputAction: TextInputAction.next,
-                                       validators: [
-                                         FormBuilderValidators.required(
-                                           errorText: 'Last name is required',
-                                         ),
-                                         FormBuilderValidators.minLength(
-                                           2,
-                                           errorText: 'At least 2 characters',
-                                         ),
-                                       ],
-                                     ),
-                                   ),
-                                 ],
-                               ),
-                                SizedBox(height: 16.h),
-                                CustomFormField(
-                                  name: 'username',
-                                  labelText: 'Username',
-                                  hintText: 'Enter your username',
-                                  iconPath: 'assets/icons/ic-user.svg',
-                                  keyboardType: TextInputType.name,
-                                  textInputAction: TextInputAction.next,
-                                  validators: [
-                                    FormBuilderValidators.required(
-                                      errorText: 'Username is required',
-                                    ),
-                                    FormBuilderValidators.minLength(
-                                      3,
-                                      errorText: 'At least 3 characters',
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(height: 16.h),
-                                CustomFormField(
-                                  name: 'address',
-                                  labelText: 'Address',
-                                  hintText: '123 Main St, City, Country',
-                                  iconPath: 'assets/icons/ic-location.svg',
-                                  keyboardType: TextInputType.streetAddress,
-                                  textInputAction: TextInputAction.next,
-                                  validators: [
-                                    FormBuilderValidators.required(
-                                      errorText: 'Address is required',
-                                    ),
-                                    FormBuilderValidators.minLength(
-                                      5,
-                                      errorText: 'At least 5 characters',
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(height: 16.h),
-                                CustomFormField(
-                                  name: 'email',
-                                  labelText: 'Email',
-                                  hintText: 'user@example.com',
-                                  iconPath: 'assets/icons/ic-email.svg',
-                                  keyboardType: TextInputType.emailAddress,
-                                  textInputAction: TextInputAction.next,
-                                  validators: [
-                                    FormBuilderValidators.required(
-                                      errorText: 'Email is required',
-                                    ),
-                                    FormBuilderValidators.email(
-                                      errorText: 'Enter a valid email',
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(height: 16.h),
-                                CustomFormField(
-                                  name: 'phone',
-                                  labelText: 'Phone Number',
-                                  hintText: '+8801XXXXXXXXX',
-                                  iconPath: 'assets/icons/ic-phone.svg',
-                                  keyboardType: TextInputType.phone,
-                                  textInputAction: TextInputAction.next,
-                                  validators: [
-                                    FormBuilderValidators.required(
-                                      errorText: 'Phone number is required',
-                                    ),
-                                    FormBuilderValidators.phoneNumber(
-                                      errorText: 'Enter a valid phone number',
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(height: 16.h),
-
-                                CustomFormField(
-                                  name: 'password',
-                                  labelText: 'Password',
-                                  hintText: '*********',
-                                  iconPath: 'assets/icons/ic-password.svg',
-                                  isPassword: true,
-                                  keyboardType: TextInputType.visiblePassword,
-                                  textInputAction: TextInputAction.next,
-                                  validators: [
-                                    FormBuilderValidators.required(
-                                      errorText: 'Password is required',
-                                    ),
-                                    FormBuilderValidators.minLength(
-                                      6,
-                                      errorText: 'At least 6 characters',
-                                    ),
-                                  ],
-                                  onSubmitted: _handleSignUp,
-                                ),
-                                SizedBox(height: 16.h),
-
-                                CustomFormField(
-                                  name: 'confirm_password',
-                                  labelText: 'Confirm Password',
-                                  hintText: '*********',
-                                  iconPath: 'assets/icons/ic-password.svg',
-                                  isPassword: true,
-                                  keyboardType: TextInputType.visiblePassword,
-                                  textInputAction: TextInputAction.done,
-                                  validators: [
-                                    FormBuilderValidators.required(
-                                      errorText: 'Password is required',
-                                    ),
-                                    FormBuilderValidators.minLength(
-                                      6,
-                                      errorText: 'At least 6 characters',
-                                    ),
-                                  ],
-                                  onSubmitted: _handleSignUp,
-                                ),
-                              ],
-                            ),
+                FormBuilder(
+                  key: _formKey,
+                  child: Column(
+                    children: [
+                      CustomFormField(
+                        name: 'first_name',
+                        labelText: 'First Name',
+                        hintText: 'John',
+                        iconPath: 'assets/icons/ic-user.svg',
+                        keyboardType: TextInputType.name,
+                        textInputAction: TextInputAction.next,
+                        validators: [
+                          FormBuilderValidators.required(
+                            errorText: 'First name is required',
                           ),
-
-                          SizedBox(height: 16.h),
-                          CustomButton.primary(
-                            width: double.infinity,
-                            borderRadius: 6.r,
-                            text: "Sign Up",
-                            onPressed: _handleSignUp,
-                          ),
-
-                          SizedBox(height: 24.h),
-                          const AuthDivider(),
-                          SizedBox(height: 24.h),
-                          const SocialLoginSection(),
-                          SizedBox(height: 24.h),
-
-                          AuthToggleLink(
-                            prompt: "Already have an account? ",
-                            linkText: "Sign In",
-                            onTap: () {
-                              Navigator.pushReplacementNamed(
-                                context,
-                                Routes.signIn,
-                              );
-                            },
+                          FormBuilderValidators.minLength(
+                            2,
+                            errorText: 'At least 2 characters',
                           ),
                         ],
                       ),
-                    ),
+                      SizedBox(height: 16.h),
+                      CustomFormField(
+                        name: 'last_name',
+                        labelText: 'Last Name',
+                        hintText: 'Doe',
+                        iconPath: 'assets/icons/ic-user.svg',
+                        keyboardType: TextInputType.name,
+                        textInputAction: TextInputAction.next,
+                        validators: [
+                          FormBuilderValidators.required(
+                            errorText: 'Last name is required',
+                          ),
+                          FormBuilderValidators.minLength(
+                            2,
+                            errorText: 'At least 2 characters',
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 16.h),
+                      CustomFormField(
+                        name: 'username',
+                        labelText: 'Username',
+                        hintText: 'Enter your username',
+                        iconPath: 'assets/icons/ic-user.svg',
+                        keyboardType: TextInputType.name,
+                        textInputAction: TextInputAction.next,
+                        validators: [
+                          FormBuilderValidators.required(
+                            errorText: 'Username is required',
+                          ),
+                          FormBuilderValidators.minLength(
+                            3,
+                            errorText: 'At least 3 characters',
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 16.h),
+                      CustomFormField(
+                        name: 'address',
+                        labelText: 'Address',
+                        hintText: '123 Main St, City, Country',
+                        iconPath: 'assets/icons/ic-location.svg',
+                        keyboardType: TextInputType.streetAddress,
+                        textInputAction: TextInputAction.next,
+                        validators: [
+                          FormBuilderValidators.required(
+                            errorText: 'Address is required',
+                          ),
+                          FormBuilderValidators.minLength(
+                            5,
+                            errorText: 'At least 5 characters',
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 16.h),
+
+                      CustomFormField(
+                        name: 'email',
+                        labelText: 'Email',
+                        hintText: 'user@example.com',
+                        iconPath: 'assets/icons/ic-email.svg',
+                        keyboardType: TextInputType.emailAddress,
+                        textInputAction: TextInputAction.next,
+                        validators: [
+                          FormBuilderValidators.required(
+                            errorText: 'Email is required',
+                          ),
+                          FormBuilderValidators.email(
+                            errorText: 'Enter a valid email',
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 16.h),
+                      CustomFormField(
+                        name: 'phone',
+                        labelText: 'Phone Number',
+                        hintText: '+8801XXXXXXXXX',
+                        iconPath: 'assets/icons/ic-phone.svg',
+                        keyboardType: TextInputType.phone,
+                        textInputAction: TextInputAction.next,
+                        validators: [
+                          FormBuilderValidators.required(
+                            errorText: 'Phone number is required',
+                          ),
+                          FormBuilderValidators.phoneNumber(
+                            errorText: 'Enter a valid phone number',
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 16.h),
+
+                      CustomFormField(
+                        name: 'password',
+                        labelText: 'Password',
+                        hintText: '*********',
+                        iconPath: 'assets/icons/ic-password.svg',
+                        isPassword: true,
+                        keyboardType: TextInputType.visiblePassword,
+                        textInputAction: TextInputAction.next,
+                        validators: [
+                          FormBuilderValidators.required(
+                            errorText: 'Password is required',
+                          ),
+                          FormBuilderValidators.minLength(
+                            6,
+                            errorText: 'At least 6 characters',
+                          ),
+                        ],
+                        onSubmitted: _handleSignUp,
+                      ),
+                      SizedBox(height: 16.h),
+
+                      CustomFormField(
+                        name: 'confirm_password',
+                        labelText: 'Confirm Password',
+                        hintText: '*********',
+                        iconPath: 'assets/icons/ic-password.svg',
+                        isPassword: true,
+                        keyboardType: TextInputType.visiblePassword,
+                        textInputAction: TextInputAction.done,
+                        validators: [
+                          FormBuilderValidators.required(
+                            errorText: 'Password is required',
+                          ),
+                          FormBuilderValidators.minLength(
+                            6,
+                            errorText: 'At least 6 characters',
+                          ),
+                        ],
+                        onSubmitted: _handleSignUp,
+                      ),
+                    ],
                   ),
                 ),
-              ),
+
+                SizedBox(height: 24.h),
+                CustomButton.primary(
+                  width: double.infinity,
+                  text: "Sign Up",
+                  onPressed: _handleSignUp,
+                ),
+
+                SizedBox(height: 24.h),
+
+                // const AuthDivider(),
+                // SizedBox(height: 24.h),
+                // const SocialLoginSection(),
+                // SizedBox(height: 24.h),
+                AuthToggleLink(
+                  prompt: "Already have an account? ",
+                  linkText: "Sign In",
+                  onTap: () {
+                    Navigator.pushReplacementNamed(context, Routes.signIn);
+                  },
+                ),
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );

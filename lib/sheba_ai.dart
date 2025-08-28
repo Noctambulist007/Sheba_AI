@@ -15,6 +15,8 @@ class ShebaAi extends StatelessWidget {
       builder: (_, child) => GestureDetector(
         behavior: HitTestBehavior.translucent,
         onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+
+        //
         child: MaterialApp(
           title: 'ShebaAi',
           theme: AppTheme.light,

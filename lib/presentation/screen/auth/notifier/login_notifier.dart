@@ -26,12 +26,14 @@ class LoginNotifier extends StateNotifier<LoginUiState> {
           return const LoginUiState.error('Token data is null');
         } //
         else {
+          ref.read(authNotifierProvider.notifier).updateAuthState(tokenData);
           ref.read(loginNotifierProvider.notifier).updateAuthState(tokenData);
           return LoginUiState.success(tokenData: tokenData);
         }
       },
       failure: (failure) => LoginUiState.error(failure.message),
     );
+
   }
 
   void updateAuthState(TokenData tokenData) {
