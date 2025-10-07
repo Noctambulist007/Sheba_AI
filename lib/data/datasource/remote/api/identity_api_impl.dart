@@ -3,8 +3,11 @@ import 'package:sheba_ai/data/datasource/remote/api/identity_api.dart';
 import 'package:sheba_ai/data/datasource/remote/model/request/identity/login_request.dart';
 import 'package:sheba_ai/data/datasource/remote/model/request/identity/register_request.dart';
 import 'package:sheba_ai/data/datasource/remote/model/response/identity/login_response.dart';
+import 'package:sheba_ai/data/datasource/remote/model/response/identity/profile_response.dart';
 import 'package:sheba_ai/data/datasource/remote/model/response/identity/register_response.dart';
 import 'package:sheba_ai/data/datasource/remote/util/api_client.dart';
+import 'package:sheba_ai/data/mapper/identity/profile_response_mapper.dart';
+import 'package:sheba_ai/domain/model/identity/profile.dart';
 
 class IdentityApiImpl extends IdentityApi {
   final ApiClient _client;
@@ -12,6 +15,7 @@ class IdentityApiImpl extends IdentityApi {
   static const loginUrl = 'accounts/auth/login/';
   static const registerUrl = 'accounts/auth/register/';
   static const refreshTokenUrl = 'accounts/auth/refresh/';
+  static const profileUrl = 'accounts/auth/profile/';
 
   IdentityApiImpl({required ApiClient client}) : _client = client;
 
@@ -61,5 +65,14 @@ class IdentityApiImpl extends IdentityApi {
       debugPrint("Register error: $e");
       rethrow;
     }
+  }
+
+  @override
+  Future<Profile> getProfile() async {
+    final response = await _client.get<JSONObject, ProfileResponse>(
+      path: profileUrl,
+      converter: (json) => ProfileResponse.fromJson(json),
+    );
+    return response.toProfile();
   }
 }

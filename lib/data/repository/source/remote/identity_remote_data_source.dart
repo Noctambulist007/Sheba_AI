@@ -1,5 +1,7 @@
 import 'package:sheba_ai/data/datasource/remote/model/response/identity/login_response.dart';
+import 'package:sheba_ai/data/datasource/remote/model/response/identity/profile_response.dart';
 import 'package:sheba_ai/data/datasource/remote/model/response/identity/register_response.dart';
+import 'package:sheba_ai/domain/model/identity/profile.dart';
 
 abstract class IdentityRemoteDataSource {
   Future<LoginResponse> refreshToken(String refreshToken);
@@ -19,4 +21,7 @@ abstract class IdentityRemoteDataSource {
     required String password,
     required String confirmPassword,
   });
+
+  Future<Profile> getProfile();
+
 }

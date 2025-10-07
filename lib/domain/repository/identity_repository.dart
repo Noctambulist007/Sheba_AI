@@ -1,4 +1,6 @@
+import 'package:sheba_ai/data/datasource/remote/model/response/identity/profile_response.dart';
 import 'package:sheba_ai/data/datasource/remote/model/response/identity/register_response.dart';
+import 'package:sheba_ai/domain/model/identity/profile.dart';
 import 'package:sheba_ai/domain/model/identity/token_data.dart';
 import 'package:sheba_ai/domain/model/identity/user.dart';
 
@@ -20,4 +22,7 @@ abstract class IdentityRepository {
     required String password,
     required String confirmPassword,
   });
+
+  Future<Profile> getProfile();
+
 }

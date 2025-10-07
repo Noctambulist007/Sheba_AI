@@ -1,9 +1,11 @@
 import 'package:flutter/foundation.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
+import 'package:sheba_ai/data/datasource/remote/model/response/identity/profile_response.dart';
 import 'package:sheba_ai/data/datasource/remote/model/response/identity/register_response.dart';
 import 'package:sheba_ai/data/mapper/identity/token_response_mapper.dart';
 import 'package:sheba_ai/data/repository/source/local/identity_local_data_source.dart';
 import 'package:sheba_ai/data/repository/source/remote/identity_remote_data_source.dart';
+import 'package:sheba_ai/domain/model/identity/profile.dart';
 import 'package:sheba_ai/domain/model/identity/token_data.dart';
 import 'package:sheba_ai/domain/model/identity/user.dart';
 import 'package:sheba_ai/domain/repository/identity_repository.dart';
@@ -102,7 +104,14 @@ class IdentityRepositoryImpl implements IdentityRepository {
       password: password,
       confirmPassword: confirmPassword,
     );
-    
+
     return response;
+  }
+
+  @override
+  Future<Profile> getProfile() async {
+    var profile = await identityRemoteDataSource.getProfile();
+    identityLocalDataSource.setAccountId(id: profile.id.toString());
+    return profile;
   }
 }

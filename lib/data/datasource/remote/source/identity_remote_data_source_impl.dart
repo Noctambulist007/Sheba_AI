@@ -2,8 +2,11 @@ import 'package:sheba_ai/data/datasource/remote/api/identity_api.dart';
 import 'package:sheba_ai/data/datasource/remote/model/request/identity/login_request.dart';
 import 'package:sheba_ai/data/datasource/remote/model/request/identity/register_request.dart';
 import 'package:sheba_ai/data/datasource/remote/model/response/identity/login_response.dart';
+import 'package:sheba_ai/data/datasource/remote/model/response/identity/profile_response.dart';
 import 'package:sheba_ai/data/datasource/remote/model/response/identity/register_response.dart';
+import 'package:sheba_ai/data/mapper/identity/profile_response_mapper.dart';
 import 'package:sheba_ai/data/repository/source/remote/identity_remote_data_source.dart';
+import 'package:sheba_ai/domain/model/identity/profile.dart';
 
 class IdentityRemoteDataSourceImpl extends IdentityRemoteDataSource {
   final IdentityApi _identityApi;
@@ -47,5 +50,10 @@ class IdentityRemoteDataSourceImpl extends IdentityRemoteDataSource {
       password2: confirmPassword,
     );
     return await _identityApi.register(request);
+  }
+
+  @override
+  Future<Profile> getProfile() async {
+    return await _identityApi.getProfile();
   }
 }

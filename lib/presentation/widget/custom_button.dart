@@ -47,6 +47,7 @@ class CustomButton extends StatelessWidget {
   factory CustomButton.primary({
     Key? key,
     required String text,
+    TextStyle? textStyle,
     VoidCallback? onPressed,
     double? width,
     double? height,
@@ -57,6 +58,7 @@ class CustomButton extends StatelessWidget {
     return CustomButton(
       key: key,
       text: text,
+      textStyle: textStyle,
       borderRadius: borderRadius ?? 24.r,
       gradient: const LinearGradient(
         colors: [Color(0xFF0D47A1), Color(0xFF007BDC)],
