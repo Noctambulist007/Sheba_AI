@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:sheba_ai/presentation/screen/auth/sign_in_screen.dart';
 import 'package:sheba_ai/presentation/screen/auth/sign_up_screen.dart';
+import 'package:sheba_ai/presentation/screen/cart/cart_screen.dart';
 import 'package:sheba_ai/presentation/screen/chat/chat_screen.dart';
 import 'package:sheba_ai/presentation/screen/intro/intro_screen.dart';
 import 'package:sheba_ai/presentation/screen/main/main_screen.dart';
+import 'package:sheba_ai/presentation/screen/my_orders/my_orders_screen.dart';
 import 'package:sheba_ai/presentation/screen/prescription/prescription_screen.dart';
 import 'package:sheba_ai/presentation/screen/profile/profile_screen.dart';
 import 'package:sheba_ai/presentation/screen/reminder/reminder_screen.dart';
@@ -25,6 +27,8 @@ class Routes {
   static const String chat = 'chat';
   static const String reminder = 'reminder';
   static const String profile = 'profile';
+  static const String cart = 'cart';
+  static const String myOrders = 'myOrders';
 
   static PageRoute generateRoutes(RouteSettings settings) {
     return PageRouteBuilder(
@@ -53,7 +57,10 @@ class Routes {
             return const ReminderScreen();
           case profile:
             return const ProfileScreen();
-
+            case cart:
+            return const CartScreen();
+            case myOrders:
+            return const MyOrdersScreen();
           default:
             return const MainScreen();
         }

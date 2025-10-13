@@ -30,8 +30,6 @@ class ProfileScreen extends ConsumerWidget {
       backgroundColor: AppColors.background,
       appBar: CustomGradientAppBar(
         title: 'Profile',
-        showSearch: false,
-        showCart: false,
         leading: BackButton(
           color: Colors.white,
           onPressed: () => Navigator.pop(context),

@@ -3,6 +3,8 @@ import 'package:sheba_ai/data/datasource/remote/api/identity_api.dart';
 import 'package:sheba_ai/data/datasource/remote/api/identity_api_impl.dart';
 import 'package:sheba_ai/data/datasource/remote/api/medicine_api.dart';
 import 'package:sheba_ai/data/datasource/remote/api/medicine_api_impl.dart';
+import 'package:sheba_ai/data/datasource/remote/api/order_api.dart';
+import 'package:sheba_ai/data/datasource/remote/api/order_api_impl.dart';
 import 'package:sheba_ai/data/datasource/remote/util/api_client.dart';
 import 'package:sheba_ai/data/datasource/remote/util/auth_interceptor.dart';
 import 'package:sheba_ai/data/datasource/remote/util/logging_interceptor.dart';
@@ -50,5 +52,9 @@ Future<void> setUpNetworkModule() async {
 
   getIt.registerLazySingleton<MedicineApi>(
         () => MedicineApiImpl(client: getIt()),
+  );
+
+  getIt.registerLazySingleton<OrderApi>(
+        () => OrderApiImpl(client: getIt()),
   );
 }

@@ -7,81 +7,81 @@ class MedicineItemShimmer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Shimmer.fromColors(
-      baseColor: Colors.grey[300]!,
-      highlightColor: Colors.grey[100]!,
-      child: Container(
-        margin: EdgeInsets.only(bottom: 16.h),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(16.r),
-          border: Border.all(color: Colors.grey[200]!, width: 1.w),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Image placeholder
-            Container(
-              height: 100.h,
-              width: double.infinity,
-              decoration: BoxDecoration(
-                color: Colors.grey[50],
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(16.r),
-                  topRight: Radius.circular(16.r),
+    return Container(
+      margin: EdgeInsets.only(bottom: 16.h),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16.r),
+        border: Border.all(color: Colors.grey[200]!, width: 1.w),
+      ),
+      child: Shimmer.fromColors(
+        baseColor: Colors.grey[300]!,
+        highlightColor: Colors.grey[100]!,
+        child: Padding(
+          padding: EdgeInsets.all(12.w),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Image placeholder
+              Container(
+                height: 100.h,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  color: Colors.grey[300],
+                  borderRadius: BorderRadius.circular(12.r),
                 ),
               ),
-              child: Center(
-                child: Icon(
-                  Icons.medication,
-                  size: 60.sp,
-                  color: Colors.white.withOpacity(0.7),
-                ),
-              ),
-            ),
+              SizedBox(height: 12.h),
 
-            // Details placeholder
-            Padding(
-              padding: EdgeInsets.all(12.w),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              // Medicine name
+              Container(
+                height: 16.h,
+                width: double.infinity,
+                color: Colors.grey[300],
+              ),
+              SizedBox(height: 6.h),
+
+              // Strength & Form
+              Row(
                 children: [
-                  // Medicine name placeholder
-                  Container(
-                    height: 16.h,
-                    width: double.infinity,
-                    color: Colors.grey[400],
+                  Expanded(
+                    child: Container(height: 14.h, color: Colors.grey[300]),
                   ),
-                  SizedBox(height: 6.h),
-
-                  // Strength & Form placeholder
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Container(height: 14.h, color: Colors.grey[400]),
-                      ),
-                      SizedBox(width: 6.w),
-                      Expanded(
-                        child: Container(height: 14.h, color: Colors.grey[400]),
-                      ),
-                    ],
+                  SizedBox(width: 6.w),
+                  Expanded(
+                    child: Container(height: 14.h, color: Colors.grey[300]),
                   ),
-                  SizedBox(height: 6.h),
-
-                  // Manufacturer placeholder
-                  Container(
-                    height: 12.h,
-                    width: 100.w,
-                    color: Colors.grey[400],
-                  ),
-                  SizedBox(height: 8.h),
-
-                  // Price placeholder
-                  Container(height: 18.h, width: 80.w, color: Colors.grey[400]),
                 ],
               ),
-            ),
-          ],
+              SizedBox(height: 6.h),
+
+              // Manufacturer
+              Container(
+                height: 12.h,
+                width: 100.w,
+                color: Colors.grey[300],
+              ),
+              SizedBox(height: 8.h),
+
+              // Price & Action row
+              Row(
+                children: [
+                  // Price placeholder
+                  Container(height: 18.h, width: 80.w, color: Colors.grey[300]),
+                  const Spacer(),
+                  // Icon/action placeholder
+                  Container(
+                    height: 32.h,
+                    width: 32.w,
+                    decoration: BoxDecoration(
+                      color: Colors.grey[300],
+                      borderRadius: BorderRadius.circular(8.r),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );

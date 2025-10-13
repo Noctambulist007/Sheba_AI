@@ -12,8 +12,6 @@ class CustomGradientAppBar extends StatelessWidget
   final String? svgPath;
   final Widget? leading;
   final IconButton? lateIconButton;
-  final bool showSearch;
-  final bool showCart;
   final List<Widget>? customActions;
   final bool showDrawerIcon;
 
@@ -26,8 +24,6 @@ class CustomGradientAppBar extends StatelessWidget
     this.svgPath,
     this.leading,
     this.lateIconButton,
-    this.showSearch = true,
-    this.showCart = true,
     this.customActions,
     this.showDrawerIcon = false,
   });

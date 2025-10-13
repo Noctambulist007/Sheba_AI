@@ -1,25 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:sheba_ai/presentation/screen/store/medicine_details_screen.dart';
-import 'package:sheba_ai/presentation/screen/store/state/medicine_ui_state.dart';
-import 'package:sheba_ai/presentation/screen/store/widget/medicine_item.dart';
-import 'package:sheba_ai/presentation/screen/store/widget/medicine_item_shimmer.dart';
+import 'package:sheba_ai/presentation/screen/my_orders/notifier/provider.dart';
+import 'package:sheba_ai/presentation/screen/my_orders/state/my_orders_ui_state.dart';
+import 'package:sheba_ai/presentation/screen/my_orders/widget/my_order_item.dart';
+import 'package:sheba_ai/presentation/screen/my_orders/widget/my_order_item_shimmer.dart';
 import 'package:sheba_ai/presentation/theme/color.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:sheba_ai/presentation/screen/store/notifier/provider.dart';
-import 'package:sheba_ai/presentation/util/routes.dart';
 import 'package:sheba_ai/presentation/widget/custom_gradient_app_bar.dart';
 
-class StoreScreen extends ConsumerStatefulWidget {
-  const StoreScreen({super.key});
+class MyOrdersScreen extends ConsumerStatefulWidget {
+  const MyOrdersScreen({super.key});
 
   @override
-  ConsumerState<StoreScreen> createState() => _StoreScreenState();
+  ConsumerState<MyOrdersScreen> createState() => _MyOrdersScreenState();
 }
 
-class _StoreScreenState extends ConsumerState<StoreScreen> {
+class _MyOrdersScreenState extends ConsumerState<MyOrdersScreen> {
   final ScrollController _scrollController = ScrollController();
 
   @override
@@ -27,11 +23,20 @@ class _StoreScreenState extends ConsumerState<StoreScreen> {
     super.initState();
 
     _scrollController.addListener(() {
-      if (_scrollController.position.pixels >=
-          _scrollController.position.maxScrollExtent - 200) {
-        final notifier = ref.read(medicineNotifierProvider.notifier);
-        notifier.fetchAllMedicines(loadMore: true);
-      }
+      final notifier = ref.read(myOrdersNotifierProvider.notifier);
+      final state = ref.read(myOrdersNotifierProvider);
+
+      state.maybeWhen(
+        success: (_, isLoadingMore, hasMore) {
+          if (!isLoadingMore &&
+              hasMore &&
+              _scrollController.position.pixels >=
+                  _scrollController.position.maxScrollExtent - 200) {
+            notifier.fetchMyOrders(loadMore: true);
+          }
+        },
+        orElse: () {},
+      );
     });
   }
 
@@ -42,63 +47,29 @@ class _StoreScreenState extends ConsumerState<StoreScreen> {
   }
 
   Future<void> _onRefresh() async {
-    final notifier = ref.read(medicineNotifierProvider.notifier);
-    await notifier.fetchAllMedicines();
+    final notifier = ref.read(myOrdersNotifierProvider.notifier);
+    await notifier.fetchMyOrders();
   }
 
   @override
   Widget build(BuildContext context) {
-    final state = ref.watch(medicineNotifierProvider);
+    final state = ref.watch(myOrdersNotifierProvider);
 
     return Scaffold(
       backgroundColor: AppColors.background,
-      appBar: CustomGradientAppBar(
-        title: 'Store',
-        customActions: [
-          Padding(
-            padding: EdgeInsets.only(right: 16.w),
-            child: GestureDetector(
-              onTap: () {
-                Navigator.pushNamed(context, Routes.cart);
-              },
-              child: SvgPicture.asset(
-                'assets/icons/ic-cart.svg',
-                width: 24.w,
-                height: 24.h,
-                color: Colors.white,
-              ),
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.only(right: 16.w),
-            child: GestureDetector(
-              onTap: () {
-                Navigator.pushNamed(context, Routes.myOrders);
-              },
-              child: SvgPicture.asset(
-                'assets/icons/ic-my-orders.svg',
-                width: 20.w,
-                height: 20.h,
-                color: Colors.white,
-              ),
-            ),
-          ),
-        ],
-      ),
+      appBar: CustomGradientAppBar(title: 'My Orders', leading: BackButton(color: AppColors.colorWhite)),
       body: state.when(
         initial: () => const SizedBox.shrink(),
         loading: () => Padding(
           padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
-          child: MasonryGridView.count(
+          child: ListView.builder(
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
-            crossAxisCount: 2,
-            mainAxisSpacing: 12,
-            crossAxisSpacing: 12,
             itemCount: 6,
-            itemBuilder: (context, index) => const MedicineItemShimmer(),
+            itemBuilder: (context, index) => const MyOrderItemShimmer(),
           ),
         ),
+
         error: (message) => Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -115,8 +86,8 @@ class _StoreScreenState extends ConsumerState<StoreScreen> {
             ],
           ),
         ),
-        success: (medicine, isLoadingMore, hasMore) {
-          if (medicine.isEmpty) {
+        success: (order, isLoadingMore, hasMore) {
+          if (order.isEmpty) {
             return RefreshIndicator(
               onRefresh: _onRefresh,
               child: ListView(
@@ -130,7 +101,7 @@ class _StoreScreenState extends ConsumerState<StoreScreen> {
                   SizedBox(height: 16.h),
                   Center(
                     child: Text(
-                      'No medicines found.',
+                      'No orders found.',
                       style: TextStyle(fontSize: 16.sp, color: Colors.grey),
                     ),
                   ),
@@ -148,33 +119,20 @@ class _StoreScreenState extends ConsumerState<StoreScreen> {
                 padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
                 child: Column(
                   children: [
-                    GridView.builder(
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        mainAxisSpacing: 12.h,
-                        crossAxisSpacing: 12.w,
-                        childAspectRatio: 0.70,
-                      ),
+                    ListView.builder(
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
-                      itemCount: medicine.length,
+                      itemCount: order.length,
                       itemBuilder: (context, index) {
-                        final item = medicine[index];
+                        final item = order[index];
                         return GestureDetector(
-                          onTap: () {
-                            Navigator.pushNamed(
-                              context,
-                              Routes.medicineDetails,
-                              arguments: MedicineDetailsArgs(medicine: item),
-                            );
-                          },
-                          child: MedicineItem(medicine: item),
+                          onTap: () {},
+                          child: MyOrderItemCard(order: item)
                         );
                       },
                     ),
 
-                    // Loading more indicator
-                    if (hasMore)
+                    if (isLoadingMore)
                       Padding(
                         padding: EdgeInsets.symmetric(vertical: 16.h),
                         child: Center(

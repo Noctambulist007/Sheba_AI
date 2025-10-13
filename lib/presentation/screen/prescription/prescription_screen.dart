@@ -24,8 +24,6 @@ class PrescriptionScreen extends ConsumerWidget {
           success: (profile) => 'Hi, ${profile.username}',
           error: (message) => 'Error',
         ),
-        showSearch: false,
-        showCart: false,
         customActions: [
           Padding(
             padding: EdgeInsets.only(right: 8.w),

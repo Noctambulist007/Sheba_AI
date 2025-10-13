@@ -13,8 +13,6 @@ class ChatScreen extends StatelessWidget {
       backgroundColor: AppColors.background,
       appBar: CustomGradientAppBar(
         title: 'Chat',
-        showSearch: false,
-        showCart: false,
       ),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),

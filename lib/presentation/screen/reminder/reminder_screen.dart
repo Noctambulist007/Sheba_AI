@@ -12,8 +12,6 @@ class ReminderScreen extends StatelessWidget {
       backgroundColor: AppColors.background,
       appBar: CustomGradientAppBar(
         title: 'Reminders',
-        showSearch: false,
-        showCart: false,
 
       ),
       body: Padding(
