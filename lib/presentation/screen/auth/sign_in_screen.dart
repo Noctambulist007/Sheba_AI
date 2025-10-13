@@ -123,7 +123,13 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
               width: double.infinity,
               text: "Sign In",
               onPressed: _handleSignIn,
-              isLoading: ref.watch(loginNotifierProvider) is LoadingState,
+              isLoading: ref
+                  .watch(loginNotifierProvider)
+                  .maybeWhen(
+                loading: () => true,
+                error: (_) => false,
+                orElse: () => false,
+              ),
             ),
 
             SizedBox(height: 24.h),

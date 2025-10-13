@@ -250,6 +250,13 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                   width: double.infinity,
                   text: "Sign Up",
                   onPressed: _handleSignUp,
+                  isLoading: ref
+                      .watch(registerNotifierProvider)
+                      .maybeWhen(
+                    loading: () => true,
+                    error: (_) => false,
+                    orElse: () => false,
+                  ),
                 ),
 
                 SizedBox(height: 24.h),
