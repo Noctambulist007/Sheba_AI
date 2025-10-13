@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:sheba_ai/presentation/screen/cart/notifier/provider.dart';
 import 'package:sheba_ai/presentation/screen/store/medicine_details_screen.dart';
 import 'package:sheba_ai/presentation/screen/store/state/medicine_ui_state.dart';
 import 'package:sheba_ai/presentation/screen/store/widget/medicine_item.dart';
@@ -10,6 +11,7 @@ import 'package:sheba_ai/presentation/theme/color.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sheba_ai/presentation/screen/store/notifier/provider.dart';
 import 'package:sheba_ai/presentation/util/routes.dart';
+import 'package:sheba_ai/presentation/util/toast_helper.dart';
 import 'package:sheba_ai/presentation/widget/custom_gradient_app_bar.dart';
 
 class StoreScreen extends ConsumerStatefulWidget {
@@ -153,14 +155,15 @@ class _StoreScreenState extends ConsumerState<StoreScreen> {
                         crossAxisCount: 2,
                         mainAxisSpacing: 12.h,
                         crossAxisSpacing: 12.w,
-                        childAspectRatio: 0.70,
+                        childAspectRatio: 0.65.r,
                       ),
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
                       itemCount: medicine.length,
                       itemBuilder: (context, index) {
                         final item = medicine[index];
-                        return GestureDetector(
+                        return MedicineItem(
+                          medicine: item,
                           onTap: () {
                             Navigator.pushNamed(
                               context,
@@ -168,7 +171,26 @@ class _StoreScreenState extends ConsumerState<StoreScreen> {
                               arguments: MedicineDetailsArgs(medicine: item),
                             );
                           },
-                          child: MedicineItem(medicine: item),
+                          onAddToCart: () {
+                            // final cartItems = ref
+                            //     .read(cartNotifierProvider)
+                            //     .items;
+                            // final exists = cartItems.any(
+                            //   (item) =>
+                            //       item.medicine.medicineId ==
+                            //       item.medicine.medicineId,
+                            // );
+                            //
+                            // if (!exists) {
+                            //   ref
+                            //       .read(cartNotifierProvider.notifier)
+                            //       .addToCart(item);
+                            // }
+                            // ToastHelper.showSuccess(
+                            //   context,
+                            //   '${item.name} added to cart',
+                            // );
+                          },
                         );
                       },
                     ),

@@ -35,7 +35,7 @@ class AuthToggleLink extends StatelessWidget {
               TextSpan(
                 text: linkText,
                 style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                      color: AppColors.colorPrimary,
+                      color: AppColors.AppColors.primary,
                       fontSize: 16.sp,
                       height: 20.sp / 16.sp,
                       letterSpacing: 0.31.sp,

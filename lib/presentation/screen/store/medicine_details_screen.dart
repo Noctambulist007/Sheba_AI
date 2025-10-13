@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:sheba_ai/domain/model/cart/cart_item.dart';
 import 'package:sheba_ai/domain/model/medicine/medicine.dart';
+import 'package:sheba_ai/presentation/screen/cart/notifier/cart_notifier.dart';
+import 'package:sheba_ai/presentation/screen/cart/notifier/provider.dart';
 import 'package:sheba_ai/presentation/theme/color.dart';
+import 'package:sheba_ai/presentation/util/toast_helper.dart';
 import 'package:sheba_ai/presentation/widget/custom_gradient_app_bar.dart';
 
 class MedicineDetailsArgs {
@@ -192,7 +196,6 @@ class MedicineDetailsScreen extends ConsumerWidget {
 
                   SizedBox(height: 20.h),
 
-                  // Price Section
                   Container(
                     padding: EdgeInsets.all(16.w),
                     decoration: BoxDecoration(
@@ -235,14 +238,47 @@ class MedicineDetailsScreen extends ConsumerWidget {
                             children: [
                               IconButton(
                                 icon: const Icon(Icons.remove),
-                                onPressed: () {},
+                                onPressed: () {
+                                  final quantity = ref
+                                      .read(cartNotifierProvider)
+                                      .items
+                                      .firstWhere(
+                                        (item) =>
+                                            item.medicine.medicineId ==
+                                            medicine.medicineId,
+                                        orElse: () => CartItem(
+                                          medicine: medicine,
+                                          quantity: 0,
+                                        ),
+                                      )
+                                      .quantity;
+
+                                  if (quantity > 0) {
+                                    ref
+                                        .read(cartNotifierProvider.notifier)
+                                        .decrementQuantity(medicine.medicineId);
+                                  }
+                                },
                                 color: AppColors.primary,
                                 iconSize: 20.sp,
                               ),
                               Container(
                                 padding: EdgeInsets.symmetric(horizontal: 12.w),
                                 child: Text(
-                                  '1',
+                                  ref
+                                      .watch(cartNotifierProvider)
+                                      .items
+                                      .firstWhere(
+                                        (item) =>
+                                            item.medicine.medicineId ==
+                                            medicine.medicineId,
+                                        orElse: () => CartItem(
+                                          medicine: medicine,
+                                          quantity: 0,
+                                        ),
+                                      )
+                                      .quantity
+                                      .toString(),
                                   style: TextStyle(
                                     fontSize: 16.sp,
                                     fontWeight: FontWeight.bold,
@@ -251,7 +287,27 @@ class MedicineDetailsScreen extends ConsumerWidget {
                               ),
                               IconButton(
                                 icon: const Icon(Icons.add),
-                                onPressed: () {},
+                                onPressed: () {
+                                  ref
+                                      .read(cartNotifierProvider.notifier)
+                                      .incrementQuantity(medicine.medicineId);
+
+                                  // If item is not in cart yet, add it
+                                  final cartItems = ref
+                                      .read(cartNotifierProvider)
+                                      .items;
+                                  final exists = cartItems.any(
+                                    (item) =>
+                                        item.medicine.medicineId ==
+                                        medicine.medicineId,
+                                  );
+
+                                  if (!exists) {
+                                    ref
+                                        .read(cartNotifierProvider.notifier)
+                                        .addToCart(medicine);
+                                  }
+                                },
                                 color: AppColors.primary,
                                 iconSize: 20.sp,
                               ),
@@ -321,12 +377,28 @@ class MedicineDetailsScreen extends ConsumerWidget {
               // Add to Cart Button
               Expanded(
                 child: OutlinedButton.icon(
-                  onPressed: () {},
+                  onPressed: () {
+                    final cartItems = ref.read(cartNotifierProvider).items;
+                    final exists = cartItems.any(
+                      (item) => item.medicine.medicineId == medicine.medicineId,
+                    );
+
+                    if (!exists) {
+                      ref
+                          .read(cartNotifierProvider.notifier)
+                          .addToCart(medicine);
+                    }
+                    ToastHelper.showSuccess(
+                      context,
+                      '${medicine.name} added to cart',
+                    );
+                  },
                   icon: const Icon(Icons.add_shopping_cart_outlined),
                   label: const Text('Add to Cart'),
                   style: OutlinedButton.styleFrom(
+                    elevation: 0,
                     foregroundColor: AppColors.primary,
-                    side: BorderSide(color: AppColors.primary, width: 2),
+                    side: BorderSide(color: AppColors.primary, width: 1),
                     padding: EdgeInsets.symmetric(vertical: 14.h),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12.r),

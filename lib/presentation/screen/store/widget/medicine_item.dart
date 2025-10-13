@@ -7,8 +7,9 @@ import 'package:sheba_ai/presentation/theme/color.dart';
 class MedicineItem extends StatelessWidget {
   final Medicine medicine;
   final VoidCallback? onTap;
+  final VoidCallback? onAddToCart;
 
-  const MedicineItem({super.key, required this.medicine, this.onTap});
+  const MedicineItem({super.key, required this.medicine, this.onTap, this.onAddToCart});
 
   Color getRandomNaturalColor() {
     final Random random = Random();
@@ -143,6 +144,22 @@ class MedicineItem extends StatelessWidget {
                             color: AppColors.primary,
                           ),
                           overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                      // add to cart button
+                      Container(
+                        decoration: BoxDecoration(
+                          color: AppColors.colorWhite,
+                          border: Border.all(color: AppColors.gray300, width: 1.w),
+                          borderRadius: BorderRadius.circular(8.r),
+                        ),
+                        child: IconButton(
+                          icon: Icon(
+                            Icons.add_shopping_cart,
+                            color: AppColors.primary,
+                            size: 20.sp,
+                          ),
+                          onPressed: onAddToCart
                         ),
                       ),
                     ],

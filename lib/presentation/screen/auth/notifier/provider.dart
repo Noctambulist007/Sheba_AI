@@ -29,3 +29,4 @@ final registerNotifierProvider =
     StateNotifierProvider<RegisterNotifier, RegisterUiState>((ref) {
       return RegisterNotifier(ref);
     });
+

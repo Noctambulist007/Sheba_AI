@@ -101,7 +101,7 @@ class AppColors {
   // Primary Surface Color Family
   static const Color primarySurfaceSubtitle = Color(0xFFE8EDF7);
   static const Color primarySurfaceLighter = Color(0xFF6B9BD1);
-  static const Color primarySurfaceDefault = Color(0xFF15376B);
+  static const Color primarySurfaceDefault = primaryGradient;
   static const Color primarySurfaceDarker = Color(0xFF0F2851);
 
   // Primary Border Color Family

@@ -101,24 +101,25 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
               ),
             ),
 
-            SizedBox(height: 2.h),
+            // SizedBox(height: 2.h),
+            //
+            // Align(
+            //   alignment: Alignment.centerRight,
+            //   child: TextButton(
+            //     onPressed: () {
+            //       // Navigator.pushNamed(context, Routes.otpSend);
+            //     },
+            //     child: Text(
+            //       "Forgot Password?",
+            //       style: AppTextStyles.labelL6Regular.copyWith(
+            //         color: AppColors.colorPrimary,
+            //       ),
+            //     ),
+            //   ),
+            // ),
 
-            Align(
-              alignment: Alignment.centerRight,
-              child: TextButton(
-                onPressed: () {
-                  // Navigator.pushNamed(context, Routes.otpSend);
-                },
-                child: Text(
-                  "Forgot Password?",
-                  style: AppTextStyles.labelL6Regular.copyWith(
-                    color: AppColors.colorPrimary,
-                  ),
-                ),
-              ),
-            ),
-
-            SizedBox(height: 12.h),
+            SizedBox(height: 24.h),
+            
             CustomButton.primary(
               width: double.infinity,
               text: "Sign In",
