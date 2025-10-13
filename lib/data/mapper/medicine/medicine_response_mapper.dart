@@ -14,8 +14,8 @@ extension MedicineResponseMapper on MedicineResponseData {
       manufacturer: manufacturer.toManufacturer(),
       generic: generic.toGeneric(),
       dosageForm: dosageForm.toDosageForm(),
-      price: price,
-      formattedPrice: formattedPrice,
+      price: price ?? '',
+      formattedPrice: formattedPrice ?? '',
       unit: unit,
     );
   }

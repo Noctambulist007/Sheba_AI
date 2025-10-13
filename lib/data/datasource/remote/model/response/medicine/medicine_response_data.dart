@@ -17,8 +17,8 @@ abstract class MedicineResponseData with _$MedicineResponseData {
     @JsonKey(name: 'manufacturer') required ManufacturerResponseData manufacturer,
     @JsonKey(name: 'generic') required GenericResponseData generic,
     @JsonKey(name: 'dosage_form') required DosageFormResponseData dosageForm,
-    @JsonKey(name: 'price') required String price,
-    @JsonKey(name: 'formatted_price') required String formattedPrice,
+    @JsonKey(name: 'price') String? price,
+    @JsonKey(name: 'formatted_price') String? formattedPrice,
     @JsonKey(name: 'unit') required String unit,
   }) = _MedicineResponseData;
 

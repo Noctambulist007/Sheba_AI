@@ -22,8 +22,8 @@ _MedicineResponseData _$MedicineResponseDataFromJson(
   dosageForm: DosageFormResponseData.fromJson(
     json['dosage_form'] as Map<String, dynamic>,
   ),
-  price: json['price'] as String,
-  formattedPrice: json['formatted_price'] as String,
+  price: json['price'] as String?,
+  formattedPrice: json['formatted_price'] as String?,
   unit: json['unit'] as String,
 );
 

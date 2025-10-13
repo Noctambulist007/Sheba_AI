@@ -10,8 +10,8 @@ class Medicine {
   final Manufacturer manufacturer;
   final Generic generic;
   final DosageForm dosageForm;
-  final String price;
-  final String formattedPrice;
+  final String? price;
+  final String? formattedPrice;
   final String unit;
 
   Medicine({
@@ -22,8 +22,8 @@ class Medicine {
     required this.manufacturer,
     required this.generic,
     required this.dosageForm,
-    required this.price,
-    required this.formattedPrice,
+     this.price,
+     this.formattedPrice,
     required this.unit,
   });
 }

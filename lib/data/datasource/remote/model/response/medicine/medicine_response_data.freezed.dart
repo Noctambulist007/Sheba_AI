@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$MedicineResponseData {
 
-@JsonKey(name: 'medicine_id') int get medicineId;@JsonKey(name: 'name') String get name;@JsonKey(name: 'slug') String get slug;@JsonKey(name: 'strength') String get strength;@JsonKey(name: 'manufacturer') ManufacturerResponseData get manufacturer;@JsonKey(name: 'generic') GenericResponseData get generic;@JsonKey(name: 'dosage_form') DosageFormResponseData get dosageForm;@JsonKey(name: 'price') String get price;@JsonKey(name: 'formatted_price') String get formattedPrice;@JsonKey(name: 'unit') String get unit;
+@JsonKey(name: 'medicine_id') int get medicineId;@JsonKey(name: 'name') String get name;@JsonKey(name: 'slug') String get slug;@JsonKey(name: 'strength') String get strength;@JsonKey(name: 'manufacturer') ManufacturerResponseData get manufacturer;@JsonKey(name: 'generic') GenericResponseData get generic;@JsonKey(name: 'dosage_form') DosageFormResponseData get dosageForm;@JsonKey(name: 'price') String? get price;@JsonKey(name: 'formatted_price') String? get formattedPrice;@JsonKey(name: 'unit') String get unit;
 /// Create a copy of MedicineResponseData
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -48,7 +48,7 @@ abstract mixin class $MedicineResponseDataCopyWith<$Res>  {
   factory $MedicineResponseDataCopyWith(MedicineResponseData value, $Res Function(MedicineResponseData) _then) = _$MedicineResponseDataCopyWithImpl;
 @useResult
 $Res call({
-@JsonKey(name: 'medicine_id') int medicineId,@JsonKey(name: 'name') String name,@JsonKey(name: 'slug') String slug,@JsonKey(name: 'strength') String strength,@JsonKey(name: 'manufacturer') ManufacturerResponseData manufacturer,@JsonKey(name: 'generic') GenericResponseData generic,@JsonKey(name: 'dosage_form') DosageFormResponseData dosageForm,@JsonKey(name: 'price') String price,@JsonKey(name: 'formatted_price') String formattedPrice,@JsonKey(name: 'unit') String unit
+@JsonKey(name: 'medicine_id') int medicineId,@JsonKey(name: 'name') String name,@JsonKey(name: 'slug') String slug,@JsonKey(name: 'strength') String strength,@JsonKey(name: 'manufacturer') ManufacturerResponseData manufacturer,@JsonKey(name: 'generic') GenericResponseData generic,@JsonKey(name: 'dosage_form') DosageFormResponseData dosageForm,@JsonKey(name: 'price') String? price,@JsonKey(name: 'formatted_price') String? formattedPrice,@JsonKey(name: 'unit') String unit
 });
 
 
@@ -65,7 +65,7 @@ class _$MedicineResponseDataCopyWithImpl<$Res>
 
 /// Create a copy of MedicineResponseData
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? medicineId = null,Object? name = null,Object? slug = null,Object? strength = null,Object? manufacturer = null,Object? generic = null,Object? dosageForm = null,Object? price = null,Object? formattedPrice = null,Object? unit = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? medicineId = null,Object? name = null,Object? slug = null,Object? strength = null,Object? manufacturer = null,Object? generic = null,Object? dosageForm = null,Object? price = freezed,Object? formattedPrice = freezed,Object? unit = null,}) {
   return _then(_self.copyWith(
 medicineId: null == medicineId ? _self.medicineId : medicineId // ignore: cast_nullable_to_non_nullable
 as int,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
@@ -74,9 +74,9 @@ as String,strength: null == strength ? _self.strength : strength // ignore: cast
 as String,manufacturer: null == manufacturer ? _self.manufacturer : manufacturer // ignore: cast_nullable_to_non_nullable
 as ManufacturerResponseData,generic: null == generic ? _self.generic : generic // ignore: cast_nullable_to_non_nullable
 as GenericResponseData,dosageForm: null == dosageForm ? _self.dosageForm : dosageForm // ignore: cast_nullable_to_non_nullable
-as DosageFormResponseData,price: null == price ? _self.price : price // ignore: cast_nullable_to_non_nullable
-as String,formattedPrice: null == formattedPrice ? _self.formattedPrice : formattedPrice // ignore: cast_nullable_to_non_nullable
-as String,unit: null == unit ? _self.unit : unit // ignore: cast_nullable_to_non_nullable
+as DosageFormResponseData,price: freezed == price ? _self.price : price // ignore: cast_nullable_to_non_nullable
+as String?,formattedPrice: freezed == formattedPrice ? _self.formattedPrice : formattedPrice // ignore: cast_nullable_to_non_nullable
+as String?,unit: null == unit ? _self.unit : unit // ignore: cast_nullable_to_non_nullable
 as String,
   ));
 }
@@ -189,7 +189,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: 'medicine_id')  int medicineId, @JsonKey(name: 'name')  String name, @JsonKey(name: 'slug')  String slug, @JsonKey(name: 'strength')  String strength, @JsonKey(name: 'manufacturer')  ManufacturerResponseData manufacturer, @JsonKey(name: 'generic')  GenericResponseData generic, @JsonKey(name: 'dosage_form')  DosageFormResponseData dosageForm, @JsonKey(name: 'price')  String price, @JsonKey(name: 'formatted_price')  String formattedPrice, @JsonKey(name: 'unit')  String unit)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: 'medicine_id')  int medicineId, @JsonKey(name: 'name')  String name, @JsonKey(name: 'slug')  String slug, @JsonKey(name: 'strength')  String strength, @JsonKey(name: 'manufacturer')  ManufacturerResponseData manufacturer, @JsonKey(name: 'generic')  GenericResponseData generic, @JsonKey(name: 'dosage_form')  DosageFormResponseData dosageForm, @JsonKey(name: 'price')  String? price, @JsonKey(name: 'formatted_price')  String? formattedPrice, @JsonKey(name: 'unit')  String unit)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _MedicineResponseData() when $default != null:
 return $default(_that.medicineId,_that.name,_that.slug,_that.strength,_that.manufacturer,_that.generic,_that.dosageForm,_that.price,_that.formattedPrice,_that.unit);case _:
@@ -210,7 +210,7 @@ return $default(_that.medicineId,_that.name,_that.slug,_that.strength,_that.manu
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: 'medicine_id')  int medicineId, @JsonKey(name: 'name')  String name, @JsonKey(name: 'slug')  String slug, @JsonKey(name: 'strength')  String strength, @JsonKey(name: 'manufacturer')  ManufacturerResponseData manufacturer, @JsonKey(name: 'generic')  GenericResponseData generic, @JsonKey(name: 'dosage_form')  DosageFormResponseData dosageForm, @JsonKey(name: 'price')  String price, @JsonKey(name: 'formatted_price')  String formattedPrice, @JsonKey(name: 'unit')  String unit)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: 'medicine_id')  int medicineId, @JsonKey(name: 'name')  String name, @JsonKey(name: 'slug')  String slug, @JsonKey(name: 'strength')  String strength, @JsonKey(name: 'manufacturer')  ManufacturerResponseData manufacturer, @JsonKey(name: 'generic')  GenericResponseData generic, @JsonKey(name: 'dosage_form')  DosageFormResponseData dosageForm, @JsonKey(name: 'price')  String? price, @JsonKey(name: 'formatted_price')  String? formattedPrice, @JsonKey(name: 'unit')  String unit)  $default,) {final _that = this;
 switch (_that) {
 case _MedicineResponseData():
 return $default(_that.medicineId,_that.name,_that.slug,_that.strength,_that.manufacturer,_that.generic,_that.dosageForm,_that.price,_that.formattedPrice,_that.unit);case _:
@@ -230,7 +230,7 @@ return $default(_that.medicineId,_that.name,_that.slug,_that.strength,_that.manu
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: 'medicine_id')  int medicineId, @JsonKey(name: 'name')  String name, @JsonKey(name: 'slug')  String slug, @JsonKey(name: 'strength')  String strength, @JsonKey(name: 'manufacturer')  ManufacturerResponseData manufacturer, @JsonKey(name: 'generic')  GenericResponseData generic, @JsonKey(name: 'dosage_form')  DosageFormResponseData dosageForm, @JsonKey(name: 'price')  String price, @JsonKey(name: 'formatted_price')  String formattedPrice, @JsonKey(name: 'unit')  String unit)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: 'medicine_id')  int medicineId, @JsonKey(name: 'name')  String name, @JsonKey(name: 'slug')  String slug, @JsonKey(name: 'strength')  String strength, @JsonKey(name: 'manufacturer')  ManufacturerResponseData manufacturer, @JsonKey(name: 'generic')  GenericResponseData generic, @JsonKey(name: 'dosage_form')  DosageFormResponseData dosageForm, @JsonKey(name: 'price')  String? price, @JsonKey(name: 'formatted_price')  String? formattedPrice, @JsonKey(name: 'unit')  String unit)?  $default,) {final _that = this;
 switch (_that) {
 case _MedicineResponseData() when $default != null:
 return $default(_that.medicineId,_that.name,_that.slug,_that.strength,_that.manufacturer,_that.generic,_that.dosageForm,_that.price,_that.formattedPrice,_that.unit);case _:
@@ -245,7 +245,7 @@ return $default(_that.medicineId,_that.name,_that.slug,_that.strength,_that.manu
 @JsonSerializable()
 
 class _MedicineResponseData implements MedicineResponseData {
-  const _MedicineResponseData({@JsonKey(name: 'medicine_id') required this.medicineId, @JsonKey(name: 'name') required this.name, @JsonKey(name: 'slug') required this.slug, @JsonKey(name: 'strength') required this.strength, @JsonKey(name: 'manufacturer') required this.manufacturer, @JsonKey(name: 'generic') required this.generic, @JsonKey(name: 'dosage_form') required this.dosageForm, @JsonKey(name: 'price') required this.price, @JsonKey(name: 'formatted_price') required this.formattedPrice, @JsonKey(name: 'unit') required this.unit});
+  const _MedicineResponseData({@JsonKey(name: 'medicine_id') required this.medicineId, @JsonKey(name: 'name') required this.name, @JsonKey(name: 'slug') required this.slug, @JsonKey(name: 'strength') required this.strength, @JsonKey(name: 'manufacturer') required this.manufacturer, @JsonKey(name: 'generic') required this.generic, @JsonKey(name: 'dosage_form') required this.dosageForm, @JsonKey(name: 'price') this.price, @JsonKey(name: 'formatted_price') this.formattedPrice, @JsonKey(name: 'unit') required this.unit});
   factory _MedicineResponseData.fromJson(Map<String, dynamic> json) => _$MedicineResponseDataFromJson(json);
 
 @override@JsonKey(name: 'medicine_id') final  int medicineId;
@@ -255,8 +255,8 @@ class _MedicineResponseData implements MedicineResponseData {
 @override@JsonKey(name: 'manufacturer') final  ManufacturerResponseData manufacturer;
 @override@JsonKey(name: 'generic') final  GenericResponseData generic;
 @override@JsonKey(name: 'dosage_form') final  DosageFormResponseData dosageForm;
-@override@JsonKey(name: 'price') final  String price;
-@override@JsonKey(name: 'formatted_price') final  String formattedPrice;
+@override@JsonKey(name: 'price') final  String? price;
+@override@JsonKey(name: 'formatted_price') final  String? formattedPrice;
 @override@JsonKey(name: 'unit') final  String unit;
 
 /// Create a copy of MedicineResponseData
@@ -292,7 +292,7 @@ abstract mixin class _$MedicineResponseDataCopyWith<$Res> implements $MedicineRe
   factory _$MedicineResponseDataCopyWith(_MedicineResponseData value, $Res Function(_MedicineResponseData) _then) = __$MedicineResponseDataCopyWithImpl;
 @override @useResult
 $Res call({
-@JsonKey(name: 'medicine_id') int medicineId,@JsonKey(name: 'name') String name,@JsonKey(name: 'slug') String slug,@JsonKey(name: 'strength') String strength,@JsonKey(name: 'manufacturer') ManufacturerResponseData manufacturer,@JsonKey(name: 'generic') GenericResponseData generic,@JsonKey(name: 'dosage_form') DosageFormResponseData dosageForm,@JsonKey(name: 'price') String price,@JsonKey(name: 'formatted_price') String formattedPrice,@JsonKey(name: 'unit') String unit
+@JsonKey(name: 'medicine_id') int medicineId,@JsonKey(name: 'name') String name,@JsonKey(name: 'slug') String slug,@JsonKey(name: 'strength') String strength,@JsonKey(name: 'manufacturer') ManufacturerResponseData manufacturer,@JsonKey(name: 'generic') GenericResponseData generic,@JsonKey(name: 'dosage_form') DosageFormResponseData dosageForm,@JsonKey(name: 'price') String? price,@JsonKey(name: 'formatted_price') String? formattedPrice,@JsonKey(name: 'unit') String unit
 });
 
 
@@ -309,7 +309,7 @@ class __$MedicineResponseDataCopyWithImpl<$Res>
 
 /// Create a copy of MedicineResponseData
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? medicineId = null,Object? name = null,Object? slug = null,Object? strength = null,Object? manufacturer = null,Object? generic = null,Object? dosageForm = null,Object? price = null,Object? formattedPrice = null,Object? unit = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? medicineId = null,Object? name = null,Object? slug = null,Object? strength = null,Object? manufacturer = null,Object? generic = null,Object? dosageForm = null,Object? price = freezed,Object? formattedPrice = freezed,Object? unit = null,}) {
   return _then(_MedicineResponseData(
 medicineId: null == medicineId ? _self.medicineId : medicineId // ignore: cast_nullable_to_non_nullable
 as int,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
@@ -318,9 +318,9 @@ as String,strength: null == strength ? _self.strength : strength // ignore: cast
 as String,manufacturer: null == manufacturer ? _self.manufacturer : manufacturer // ignore: cast_nullable_to_non_nullable
 as ManufacturerResponseData,generic: null == generic ? _self.generic : generic // ignore: cast_nullable_to_non_nullable
 as GenericResponseData,dosageForm: null == dosageForm ? _self.dosageForm : dosageForm // ignore: cast_nullable_to_non_nullable
-as DosageFormResponseData,price: null == price ? _self.price : price // ignore: cast_nullable_to_non_nullable
-as String,formattedPrice: null == formattedPrice ? _self.formattedPrice : formattedPrice // ignore: cast_nullable_to_non_nullable
-as String,unit: null == unit ? _self.unit : unit // ignore: cast_nullable_to_non_nullable
+as DosageFormResponseData,price: freezed == price ? _self.price : price // ignore: cast_nullable_to_non_nullable
+as String?,formattedPrice: freezed == formattedPrice ? _self.formattedPrice : formattedPrice // ignore: cast_nullable_to_non_nullable
+as String?,unit: null == unit ? _self.unit : unit // ignore: cast_nullable_to_non_nullable
 as String,
   ));
 }

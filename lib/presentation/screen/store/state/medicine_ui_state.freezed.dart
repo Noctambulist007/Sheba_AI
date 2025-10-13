@@ -128,12 +128,12 @@ return error(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  initial,TResult Function()?  loading,TResult Function( List<Medicine> medicine)?  success,TResult Function( String message)?  error,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  initial,TResult Function()?  loading,TResult Function( List<Medicine> medicine,  bool isLoadingMore,  bool hasMore)?  success,TResult Function( String message)?  error,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case InitialState() when initial != null:
 return initial();case LoadingState() when loading != null:
 return loading();case SuccessState() when success != null:
-return success(_that.medicine);case ErrorState() when error != null:
+return success(_that.medicine,_that.isLoadingMore,_that.hasMore);case ErrorState() when error != null:
 return error(_that.message);case _:
   return orElse();
 
@@ -152,12 +152,12 @@ return error(_that.message);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  initial,required TResult Function()  loading,required TResult Function( List<Medicine> medicine)  success,required TResult Function( String message)  error,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  initial,required TResult Function()  loading,required TResult Function( List<Medicine> medicine,  bool isLoadingMore,  bool hasMore)  success,required TResult Function( String message)  error,}) {final _that = this;
 switch (_that) {
 case InitialState():
 return initial();case LoadingState():
 return loading();case SuccessState():
-return success(_that.medicine);case ErrorState():
+return success(_that.medicine,_that.isLoadingMore,_that.hasMore);case ErrorState():
 return error(_that.message);case _:
   throw StateError('Unexpected subclass');
 
@@ -175,12 +175,12 @@ return error(_that.message);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  initial,TResult? Function()?  loading,TResult? Function( List<Medicine> medicine)?  success,TResult? Function( String message)?  error,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  initial,TResult? Function()?  loading,TResult? Function( List<Medicine> medicine,  bool isLoadingMore,  bool hasMore)?  success,TResult? Function( String message)?  error,}) {final _that = this;
 switch (_that) {
 case InitialState() when initial != null:
 return initial();case LoadingState() when loading != null:
 return loading();case SuccessState() when success != null:
-return success(_that.medicine);case ErrorState() when error != null:
+return success(_that.medicine,_that.isLoadingMore,_that.hasMore);case ErrorState() when error != null:
 return error(_that.message);case _:
   return null;
 
@@ -257,7 +257,7 @@ String toString() {
 
 
 class SuccessState implements MedicineUiState {
-  const SuccessState({required final  List<Medicine> medicine}): _medicine = medicine;
+  const SuccessState({required final  List<Medicine> medicine, this.isLoadingMore = false, this.hasMore = true}): _medicine = medicine;
   
 
  final  List<Medicine> _medicine;
@@ -267,6 +267,8 @@ class SuccessState implements MedicineUiState {
   return EqualUnmodifiableListView(_medicine);
 }
 
+@JsonKey() final  bool isLoadingMore;
+@JsonKey() final  bool hasMore;
 
 /// Create a copy of MedicineUiState
 /// with the given fields replaced by the non-null parameter values.
@@ -278,16 +280,16 @@ $SuccessStateCopyWith<SuccessState> get copyWith => _$SuccessStateCopyWithImpl<S
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is SuccessState&&const DeepCollectionEquality().equals(other._medicine, _medicine));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is SuccessState&&const DeepCollectionEquality().equals(other._medicine, _medicine)&&(identical(other.isLoadingMore, isLoadingMore) || other.isLoadingMore == isLoadingMore)&&(identical(other.hasMore, hasMore) || other.hasMore == hasMore));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_medicine));
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_medicine),isLoadingMore,hasMore);
 
 @override
 String toString() {
-  return 'MedicineUiState.success(medicine: $medicine)';
+  return 'MedicineUiState.success(medicine: $medicine, isLoadingMore: $isLoadingMore, hasMore: $hasMore)';
 }
 
 
@@ -298,7 +300,7 @@ abstract mixin class $SuccessStateCopyWith<$Res> implements $MedicineUiStateCopy
   factory $SuccessStateCopyWith(SuccessState value, $Res Function(SuccessState) _then) = _$SuccessStateCopyWithImpl;
 @useResult
 $Res call({
- List<Medicine> medicine
+ List<Medicine> medicine, bool isLoadingMore, bool hasMore
 });
 
 
@@ -315,10 +317,12 @@ class _$SuccessStateCopyWithImpl<$Res>
 
 /// Create a copy of MedicineUiState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? medicine = null,}) {
+@pragma('vm:prefer-inline') $Res call({Object? medicine = null,Object? isLoadingMore = null,Object? hasMore = null,}) {
   return _then(SuccessState(
 medicine: null == medicine ? _self._medicine : medicine // ignore: cast_nullable_to_non_nullable
-as List<Medicine>,
+as List<Medicine>,isLoadingMore: null == isLoadingMore ? _self.isLoadingMore : isLoadingMore // ignore: cast_nullable_to_non_nullable
+as bool,hasMore: null == hasMore ? _self.hasMore : hasMore // ignore: cast_nullable_to_non_nullable
+as bool,
   ));
 }
 
