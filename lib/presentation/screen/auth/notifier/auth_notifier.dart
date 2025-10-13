@@ -37,4 +37,7 @@ class AuthNotifier extends StateNotifier<AuthUiState> {
   void clearAuthState() {
     state = const AuthUiState.anonymous();
   }
+
+  Future<void> logout() async {
+  }
 }

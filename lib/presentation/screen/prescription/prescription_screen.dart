@@ -18,7 +18,12 @@ class PrescriptionScreen extends ConsumerWidget {
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: CustomGradientAppBar(
-        title: 'Prescription',
+        title: profileState.when(
+          loading: () => 'Loading...',
+          anonymous: () => 'Hi, Guest',
+          success: (profile) => 'Hi, ${profile.username}',
+          error: (message) => 'Error',
+        ),
         showSearch: false,
         showCart: false,
         customActions: [

@@ -64,7 +64,7 @@ class CustomButton extends StatefulWidget {
       text: text,
       borderRadius: borderRadius ?? 25.r,
       gradient: LinearGradient(
-        colors: gradientColors ?? [AppColors.colorPrimary, AppColors.primaryGradient],
+        colors: gradientColors ?? [Color(0xFF025036), Color(0xFF056F38)],
         begin: Alignment.topRight,
         end: Alignment.bottomLeft,
       ),
@@ -155,7 +155,8 @@ class CustomButton extends StatefulWidget {
 }
 
 class _CustomButtonState extends State<CustomButton> {
-  final RoundedLoadingButtonController _btnController = RoundedLoadingButtonController();
+  final RoundedLoadingButtonController _btnController =
+      RoundedLoadingButtonController();
 
   @override
   void didUpdateWidget(CustomButton oldWidget) {
@@ -194,12 +195,17 @@ class _CustomButtonState extends State<CustomButton> {
           decoration: BoxDecoration(
             gradient: widget.gradient,
             border: widget.borderColor != null
-                ? Border.all(color: widget.borderColor!, width: widget.borderWidth ?? 1.5.w)
+                ? Border.all(
+                    color: widget.borderColor!,
+                    width: widget.borderWidth ?? 1.5.w,
+                  )
                 : null,
             borderRadius: BorderRadius.circular(widget.borderRadius ?? 25.r),
           ),
           alignment: Alignment.center,
-          padding: widget.padding ?? EdgeInsets.symmetric(horizontal: 24.w, vertical: 12.h),
+          padding:
+              widget.padding ??
+              EdgeInsets.symmetric(horizontal: 24.w, vertical: 12.h),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             mainAxisSize: MainAxisSize.min,
@@ -207,7 +213,8 @@ class _CustomButtonState extends State<CustomButton> {
               if (widget.icon != null) ...[widget.icon!, SizedBox(width: 8.w)],
               Text(
                 widget.text,
-                style: widget.textStyle ??
+                style:
+                    widget.textStyle ??
                     TextStyle(
                       fontSize: widget.fontSize ?? 16.sp,
                       color: widget.textColor ?? Colors.white,

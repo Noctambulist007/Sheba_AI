@@ -8,6 +8,7 @@ import 'package:sheba_ai/presentation/screen/prescription/prescription_screen.da
 import 'package:sheba_ai/presentation/screen/profile/profile_screen.dart';
 import 'package:sheba_ai/presentation/screen/reminder/reminder_screen.dart';
 import 'package:sheba_ai/presentation/screen/splash/splash_screen.dart';
+import 'package:sheba_ai/presentation/screen/store/medicine_details_screen.dart';
 import 'package:sheba_ai/presentation/screen/store/store_screen.dart';
 
 class Routes {
@@ -20,6 +21,7 @@ class Routes {
 
   static const String prescription = 'prescription';
   static const String store = 'store';
+  static const String medicineDetails = 'medicineDetails';
   static const String chat = 'chat';
   static const String reminder = 'reminder';
   static const String profile = 'profile';
@@ -43,6 +45,8 @@ class Routes {
             return const PrescriptionScreen();
             case store:
             return const StoreScreen();
+            case medicineDetails:
+              return MedicineDetailsScreen();
           case chat:
             return const ChatScreen();
           case reminder:

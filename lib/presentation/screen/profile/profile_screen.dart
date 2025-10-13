@@ -48,7 +48,7 @@ class ProfileScreen extends ConsumerWidget {
                 height: MediaQuery.of(context).size.height * 0.2,
                 decoration: BoxDecoration(
                   gradient: const LinearGradient(
-                    colors: [Color(0xFF0D47A1), Color(0xFF007BDC)],
+                    colors: [Color(0xFF025036), Color(0xFF056F38)],
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
                   ),
@@ -123,6 +123,26 @@ class ProfileScreen extends ConsumerWidget {
                           ),
                           SizedBox(height: 16.h),
                           CustomFormField(
+                            initialValue: userProfile.username,
+                            name: 'user_name',
+                            labelText: 'User Name',
+                            hintText: 'Enter your User name',
+                            iconPath: 'assets/icons/ic-user.svg',
+                            keyboardType: TextInputType.name,
+                            textInputAction: TextInputAction.next,
+                            readOnly: true,
+                            validators: [
+                              FormBuilderValidators.required(
+                                errorText: 'User is required',
+                              ),
+                              FormBuilderValidators.minLength(
+                                3,
+                                errorText: 'At least 3 characters',
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: 16.h),
+                          CustomFormField(
                             initialValue: userProfile.email,
                             name: 'email',
                             labelText: 'Email Address',
@@ -130,6 +150,7 @@ class ProfileScreen extends ConsumerWidget {
                             iconPath: 'assets/icons/ic-email.svg',
                             keyboardType: TextInputType.emailAddress,
                             textInputAction: TextInputAction.next,
+                            readOnly: true,
                             validators: [
                               FormBuilderValidators.required(
                                 errorText: 'Email is required',
@@ -150,6 +171,16 @@ class ProfileScreen extends ConsumerWidget {
                             textInputAction: TextInputAction.next,
                             readOnly: true,
                           ),
+                          SizedBox(height: 16.h),
+                          CustomFormField(
+                            initialValue: userProfile.address,
+                            name: 'address',
+                            labelText: 'Address',
+                            hintText: 'Enter your address',
+                            iconPath: 'assets/icons/ic-location.svg',
+                            keyboardType: TextInputType.phone,
+                            textInputAction: TextInputAction.next,
+                          ),
                         ],
                       ),
                     ),
@@ -165,8 +196,12 @@ class ProfileScreen extends ConsumerWidget {
           padding: EdgeInsets.all(16.h),
           child: CustomButton.primary(
             width: double.infinity,
-            borderRadius: 6.r,
-            text: "Save",
+            text: "Logout",
+            onPressed: () {
+              Navigator.pop(context);
+              // ref.read(authStatusProvider.notifier).logout();
+              // Navigator.pushNamedAndRemoveUntil(context, Routes.signIn, (route) => false);
+            },
             textStyle: AppTextStyles.labelL3Regular.copyWith(
               color: Colors.white,
             ),

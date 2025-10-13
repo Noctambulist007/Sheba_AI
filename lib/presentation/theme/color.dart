@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 
 class AppColors {
   // Primary Colors
-  static const Color primary = Color(0xFF0d6efd);
+  static const Color primary = Color(0xFF2E7A45);
   static const Color primaryLight = Color(0xFF64B5F6);
-  static const Color primaryDark = Color(0xFF4e54c8);
+  static const Color primaryDark = Color(0xFF025036);
   static const Color primaryContainer = Color(0xFFBBDEFB);
-  static const Color onPrimaryContainer = Color(0xFF0D47A1);
+  static const Color onPrimaryContainer = Color(0xFF025036);
 
   // Secondary Colors
   static const Color secondary = Color(0xFF03A9F4);
@@ -95,8 +95,8 @@ class AppColors {
   static const Color shimmerBase = Color(0xFFE0E0E0);
   static const Color shimmerHighlight = Color(0xFFF5F5F5);
   // ------------------------------ Primary Colors ------------------------------
-  static const Color primaryColour = Color(0xFF454A9F);
-  static const Color primaryGradient = Color(0xFF6A70D1);
+  static const Color primaryColour = Color(0xFF2E7A45);
+  static const Color primaryGradient = Color(0xFF025036);
 
   // Primary Surface Color Family
   static const Color primarySurfaceSubtitle = Color(0xFFE8EDF7);
@@ -277,6 +277,7 @@ class AppColors {
   static const Color colorTextSecondary = primarySurfaceDefault;
   static const Color grayscaleBody = Color(0xFF212529);
   static const Color primaryIconBackground = Color(0xFF699AB5);
+  static const Color colorBackgroundPrimary = Color(0xFFEEFCF5);
 }
 
 // ------------------------------ Global Color Constants ------------------------------
