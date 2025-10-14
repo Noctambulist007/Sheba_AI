@@ -13,8 +13,6 @@ class SearchScreen extends StatelessWidget {
       backgroundColor: AppColors.background,
       appBar: CustomGradientAppBar(
         title: 'Search',
-        showSearch: false,
-        showCart: false,
         leading: BackButton(color: Colors.white),
       ),
       body: Padding(

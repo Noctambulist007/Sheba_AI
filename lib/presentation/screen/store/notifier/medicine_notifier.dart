@@ -5,6 +5,12 @@ import 'package:sheba_ai/domain/util/result.dart';
 import 'package:sheba_ai/injection.dart';
 import 'package:sheba_ai/presentation/screen/store/state/medicine_ui_state.dart';
 
+enum MedicineFilter {
+  none,
+  lowToHigh,
+  highToLow,
+}
+
 class MedicineNotifier extends StateNotifier<MedicineUiState> {
   MedicineNotifier() : super(const MedicineUiState.initial()) {
     fetchAllMedicines();
@@ -15,6 +21,8 @@ class MedicineNotifier extends StateNotifier<MedicineUiState> {
   bool _hasMore = true;
   bool _isLoadingMore = false;
   final List<Medicine> _allMedicines = [];
+  String _searchQuery = '';
+  MedicineFilter _filter = MedicineFilter.none;
 
   Future<void> fetchAllMedicines({bool loadMore = false}) async {
     if (_isLoadingMore) return;
@@ -39,12 +47,7 @@ class MedicineNotifier extends StateNotifier<MedicineUiState> {
           _allMedicines.addAll(newMedicines);
           _currentPage++;
         }
-
-        state = MedicineUiState.success(
-          medicine: List.unmodifiable(_allMedicines),
-          isLoadingMore: _isLoadingMore,
-          hasMore: _hasMore,
-        );
+        _applyFilters();
       },
       failure: (error) {
         state = MedicineUiState.error(error.message);
@@ -52,6 +55,48 @@ class MedicineNotifier extends StateNotifier<MedicineUiState> {
     );
 
     _isLoadingMore = false;
+  }
+
+  void search(String query) {
+    _searchQuery = query;
+    _applyFilters();
+  }
+
+  void filter(MedicineFilter filter) {
+    _filter = filter;
+    _applyFilters();
+  }
+
+  void _applyFilters() {
+    List<Medicine> filteredMedicines = List.from(_allMedicines);
+
+    if (_searchQuery.isNotEmpty) {
+      filteredMedicines = filteredMedicines
+          .where((medicine) =>
+              medicine.name.toLowerCase().contains(_searchQuery.toLowerCase()))
+          .toList();
+    }
+
+    switch (_filter) {
+      case MedicineFilter.lowToHigh:
+        filteredMedicines.sort((a, b) =>
+            (double.tryParse(a.price ?? '0') ?? 0)
+                .compareTo(double.tryParse(b.price ?? '0') ?? 0));
+        break;
+      case MedicineFilter.highToLow:
+        filteredMedicines.sort((a, b) =>
+            (double.tryParse(b.price ?? '0') ?? 0)
+                .compareTo(double.tryParse(a.price ?? '0') ?? 0));
+        break;
+      case MedicineFilter.none:
+        break;
+    }
+
+    state = MedicineUiState.success(
+      medicine: List.unmodifiable(filteredMedicines),
+      isLoadingMore: _isLoadingMore,
+      hasMore: _hasMore,
+    );
   }
 
   bool get isLoadingMore => _isLoadingMore;

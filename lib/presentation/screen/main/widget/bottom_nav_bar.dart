@@ -29,7 +29,7 @@ class BottomNavBar extends StatelessWidget {
       ),
       NavigationItem(
         icon: "assets/icons/chat-light-icon.png",
-        label: "Chat",
+        label: "Mood",
       ),
       NavigationItem(
         icon: "assets/icons/reminder-light-icon.png",

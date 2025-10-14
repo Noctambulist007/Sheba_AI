@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:lottie/lottie.dart';
 import 'package:sheba_ai/domain/model/order/create_order.dart';
 import 'package:sheba_ai/presentation/theme/color.dart';
 import 'package:sheba_ai/presentation/util/routes.dart';
@@ -44,7 +46,15 @@ class OrderSuccessScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   // Success checkmark circle
-                  SvgPicture.asset('assets/images/img-success.svg'),
+                  SizedBox(
+                    height: 220.h,
+                    width: 220.w,
+                    child: Lottie.asset(
+                      'assets/anims/done.json',
+                      repeat: false,
+                      fit: BoxFit.contain,
+                    ),
+                  ),
                   const SizedBox(height: 30),
                   // Thank you text
                   const Text(

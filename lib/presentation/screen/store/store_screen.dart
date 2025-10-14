@@ -13,6 +13,7 @@ import 'package:sheba_ai/presentation/screen/store/notifier/provider.dart';
 import 'package:sheba_ai/presentation/util/routes.dart';
 import 'package:sheba_ai/presentation/util/toast_helper.dart';
 import 'package:sheba_ai/presentation/widget/custom_gradient_app_bar.dart';
+import 'package:sheba_ai/presentation/screen/store/notifier/medicine_notifier.dart';
 
 class StoreScreen extends ConsumerStatefulWidget {
   const StoreScreen({super.key});
@@ -23,6 +24,7 @@ class StoreScreen extends ConsumerStatefulWidget {
 
 class _StoreScreenState extends ConsumerState<StoreScreen> {
   final ScrollController _scrollController = ScrollController();
+  final TextEditingController _searchController = TextEditingController();
 
   @override
   void initState() {
@@ -35,11 +37,18 @@ class _StoreScreenState extends ConsumerState<StoreScreen> {
         notifier.fetchAllMedicines(loadMore: true);
       }
     });
+
+    _searchController.addListener(() {
+      ref
+          .read(medicineNotifierProvider.notifier)
+          .search(_searchController.text);
+    });
   }
 
   @override
   void dispose() {
     _scrollController.dispose();
+    _searchController.dispose();
     super.dispose();
   }
 
@@ -57,6 +66,26 @@ class _StoreScreenState extends ConsumerState<StoreScreen> {
       appBar: CustomGradientAppBar(
         title: 'Store',
         customActions: [
+          PopupMenuButton<MedicineFilter>(
+            icon: const Icon(Icons.filter_list, color: Colors.white),
+            onSelected: (filter) {
+              ref.read(medicineNotifierProvider.notifier).filter(filter);
+            },
+            itemBuilder: (context) => [
+              const PopupMenuItem(
+                value: MedicineFilter.none,
+                child: Text('None'),
+              ),
+              const PopupMenuItem(
+                value: MedicineFilter.lowToHigh,
+                child: Text('Price: Low to High'),
+              ),
+              const PopupMenuItem(
+                value: MedicineFilter.highToLow,
+                child: Text('Price: High to Low'),
+              ),
+            ],
+          ),
           Padding(
             padding: EdgeInsets.only(right: 16.w),
             child: GestureDetector(
