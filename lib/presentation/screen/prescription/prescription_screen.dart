@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:lottie/lottie.dart';
+import 'package:sheba_ai/presentation/bottom_sheet/prescription_analysis_bottom_sheet.dart';
 import 'package:sheba_ai/presentation/screen/prescription/notifier/provider.dart';
 import 'package:sheba_ai/presentation/screen/prescription/state/prescription_ui_state.dart';
 import 'package:sheba_ai/presentation/screen/prescription/widget/carousel_slider_section.dart';
@@ -242,6 +243,13 @@ class _PrescriptionScreenState extends ConsumerState<PrescriptionScreen> {
           ToastHelper.showSuccess(
             context,
             'Prescription analyzed successfully!',
+          );
+          showModalBottomSheet(
+            context: context,
+            isScrollControlled: true,
+            builder: (context) => PrescriptionAnalysisBottomSheet(
+              analysis: analyzePrescription,
+            ),
           );
         },
         error: (message) {

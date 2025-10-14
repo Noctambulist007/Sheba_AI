@@ -71,7 +71,7 @@ class OrderSuccessScreen extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(horizontal: 40),
                     child: RichText(
                       textAlign: TextAlign.center,
-                      text:  TextSpan(
+                      text: TextSpan(
                         style: TextStyle(
                           fontSize: 16,
                           color: Colors.black54,
