@@ -200,7 +200,7 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                                 initialValue: profile.phone,
                                 name: 'phone_number',
                                 labelText: 'Phone Number',
-                                hintText: '+8801XXXXXXXXX',
+                                hintText: '01XXXXXXXXX',
                                 iconPath: 'assets/icons/ic-phone.svg',
                                 keyboardType: TextInputType.phone,
                                 textInputAction: TextInputAction.next,

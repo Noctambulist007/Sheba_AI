@@ -4,6 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sheba_ai/domain/model/identity/profile.dart';
+import 'package:sheba_ai/presentation/screen/auth/notifier/provider.dart';
+import 'package:sheba_ai/presentation/util/routes.dart';
 import 'package:sheba_ai/presentation/theme/color.dart';
 import 'package:sheba_ai/presentation/theme/text_styles.dart';
 import 'package:sheba_ai/presentation/widget/custom_button.dart';
@@ -163,7 +165,7 @@ class ProfileScreen extends ConsumerWidget {
                             initialValue: userProfile.phone,
                             name: 'phone',
                             labelText: 'Phone Number',
-                            hintText: '+8801XXXXXXXXX',
+                            hintText: '01XXXXXXXXX',
                             iconPath: 'assets/icons/ic-phone.svg',
                             keyboardType: TextInputType.phone,
                             textInputAction: TextInputAction.next,
@@ -195,10 +197,9 @@ class ProfileScreen extends ConsumerWidget {
           child: CustomButton.primary(
             width: double.infinity,
             text: "Logout",
-            onPressed: () {
-              Navigator.pop(context);
-              // ref.read(authStatusProvider.notifier).logout();
-              // Navigator.pushNamedAndRemoveUntil(context, Routes.signIn, (route) => false);
+            onPressed: () async {
+              await ref.read(authNotifierProvider.notifier).logout();
+              Navigator.pushNamedAndRemoveUntil(context, Routes.main, (route) => false);
             },
             textStyle: AppTextStyles.labelL3Regular.copyWith(
               color: Colors.white,

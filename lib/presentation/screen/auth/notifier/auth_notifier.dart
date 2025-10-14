@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:sheba_ai/data/repository/source/local/identity_local_data_source.dart';
 import 'package:sheba_ai/domain/model/identity/token_data.dart';
 import 'package:sheba_ai/domain/usecase/identity/get_auth_status_use_case.dart';
 import 'package:sheba_ai/domain/util/result.dart';
@@ -39,5 +40,8 @@ class AuthNotifier extends StateNotifier<AuthUiState> {
   }
 
   Future<void> logout() async {
+    final identityLocalDataSource = getIt<IdentityLocalDataSource>();
+    await identityLocalDataSource.clearTokens();
+    state = const AuthUiState.anonymous();
   }
 }

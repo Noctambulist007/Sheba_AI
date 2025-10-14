@@ -1,11 +1,8 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:rounded_loading_button_plus/rounded_loading_button.dart';
-
 import '../theme/color.dart';
 
-class CustomButton extends StatefulWidget {
+class CustomButton extends StatelessWidget {
   final String text;
   final Color? backgroundColor;
   final Color? textColor;
@@ -86,7 +83,7 @@ class CustomButton extends StatefulWidget {
     double? height,
     Widget? icon,
     bool isLoading = false,
-    borderRadius = 24.0,
+    double borderRadius = 24.0,
   }) {
     return CustomButton(
       key: key,
@@ -151,77 +148,69 @@ class CustomButton extends StatefulWidget {
   }
 
   @override
-  State<CustomButton> createState() => _CustomButtonState();
-}
-
-class _CustomButtonState extends State<CustomButton> {
-  final RoundedLoadingButtonController _btnController =
-      RoundedLoadingButtonController();
-
-  @override
-  void didUpdateWidget(CustomButton oldWidget) {
-    super.didUpdateWidget(oldWidget);
-
-    // Reset button when isLoading changes from true to false
-    if (oldWidget.isLoading && !widget.isLoading) {
-      _btnController.reset();
-    }
-  }
-
-  void _handlePress() {
-    if (widget.onPressed != null && !widget.isLoading) {
-      widget.onPressed!();
-    }
-  }
-
-  @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
     return SizedBox(
-      width: widget.width ?? double.infinity,
-      height: widget.height ?? 50.h,
-      child: RoundedLoadingButton(
-        controller: _btnController,
-        onPressed: widget.isLoading ? null : _handlePress,
-        borderRadius: widget.borderRadius ?? 25.r,
-        color: widget.gradient == null
-            ? (widget.backgroundColor ?? theme.primaryColor)
-            : Colors.transparent,
-        successColor: Colors.green,
-        errorColor: Colors.redAccent,
-        loaderSize: 20.w,
-        child: Container(
-          decoration: BoxDecoration(
-            gradient: widget.gradient,
-            border: widget.borderColor != null
-                ? Border.all(
-                    color: widget.borderColor!,
-                    width: widget.borderWidth ?? 1.5.w,
-                  )
-                : null,
-            borderRadius: BorderRadius.circular(widget.borderRadius ?? 25.r),
+      width: width ?? double.infinity,
+      height: height ?? 50.h,
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: gradient == null
+              ? (backgroundColor ?? theme.primaryColor)
+              : Colors.transparent,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(borderRadius ?? 25.r),
+            side: borderColor != null
+                ? BorderSide(
+              color: borderColor!,
+              width: borderWidth ?? 1.5.w,
+            )
+                : BorderSide.none,
           ),
-          alignment: Alignment.center,
-          padding:
-              widget.padding ??
-              EdgeInsets.symmetric(horizontal: 24.w, vertical: 12.h),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              if (widget.icon != null) ...[widget.icon!, SizedBox(width: 8.w)],
-              Text(
-                widget.text,
-                style:
-                    widget.textStyle ??
-                    TextStyle(
-                      fontSize: widget.fontSize ?? 16.sp,
-                      color: widget.textColor ?? Colors.white,
-                      fontWeight: widget.fontWeight ?? FontWeight.w600,
-                    ),
+          elevation: elevation ?? 0,
+          padding: EdgeInsets.zero,
+        ),
+        onPressed: isLoading ? null : onPressed,
+        child: Ink(
+          decoration: BoxDecoration(
+            gradient: gradient,
+            borderRadius: BorderRadius.circular(borderRadius ?? 25.r),
+          ),
+          child: Container(
+            alignment: Alignment.center,
+            padding: padding ??
+                EdgeInsets.symmetric(horizontal: 24.w, vertical: 12.h),
+            child: isLoading
+                ? SizedBox(
+              width: 22.w,
+              height: 22.w,
+              child: CircularProgressIndicator(
+                strokeWidth: 2.5,
+                valueColor: AlwaysStoppedAnimation<Color>(
+                  loadingColor ?? Colors.white,
+                ),
               ),
-            ],
+            )
+                : Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                if (icon != null) ...[
+                  icon!,
+                  SizedBox(width: 8.w),
+                ],
+                Text(
+                  text,
+                  style: textStyle ??
+                      TextStyle(
+                        fontSize: fontSize ?? 16.sp,
+                        color: textColor ?? Colors.white,
+                        fontWeight: fontWeight ?? FontWeight.w600,
+                      ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
