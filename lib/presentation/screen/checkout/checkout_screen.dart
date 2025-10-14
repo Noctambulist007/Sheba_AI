@@ -8,6 +8,7 @@ import 'package:sheba_ai/presentation/screen/cart/notifier/provider.dart';
 import 'package:sheba_ai/presentation/screen/my_orders/notifier/provider.dart';
 import 'package:sheba_ai/presentation/screen/my_orders/state/my_orders_ui_state.dart'
     hide SuccessState;
+import 'package:sheba_ai/presentation/screen/order_success/order_success_screen.dart';
 import 'package:sheba_ai/presentation/screen/profile/notifier/provider.dart';
 import 'package:sheba_ai/presentation/screen/profile/state/profile_ui_state.dart'
     hide ErrorState;
@@ -39,6 +40,26 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
 
   @override
   Widget build(BuildContext context) {
+    //
+    ref.listen<MyOrdersUiState>(myOrdersNotifierProvider, (previous, current) {
+      current.maybeWhen(
+        orderCreated: (order) {
+          ref.read(cartNotifierProvider.notifier).clearCart();
+          ToastHelper.showSuccess(context, "Order placed successfully.");
+          Navigator.pushNamedAndRemoveUntil(
+            context,
+            Routes.orderSuccess,
+            (route) => false,
+            arguments: OrderSuccessArgs(order: order),
+          );
+        },
+        error: (message) {
+          ToastHelper.showError(context, message);
+        },
+        orElse: () {},
+      );
+    }); //
+
     final args = ModalRoute.of(context)!.settings.arguments as CheckoutArgs;
     final cartItems = args.cartItems;
     final totalPrice = args.totalPrice;
@@ -450,29 +471,11 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
             notes: notes,
             items: cartItems,
           );
-
-      final state = ref.read(myOrdersNotifierProvider);
-      debugPrint('Order state after creation: $state');
-      
-      if (state is SuccessState) {
-        ref.read(cartNotifierProvider.notifier).clearCart();
-
-        debugPrint('Order placed successfully.');
-        ToastHelper.showSuccess(context, "Order placed successfully.");
-        Navigator.pushNamedAndRemoveUntil(context, Routes.orderSuccess, (route) => false);
-      } else if (state is ErrorState) {
-        debugPrint('Order creation error: ${state.message}');
-        ToastHelper.showError(context, state.message);
-      } else {
-        ref.read(cartNotifierProvider.notifier).clearCart();
-
-        debugPrint('Order created successfully based on API response.');
-        ToastHelper.showSuccess(context, "Order placed successfully.");
-        Navigator.pushNamedAndRemoveUntil(context, Routes.orderSuccess, (route) => false);
-      }
     } catch (e) {
-      debugPrint('Exception during order creation: $e');
-      ToastHelper.showError(context, "Failed to place order. Please try again.");
+      ToastHelper.showError(
+        context,
+        "Failed to place order. Please try again.",
+      );
     }
   }
 }

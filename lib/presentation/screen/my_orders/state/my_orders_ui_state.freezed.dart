@@ -55,13 +55,14 @@ extension MyOrdersUiStatePatterns on MyOrdersUiState {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( InitialState value)?  initial,TResult Function( LoadingState value)?  loading,TResult Function( SuccessState value)?  success,TResult Function( ErrorState value)?  error,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( InitialState value)?  initial,TResult Function( LoadingState value)?  loading,TResult Function( SuccessState value)?  success,TResult Function( OrderCreatedState value)?  orderCreated,TResult Function( ErrorState value)?  error,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
 case InitialState() when initial != null:
 return initial(_that);case LoadingState() when loading != null:
 return loading(_that);case SuccessState() when success != null:
-return success(_that);case ErrorState() when error != null:
+return success(_that);case OrderCreatedState() when orderCreated != null:
+return orderCreated(_that);case ErrorState() when error != null:
 return error(_that);case _:
   return orElse();
 
@@ -80,13 +81,14 @@ return error(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( InitialState value)  initial,required TResult Function( LoadingState value)  loading,required TResult Function( SuccessState value)  success,required TResult Function( ErrorState value)  error,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( InitialState value)  initial,required TResult Function( LoadingState value)  loading,required TResult Function( SuccessState value)  success,required TResult Function( OrderCreatedState value)  orderCreated,required TResult Function( ErrorState value)  error,}){
 final _that = this;
 switch (_that) {
 case InitialState():
 return initial(_that);case LoadingState():
 return loading(_that);case SuccessState():
-return success(_that);case ErrorState():
+return success(_that);case OrderCreatedState():
+return orderCreated(_that);case ErrorState():
 return error(_that);case _:
   throw StateError('Unexpected subclass');
 
@@ -104,13 +106,14 @@ return error(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( InitialState value)?  initial,TResult? Function( LoadingState value)?  loading,TResult? Function( SuccessState value)?  success,TResult? Function( ErrorState value)?  error,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( InitialState value)?  initial,TResult? Function( LoadingState value)?  loading,TResult? Function( SuccessState value)?  success,TResult? Function( OrderCreatedState value)?  orderCreated,TResult? Function( ErrorState value)?  error,}){
 final _that = this;
 switch (_that) {
 case InitialState() when initial != null:
 return initial(_that);case LoadingState() when loading != null:
 return loading(_that);case SuccessState() when success != null:
-return success(_that);case ErrorState() when error != null:
+return success(_that);case OrderCreatedState() when orderCreated != null:
+return orderCreated(_that);case ErrorState() when error != null:
 return error(_that);case _:
   return null;
 
@@ -128,12 +131,13 @@ return error(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  initial,TResult Function()?  loading,TResult Function( List<ListOfOrderItem> order,  bool isLoadingMore,  bool hasMore)?  success,TResult Function( String message)?  error,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  initial,TResult Function()?  loading,TResult Function( List<ListOfOrderItem> order,  bool isLoadingMore,  bool hasMore)?  success,TResult Function( CreateOrder order)?  orderCreated,TResult Function( String message)?  error,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case InitialState() when initial != null:
 return initial();case LoadingState() when loading != null:
 return loading();case SuccessState() when success != null:
-return success(_that.order,_that.isLoadingMore,_that.hasMore);case ErrorState() when error != null:
+return success(_that.order,_that.isLoadingMore,_that.hasMore);case OrderCreatedState() when orderCreated != null:
+return orderCreated(_that.order);case ErrorState() when error != null:
 return error(_that.message);case _:
   return orElse();
 
@@ -152,12 +156,13 @@ return error(_that.message);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  initial,required TResult Function()  loading,required TResult Function( List<ListOfOrderItem> order,  bool isLoadingMore,  bool hasMore)  success,required TResult Function( String message)  error,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  initial,required TResult Function()  loading,required TResult Function( List<ListOfOrderItem> order,  bool isLoadingMore,  bool hasMore)  success,required TResult Function( CreateOrder order)  orderCreated,required TResult Function( String message)  error,}) {final _that = this;
 switch (_that) {
 case InitialState():
 return initial();case LoadingState():
 return loading();case SuccessState():
-return success(_that.order,_that.isLoadingMore,_that.hasMore);case ErrorState():
+return success(_that.order,_that.isLoadingMore,_that.hasMore);case OrderCreatedState():
+return orderCreated(_that.order);case ErrorState():
 return error(_that.message);case _:
   throw StateError('Unexpected subclass');
 
@@ -175,12 +180,13 @@ return error(_that.message);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  initial,TResult? Function()?  loading,TResult? Function( List<ListOfOrderItem> order,  bool isLoadingMore,  bool hasMore)?  success,TResult? Function( String message)?  error,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  initial,TResult? Function()?  loading,TResult? Function( List<ListOfOrderItem> order,  bool isLoadingMore,  bool hasMore)?  success,TResult? Function( CreateOrder order)?  orderCreated,TResult? Function( String message)?  error,}) {final _that = this;
 switch (_that) {
 case InitialState() when initial != null:
 return initial();case LoadingState() when loading != null:
 return loading();case SuccessState() when success != null:
-return success(_that.order,_that.isLoadingMore,_that.hasMore);case ErrorState() when error != null:
+return success(_that.order,_that.isLoadingMore,_that.hasMore);case OrderCreatedState() when orderCreated != null:
+return orderCreated(_that.order);case ErrorState() when error != null:
 return error(_that.message);case _:
   return null;
 
@@ -323,6 +329,72 @@ order: null == order ? _self._order : order // ignore: cast_nullable_to_non_null
 as List<ListOfOrderItem>,isLoadingMore: null == isLoadingMore ? _self.isLoadingMore : isLoadingMore // ignore: cast_nullable_to_non_nullable
 as bool,hasMore: null == hasMore ? _self.hasMore : hasMore // ignore: cast_nullable_to_non_nullable
 as bool,
+  ));
+}
+
+
+}
+
+/// @nodoc
+
+
+class OrderCreatedState implements MyOrdersUiState {
+  const OrderCreatedState({required this.order});
+  
+
+ final  CreateOrder order;
+
+/// Create a copy of MyOrdersUiState
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$OrderCreatedStateCopyWith<OrderCreatedState> get copyWith => _$OrderCreatedStateCopyWithImpl<OrderCreatedState>(this, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is OrderCreatedState&&(identical(other.order, order) || other.order == order));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,order);
+
+@override
+String toString() {
+  return 'MyOrdersUiState.orderCreated(order: $order)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $OrderCreatedStateCopyWith<$Res> implements $MyOrdersUiStateCopyWith<$Res> {
+  factory $OrderCreatedStateCopyWith(OrderCreatedState value, $Res Function(OrderCreatedState) _then) = _$OrderCreatedStateCopyWithImpl;
+@useResult
+$Res call({
+ CreateOrder order
+});
+
+
+
+
+}
+/// @nodoc
+class _$OrderCreatedStateCopyWithImpl<$Res>
+    implements $OrderCreatedStateCopyWith<$Res> {
+  _$OrderCreatedStateCopyWithImpl(this._self, this._then);
+
+  final OrderCreatedState _self;
+  final $Res Function(OrderCreatedState) _then;
+
+/// Create a copy of MyOrdersUiState
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? order = null,}) {
+  return _then(OrderCreatedState(
+order: null == order ? _self.order : order // ignore: cast_nullable_to_non_nullable
+as CreateOrder,
   ));
 }
 

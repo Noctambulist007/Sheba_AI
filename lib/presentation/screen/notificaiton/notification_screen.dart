@@ -13,8 +13,6 @@ class NotificationScreen extends StatelessWidget {
       backgroundColor: AppColors.background,
       appBar: CustomGradientAppBar(
         title: 'Notifications',
-        showSearch: false,
-        showCart: false,
         leading: BackButton(color: Colors.white),
       ),
       body: Padding(

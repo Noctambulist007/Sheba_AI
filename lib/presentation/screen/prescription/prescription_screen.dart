@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:sheba_ai/presentation/screen/prescription/widget/carousel_slider_section.dart';
+import 'package:sheba_ai/presentation/screen/prescription/widget/prescription_step.dart';
 import 'package:sheba_ai/presentation/screen/profile/notifier/provider.dart';
 import 'package:sheba_ai/presentation/screen/profile/profile_screen.dart';
 import 'package:sheba_ai/presentation/screen/profile/state/profile_ui_state.dart';
@@ -15,6 +17,7 @@ class PrescriptionScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final profileState = ref.watch(profileNotifierProvider);
+
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: CustomGradientAppBar(
@@ -31,14 +34,12 @@ class PrescriptionScreen extends ConsumerWidget {
               onPressed: () {
                 profileState.when(
                   loading: () {},
-                  anonymous: () {
-                    Navigator.pushNamed(context, Routes.signIn);
-                  },
+                  anonymous: () => Navigator.pushNamed(context, Routes.signIn),
                   success: (profile) {
                     Navigator.pushNamed(
                       context,
                       Routes.profile,
-                      arguments: ProfileArgs(userProfile: profile)
+                      arguments: ProfileArgs(userProfile: profile),
                     );
                   },
                   error: (message) {
@@ -60,25 +61,85 @@ class PrescriptionScreen extends ConsumerWidget {
           ),
         ],
       ),
+
       body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              // SvgPicture.asset('assets/images/empty-chat.svg'),
-              // SizedBox(height: 20.h),
-              Text(
-                'Upload Your Prescription',
-                style: TextStyle(
-                  fontSize: 16.sp,
-                  fontWeight: FontWeight.w400,
-                  color: AppColors.grayscaleTextSubtitle,
-                ),
+        padding: EdgeInsets.all(16.w),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 12.h),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(16.r),
+                border: Border.all(color: AppColors.primary.withOpacity(0.2)),
               ),
-            ],
-          ),
+              child: Column(
+                children: [
+                  // Carousel Section
+                  CarouselSliderSection(), //
+
+                  SizedBox(height: 16.h),
+                  //
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.auto_awesome,
+                        color: AppColors.primary,
+                        size: 24.w,
+                      ),
+                      SizedBox(width: 8.w),
+                      Text.rich(
+                        TextSpan(
+                          text: 'How ',
+                          style: TextStyle(
+                            fontSize: 20.sp,
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.grayscaleTextTitle,
+                          ),
+                          children: [
+                            TextSpan(
+                              text: 'Sheba.AI',
+                              style: TextStyle(
+                                fontSize: 20.sp,
+                                fontWeight: FontWeight.bold,
+                                color: AppColors.primary,
+                              ),
+                            ),
+                            TextSpan(
+                              text: ' Works',
+                              style: TextStyle(
+                                fontSize: 20.sp,
+                                fontWeight: FontWeight.bold,
+                                color: AppColors.grayscaleTextTitle,
+                              ),
+                            ),
+                          ],
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                      SizedBox(width: 8.w),
+                      Icon(
+                        Icons.auto_awesome,
+                        color: AppColors.primary,
+                        size: 24.w,
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 6.h),
+                  Text(
+                    "Your Smart Health Assistant in 3 Easy Steps",
+                    style: TextStyle(
+                      fontSize: 12.sp,
+                      color: AppColors.grayscaleTextSubtitle,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(height: 16.h),
+
+          ],
         ),
       ),
     );

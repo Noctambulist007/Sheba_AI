@@ -4,6 +4,7 @@ import 'package:sheba_ai/data/datasource/remote/model/request/order/create_order
 import 'package:sheba_ai/data/repository/source/remote/medicine_remote_data_source.dart';
 import 'package:sheba_ai/data/repository/source/remote/order_remote_data_source.dart';
 import 'package:sheba_ai/domain/model/medicine/medicine.dart';
+import 'package:sheba_ai/domain/model/order/create_order.dart';
 import 'package:sheba_ai/domain/model/order/list_of_order_item.dart';
 
 class OrderRemoteDataSourceImpl extends OrderRemoteDataSource {
@@ -19,7 +20,10 @@ class OrderRemoteDataSourceImpl extends OrderRemoteDataSource {
   }
 
   @override
-  Future<void> createOrder({required CreateOrderRequest requestBody}) async {
-    await _orderApi.createOrder(requestBody: requestBody);
+  Future<CreateOrder> createOrder({
+    required CreateOrderRequest requestBody,
+  }) async {
+    var response = await _orderApi.createOrder(requestBody: requestBody);
+    return response;
   }
 }

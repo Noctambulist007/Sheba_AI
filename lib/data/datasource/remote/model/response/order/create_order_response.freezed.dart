@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$CreateOrderResponse {
 
-@JsonKey(name: 'shipping_address') String get shippingAddress;@JsonKey(name: 'phone_number') String get phoneNumber;@JsonKey(name: 'payment_method') String get paymentMethod;@JsonKey(name: 'notes') String? get notes;
+@JsonKey(name: 'success') bool get success;@JsonKey(name: 'message') String get message;@JsonKey(name: 'data') CreateOrderResponseData get data;
 /// Create a copy of CreateOrderResponse
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $CreateOrderResponseCopyWith<CreateOrderResponse> get copyWith => _$CreateOrderR
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is CreateOrderResponse&&(identical(other.shippingAddress, shippingAddress) || other.shippingAddress == shippingAddress)&&(identical(other.phoneNumber, phoneNumber) || other.phoneNumber == phoneNumber)&&(identical(other.paymentMethod, paymentMethod) || other.paymentMethod == paymentMethod)&&(identical(other.notes, notes) || other.notes == notes));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is CreateOrderResponse&&(identical(other.success, success) || other.success == success)&&(identical(other.message, message) || other.message == message)&&(identical(other.data, data) || other.data == data));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,shippingAddress,phoneNumber,paymentMethod,notes);
+int get hashCode => Object.hash(runtimeType,success,message,data);
 
 @override
 String toString() {
-  return 'CreateOrderResponse(shippingAddress: $shippingAddress, phoneNumber: $phoneNumber, paymentMethod: $paymentMethod, notes: $notes)';
+  return 'CreateOrderResponse(success: $success, message: $message, data: $data)';
 }
 
 
@@ -48,11 +48,11 @@ abstract mixin class $CreateOrderResponseCopyWith<$Res>  {
   factory $CreateOrderResponseCopyWith(CreateOrderResponse value, $Res Function(CreateOrderResponse) _then) = _$CreateOrderResponseCopyWithImpl;
 @useResult
 $Res call({
-@JsonKey(name: 'shipping_address') String shippingAddress,@JsonKey(name: 'phone_number') String phoneNumber,@JsonKey(name: 'payment_method') String paymentMethod,@JsonKey(name: 'notes') String? notes
+@JsonKey(name: 'success') bool success,@JsonKey(name: 'message') String message,@JsonKey(name: 'data') CreateOrderResponseData data
 });
 
 
-
+$CreateOrderResponseDataCopyWith<$Res> get data;
 
 }
 /// @nodoc
@@ -65,16 +65,24 @@ class _$CreateOrderResponseCopyWithImpl<$Res>
 
 /// Create a copy of CreateOrderResponse
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? shippingAddress = null,Object? phoneNumber = null,Object? paymentMethod = null,Object? notes = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? success = null,Object? message = null,Object? data = null,}) {
   return _then(_self.copyWith(
-shippingAddress: null == shippingAddress ? _self.shippingAddress : shippingAddress // ignore: cast_nullable_to_non_nullable
-as String,phoneNumber: null == phoneNumber ? _self.phoneNumber : phoneNumber // ignore: cast_nullable_to_non_nullable
-as String,paymentMethod: null == paymentMethod ? _self.paymentMethod : paymentMethod // ignore: cast_nullable_to_non_nullable
-as String,notes: freezed == notes ? _self.notes : notes // ignore: cast_nullable_to_non_nullable
-as String?,
+success: null == success ? _self.success : success // ignore: cast_nullable_to_non_nullable
+as bool,message: null == message ? _self.message : message // ignore: cast_nullable_to_non_nullable
+as String,data: null == data ? _self.data : data // ignore: cast_nullable_to_non_nullable
+as CreateOrderResponseData,
   ));
 }
-
+/// Create a copy of CreateOrderResponse
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$CreateOrderResponseDataCopyWith<$Res> get data {
+  
+  return $CreateOrderResponseDataCopyWith<$Res>(_self.data, (value) {
+    return _then(_self.copyWith(data: value));
+  });
+}
 }
 
 
@@ -156,10 +164,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: 'shipping_address')  String shippingAddress, @JsonKey(name: 'phone_number')  String phoneNumber, @JsonKey(name: 'payment_method')  String paymentMethod, @JsonKey(name: 'notes')  String? notes)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: 'success')  bool success, @JsonKey(name: 'message')  String message, @JsonKey(name: 'data')  CreateOrderResponseData data)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _CreateOrderResponse() when $default != null:
-return $default(_that.shippingAddress,_that.phoneNumber,_that.paymentMethod,_that.notes);case _:
+return $default(_that.success,_that.message,_that.data);case _:
   return orElse();
 
 }
@@ -177,10 +185,10 @@ return $default(_that.shippingAddress,_that.phoneNumber,_that.paymentMethod,_tha
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: 'shipping_address')  String shippingAddress, @JsonKey(name: 'phone_number')  String phoneNumber, @JsonKey(name: 'payment_method')  String paymentMethod, @JsonKey(name: 'notes')  String? notes)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: 'success')  bool success, @JsonKey(name: 'message')  String message, @JsonKey(name: 'data')  CreateOrderResponseData data)  $default,) {final _that = this;
 switch (_that) {
 case _CreateOrderResponse():
-return $default(_that.shippingAddress,_that.phoneNumber,_that.paymentMethod,_that.notes);case _:
+return $default(_that.success,_that.message,_that.data);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -197,10 +205,10 @@ return $default(_that.shippingAddress,_that.phoneNumber,_that.paymentMethod,_tha
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: 'shipping_address')  String shippingAddress, @JsonKey(name: 'phone_number')  String phoneNumber, @JsonKey(name: 'payment_method')  String paymentMethod, @JsonKey(name: 'notes')  String? notes)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: 'success')  bool success, @JsonKey(name: 'message')  String message, @JsonKey(name: 'data')  CreateOrderResponseData data)?  $default,) {final _that = this;
 switch (_that) {
 case _CreateOrderResponse() when $default != null:
-return $default(_that.shippingAddress,_that.phoneNumber,_that.paymentMethod,_that.notes);case _:
+return $default(_that.success,_that.message,_that.data);case _:
   return null;
 
 }
@@ -212,13 +220,12 @@ return $default(_that.shippingAddress,_that.phoneNumber,_that.paymentMethod,_tha
 @JsonSerializable()
 
 class _CreateOrderResponse implements CreateOrderResponse {
-  const _CreateOrderResponse({@JsonKey(name: 'shipping_address') required this.shippingAddress, @JsonKey(name: 'phone_number') required this.phoneNumber, @JsonKey(name: 'payment_method') required this.paymentMethod, @JsonKey(name: 'notes') this.notes});
+  const _CreateOrderResponse({@JsonKey(name: 'success') required this.success, @JsonKey(name: 'message') required this.message, @JsonKey(name: 'data') required this.data});
   factory _CreateOrderResponse.fromJson(Map<String, dynamic> json) => _$CreateOrderResponseFromJson(json);
 
-@override@JsonKey(name: 'shipping_address') final  String shippingAddress;
-@override@JsonKey(name: 'phone_number') final  String phoneNumber;
-@override@JsonKey(name: 'payment_method') final  String paymentMethod;
-@override@JsonKey(name: 'notes') final  String? notes;
+@override@JsonKey(name: 'success') final  bool success;
+@override@JsonKey(name: 'message') final  String message;
+@override@JsonKey(name: 'data') final  CreateOrderResponseData data;
 
 /// Create a copy of CreateOrderResponse
 /// with the given fields replaced by the non-null parameter values.
@@ -233,16 +240,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _CreateOrderResponse&&(identical(other.shippingAddress, shippingAddress) || other.shippingAddress == shippingAddress)&&(identical(other.phoneNumber, phoneNumber) || other.phoneNumber == phoneNumber)&&(identical(other.paymentMethod, paymentMethod) || other.paymentMethod == paymentMethod)&&(identical(other.notes, notes) || other.notes == notes));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _CreateOrderResponse&&(identical(other.success, success) || other.success == success)&&(identical(other.message, message) || other.message == message)&&(identical(other.data, data) || other.data == data));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,shippingAddress,phoneNumber,paymentMethod,notes);
+int get hashCode => Object.hash(runtimeType,success,message,data);
 
 @override
 String toString() {
-  return 'CreateOrderResponse(shippingAddress: $shippingAddress, phoneNumber: $phoneNumber, paymentMethod: $paymentMethod, notes: $notes)';
+  return 'CreateOrderResponse(success: $success, message: $message, data: $data)';
 }
 
 
@@ -253,11 +260,11 @@ abstract mixin class _$CreateOrderResponseCopyWith<$Res> implements $CreateOrder
   factory _$CreateOrderResponseCopyWith(_CreateOrderResponse value, $Res Function(_CreateOrderResponse) _then) = __$CreateOrderResponseCopyWithImpl;
 @override @useResult
 $Res call({
-@JsonKey(name: 'shipping_address') String shippingAddress,@JsonKey(name: 'phone_number') String phoneNumber,@JsonKey(name: 'payment_method') String paymentMethod,@JsonKey(name: 'notes') String? notes
+@JsonKey(name: 'success') bool success,@JsonKey(name: 'message') String message,@JsonKey(name: 'data') CreateOrderResponseData data
 });
 
 
-
+@override $CreateOrderResponseDataCopyWith<$Res> get data;
 
 }
 /// @nodoc
@@ -270,17 +277,25 @@ class __$CreateOrderResponseCopyWithImpl<$Res>
 
 /// Create a copy of CreateOrderResponse
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? shippingAddress = null,Object? phoneNumber = null,Object? paymentMethod = null,Object? notes = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? success = null,Object? message = null,Object? data = null,}) {
   return _then(_CreateOrderResponse(
-shippingAddress: null == shippingAddress ? _self.shippingAddress : shippingAddress // ignore: cast_nullable_to_non_nullable
-as String,phoneNumber: null == phoneNumber ? _self.phoneNumber : phoneNumber // ignore: cast_nullable_to_non_nullable
-as String,paymentMethod: null == paymentMethod ? _self.paymentMethod : paymentMethod // ignore: cast_nullable_to_non_nullable
-as String,notes: freezed == notes ? _self.notes : notes // ignore: cast_nullable_to_non_nullable
-as String?,
+success: null == success ? _self.success : success // ignore: cast_nullable_to_non_nullable
+as bool,message: null == message ? _self.message : message // ignore: cast_nullable_to_non_nullable
+as String,data: null == data ? _self.data : data // ignore: cast_nullable_to_non_nullable
+as CreateOrderResponseData,
   ));
 }
 
-
+/// Create a copy of CreateOrderResponse
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$CreateOrderResponseDataCopyWith<$Res> get data {
+  
+  return $CreateOrderResponseDataCopyWith<$Res>(_self.data, (value) {
+    return _then(_self.copyWith(data: value));
+  });
+}
 }
 
 // dart format on

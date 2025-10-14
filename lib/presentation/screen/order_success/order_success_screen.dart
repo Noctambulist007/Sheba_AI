@@ -1,14 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:sheba_ai/domain/model/order/create_order.dart';
 import 'package:sheba_ai/presentation/theme/color.dart';
 import 'package:sheba_ai/presentation/util/routes.dart';
 import 'package:sheba_ai/presentation/widget/custom_button.dart';
+
+class OrderSuccessArgs {
+  final CreateOrder order;
+
+  OrderSuccessArgs({required this.order});
+}
 
 class OrderSuccessScreen extends StatelessWidget {
   const OrderSuccessScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final args = ModalRoute.of(context)!.settings.arguments as OrderSuccessArgs;
+
     return Scaffold(
       backgroundColor: AppColors.background,
       bottomNavigationBar: SafeArea(
@@ -52,7 +61,7 @@ class OrderSuccessScreen extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(horizontal: 40),
                     child: RichText(
                       textAlign: TextAlign.center,
-                      text: const TextSpan(
+                      text:  TextSpan(
                         style: TextStyle(
                           fontSize: 16,
                           color: Colors.black54,
@@ -71,7 +80,7 @@ class OrderSuccessScreen extends StatelessWidget {
                             ),
                           ),
                           TextSpan(
-                            text: '#123456\n',
+                            text: '${args.order.orderNumber}\n\n',
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               color: AppColors.colorPrimary,

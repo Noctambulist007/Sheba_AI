@@ -3,7 +3,9 @@ import 'package:sheba_ai/data/datasource/remote/model/request/order/create_order
 import 'package:sheba_ai/data/datasource/remote/model/response/order/create_order_response.dart';
 import 'package:sheba_ai/data/datasource/remote/model/response/order/order_list_response.dart';
 import 'package:sheba_ai/data/datasource/remote/util/api_client.dart';
+import 'package:sheba_ai/data/mapper/order/create_order_response_mapper.dart';
 import 'package:sheba_ai/data/mapper/order/order_list_response_mapper.dart';
+import 'package:sheba_ai/domain/model/order/create_order.dart';
 import 'package:sheba_ai/domain/model/order/list_of_order_item.dart';
 
 class OrderApiImpl extends OrderApi {
@@ -25,11 +27,12 @@ class OrderApiImpl extends OrderApi {
   }
 
   @override
-  Future<void> createOrder({required CreateOrderRequest requestBody}) async {
-    await _client.post<JSONObject, CreateOrderResponse>(
+  Future<CreateOrder> createOrder({required CreateOrderRequest requestBody}) async {
+    final response = await _client.post<JSONObject, CreateOrderResponse>(
       path: createOrderUrl,
       data: requestBody.toJson(),
       converter: (json) => CreateOrderResponse.fromJson(json),
     );
+    return response.data.toCreateOrder();
   }
 }

@@ -82,16 +82,20 @@ class MyOrdersNotifier extends StateNotifier<MyOrdersUiState> {
         phoneNumber: phoneNumber,
         paymentMethod: paymentMethod,
         notes: notes,
-        items: items.map((item) => OrderItemRequest(
-          medicineId: item.medicine.medicineId,
-          quantity: item.quantity,
-        )).toList(),
-      )
+        items: items
+            .map(
+              (item) => OrderItemRequest(
+                medicineId: item.medicine.medicineId,
+                quantity: item.quantity,
+              ),
+            )
+            .toList(),
+      ),
     );
 
     result.when(
       success: (order) {
-        state = MyOrdersUiState.initial();
+        state = MyOrdersUiState.orderCreated(order: order);
         fetchMyOrders();
       },
       failure: (error) {

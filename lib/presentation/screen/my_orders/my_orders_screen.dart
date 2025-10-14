@@ -58,7 +58,8 @@ class _MyOrdersScreenState extends ConsumerState<MyOrdersScreen> {
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: CustomGradientAppBar(title: 'My Orders', leading: BackButton(color: AppColors.colorWhite)),
-      body: state.when(
+      body: state.maybeWhen(
+        orElse: () => const SizedBox.shrink(),
         initial: () => const SizedBox.shrink(),
         loading: () => Padding(
           padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
@@ -69,7 +70,6 @@ class _MyOrdersScreenState extends ConsumerState<MyOrdersScreen> {
             itemBuilder: (context, index) => const MyOrderItemShimmer(),
           ),
         ),
-
         error: (message) => Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
