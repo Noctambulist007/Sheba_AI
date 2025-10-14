@@ -4,12 +4,15 @@ import 'package:sheba_ai/data/datasource/local/source/identity_local_data_source
 import 'package:sheba_ai/data/datasource/remote/source/identity_remote_data_source_impl.dart';
 import 'package:sheba_ai/data/datasource/remote/source/medicine_remote_data_source_impl.dart';
 import 'package:sheba_ai/data/datasource/remote/source/order_remote_data_source_impl.dart';
+import 'package:sheba_ai/data/datasource/remote/source/prescription_remote_data_source_impl.dart';
 import 'package:sheba_ai/data/repository/source/local/core_local_data_source.dart';
 import 'package:sheba_ai/data/repository/source/local/identity_local_data_source.dart';
 import 'package:sheba_ai/data/repository/source/remote/identity_remote_data_source.dart';
 import 'package:sheba_ai/data/repository/source/remote/medicine_remote_data_source.dart';
 import 'package:sheba_ai/data/repository/source/remote/order_remote_data_source.dart';
 import 'package:sheba_ai/injection.dart';
+
+import '../data/repository/source/remote/prescription_remote_data_source.dart';
 
 Future<void> setUpDataSourceModule() async {
   await setUpLocalDataSourceModule();
@@ -20,26 +23,28 @@ Future<void> setUpLocalDataSourceModule() async {
   await getIt.isReady<SharedPreferences>();
 
   getIt.registerLazySingleton<CoreLocalDataSource>(
-        () => CoreLocalDataSourceImpl(),
+    () => CoreLocalDataSourceImpl(),
   );
 
   getIt.registerLazySingleton<IdentityLocalDataSource>(
-        () => IdentityLocalDataSourceImpl(sharedPref: getIt()),
+    () => IdentityLocalDataSourceImpl(sharedPref: getIt()),
   );
-
 }
 
 Future<void> setUpRemoteDataSourceModule() async {
-
   getIt.registerLazySingleton<IdentityRemoteDataSource>(
-        () => IdentityRemoteDataSourceImpl(identityApi: getIt()),
+    () => IdentityRemoteDataSourceImpl(identityApi: getIt()),
   );
 
   getIt.registerLazySingleton<MedicineRemoteDataSource>(
-        () => MedicineRemoteDataSourceImpl(medicineApi: getIt()),
+    () => MedicineRemoteDataSourceImpl(medicineApi: getIt()),
   );
 
   getIt.registerLazySingleton<OrderRemoteDataSource>(
-        () => OrderRemoteDataSourceImpl(orderApi: getIt()),
+    () => OrderRemoteDataSourceImpl(orderApi: getIt()),
+  );
+
+  getIt.registerLazySingleton<PrescriptionRemoteDataSource>(
+        () => PrescriptionRemoteDataSourceImpl(prescriptionApi: getIt()),
   );
 }

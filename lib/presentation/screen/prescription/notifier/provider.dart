@@ -1,0 +1,14 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:sheba_ai/presentation/screen/prescription/notifier/prescription_notifier.dart';
+import 'package:sheba_ai/presentation/screen/prescription/state/prescription_ui_state.dart';
+
+typedef PrescriptionNotifierProvider =
+    StateNotifierProvider<PrescriptionNotifier, PrescriptionUiState>;
+
+final PrescriptionNotifierProvider prescriptionNotifierProvider = StateNotifierProvider(
+  (ref) => PrescriptionNotifier(),
+);
+
+// State provider for selected image
+final selectedImageProvider = StateProvider<XFile?>((ref) => null);
