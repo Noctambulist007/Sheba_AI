@@ -4,7 +4,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sheba_ai/presentation/screen/cart/state/cart_state.dart';
 import 'package:sheba_ai/presentation/screen/cart/notifier/provider.dart';
+import 'package:sheba_ai/presentation/screen/checkout/checkout_screen.dart';
 import 'package:sheba_ai/presentation/theme/color.dart';
+import 'package:sheba_ai/presentation/util/routes.dart';
+import 'package:sheba_ai/presentation/widget/custom_button.dart';
 import 'package:sheba_ai/presentation/widget/custom_gradient_app_bar.dart';
 
 class CartScreen extends ConsumerStatefulWidget {
@@ -26,7 +29,7 @@ class _CartScreenState extends ConsumerState<CartScreen> {
   @override
   Widget build(BuildContext context) {
     final cartState = ref.watch(cartNotifierProvider);
-    
+
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: CustomGradientAppBar(
@@ -113,14 +116,19 @@ class _CartScreenState extends ConsumerState<CartScreen> {
                                   // Remove Button
                                   InkWell(
                                     onTap: () {
-                                      ref.read(cartNotifierProvider.notifier).removeFromCart(
-                                          item.medicine.medicineId);
+                                      ref
+                                          .read(cartNotifierProvider.notifier)
+                                          .removeFromCart(
+                                            item.medicine.medicineId,
+                                          );
                                     },
                                     child: Container(
                                       padding: EdgeInsets.all(4.w),
                                       decoration: BoxDecoration(
                                         color: Colors.red[50],
-                                        borderRadius: BorderRadius.circular(4.r),
+                                        borderRadius: BorderRadius.circular(
+                                          4.r,
+                                        ),
                                       ),
                                       child: Icon(
                                         Icons.delete_outline,
@@ -135,20 +143,28 @@ class _CartScreenState extends ConsumerState<CartScreen> {
                                     children: [
                                       InkWell(
                                         onTap: () {
-                                          ref.read(cartNotifierProvider.notifier)
+                                          ref
+                                              .read(
+                                                cartNotifierProvider.notifier,
+                                              )
                                               .decrementQuantity(
-                                                  item.medicine.medicineId);
+                                                item.medicine.medicineId,
+                                              );
                                         },
                                         child: Container(
                                           width: 28.w,
                                           height: 28.h,
                                           decoration: BoxDecoration(
                                             color: Colors.grey[200],
-                                            borderRadius:
-                                                BorderRadius.circular(4.r),
+                                            borderRadius: BorderRadius.circular(
+                                              4.r,
+                                            ),
                                           ),
-                                          child: Icon(Icons.remove,
-                                              size: 16.sp, color: Colors.black),
+                                          child: Icon(
+                                            Icons.remove,
+                                            size: 16.sp,
+                                            color: Colors.black,
+                                          ),
                                         ),
                                       ),
                                       Container(
@@ -165,20 +181,28 @@ class _CartScreenState extends ConsumerState<CartScreen> {
                                       ),
                                       InkWell(
                                         onTap: () {
-                                          ref.read(cartNotifierProvider.notifier)
+                                          ref
+                                              .read(
+                                                cartNotifierProvider.notifier,
+                                              )
                                               .incrementQuantity(
-                                                  item.medicine.medicineId);
+                                                item.medicine.medicineId,
+                                              );
                                         },
                                         child: Container(
                                           width: 28.w,
                                           height: 28.h,
                                           decoration: BoxDecoration(
                                             color: AppColors.primary,
-                                            borderRadius:
-                                                BorderRadius.circular(4.r),
+                                            borderRadius: BorderRadius.circular(
+                                              4.r,
+                                            ),
                                           ),
-                                          child: Icon(Icons.add,
-                                              size: 16.sp, color: Colors.white),
+                                          child: Icon(
+                                            Icons.add,
+                                            size: 16.sp,
+                                            color: Colors.white,
+                                          ),
                                         ),
                                       ),
                                     ],
@@ -192,7 +216,7 @@ class _CartScreenState extends ConsumerState<CartScreen> {
                     },
                   ),
                 ),
-                
+
                 // Coupon Code Section
                 Container(
                   padding: EdgeInsets.all(16.w),
@@ -222,7 +246,10 @@ class _CartScreenState extends ConsumerState<CartScreen> {
                                 ),
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(8.r),
-                                  borderSide: BorderSide(color: Colors.grey.shade300, width: 1),
+                                  borderSide: BorderSide(
+                                    color: Colors.grey.shade300,
+                                    width: 1,
+                                  ),
                                 ),
                                 contentPadding: EdgeInsets.symmetric(
                                   horizontal: 16.w,
@@ -235,7 +262,8 @@ class _CartScreenState extends ConsumerState<CartScreen> {
                           ElevatedButton(
                             onPressed: () {
                               if (_couponController.text.isNotEmpty) {
-                                ref.read(cartNotifierProvider.notifier)
+                                ref
+                                    .read(cartNotifierProvider.notifier)
                                     .applyCoupon(_couponController.text);
                                 FocusScope.of(context).unfocus();
                               }
@@ -248,7 +276,10 @@ class _CartScreenState extends ConsumerState<CartScreen> {
                                 horizontal: 16.w,
                               ),
                               shape: RoundedRectangleBorder(
-                                side: BorderSide(color: AppColors.primary, width: 1),
+                                side: BorderSide(
+                                  color: AppColors.primary,
+                                  width: 1,
+                                ),
                                 borderRadius: BorderRadius.circular(8.r),
                               ),
                             ),
@@ -262,13 +293,16 @@ class _CartScreenState extends ConsumerState<CartScreen> {
                           ),
                         ],
                       ),
-                      
+
                       SizedBox(height: 16.h),
-                      
+
                       // Price Summary
                       Column(
                         children: [
-                          _buildPriceSummaryRow('Subtotal', '৳${cartState.subtotal.toStringAsFixed(2)}'),
+                          _buildPriceSummaryRow(
+                            'Subtotal',
+                            '৳${cartState.subtotal.toStringAsFixed(2)}',
+                          ),
                           if (cartState.discount > 0) ...[
                             SizedBox(height: 8.h),
                             _buildPriceSummaryRow(
@@ -287,29 +321,25 @@ class _CartScreenState extends ConsumerState<CartScreen> {
                           ),
                         ],
                       ),
-                      
+
                       SizedBox(height: 20.h),
-                      
-                      // Checkout Button
-                      ElevatedButton(
-                        onPressed: () {
-                          Navigator.pushNamed(context, '/checkout');
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: AppColors.primary,
-                          foregroundColor: Colors.white,
-                          padding: EdgeInsets.symmetric(vertical: 16.h),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12.r),
-                          ),
-                          minimumSize: Size(double.infinity, 56.h),
-                        ),
-                        child: Text(
-                          'Proceed to Checkout',
-                          style: TextStyle(
-                            fontSize: 16.sp,
-                            fontWeight: FontWeight.bold,
-                          ),
+
+                      SafeArea(
+                        child: CustomButton.primary(
+                          onPressed: () {
+                            Navigator.pushNamed(
+                              context,
+                              Routes.checkout,
+                              arguments: CheckoutArgs(
+                                cartItems: cartState.items,
+                                totalPrice: cartState.total,
+                              ),
+                            );
+                          },
+
+                          text: 'Proceed to Checkout',
+                          width: double.infinity,
+                          borderRadius: 8.r,
                         ),
                       ),
                     ],
@@ -319,7 +349,7 @@ class _CartScreenState extends ConsumerState<CartScreen> {
             ),
     );
   }
-  
+
   Widget _buildEmptyCart() {
     return Center(
       child: Column(
@@ -342,10 +372,7 @@ class _CartScreenState extends ConsumerState<CartScreen> {
           SizedBox(height: 8.h),
           Text(
             'Add medicines to your cart',
-            style: TextStyle(
-              fontSize: 14.sp,
-              color: Colors.grey[600],
-            ),
+            style: TextStyle(fontSize: 14.sp, color: Colors.grey[600]),
           ),
           SizedBox(height: 24.h),
           ElevatedButton(
@@ -355,20 +382,14 @@ class _CartScreenState extends ConsumerState<CartScreen> {
             style: ElevatedButton.styleFrom(
               backgroundColor: AppColors.primary,
               foregroundColor: Colors.white,
-              padding: EdgeInsets.symmetric(
-                horizontal: 24.w,
-                vertical: 12.h,
-              ),
+              padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 12.h),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(8.r),
               ),
             ),
             child: Text(
               'Continue Shopping',
-              style: TextStyle(
-                fontSize: 14.sp,
-                fontWeight: FontWeight.bold,
-              ),
+              style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.bold),
             ),
           ),
         ],
@@ -376,7 +397,12 @@ class _CartScreenState extends ConsumerState<CartScreen> {
     );
   }
 
-  Widget _buildPriceSummaryRow(String label, String value, {Color? valueColor, bool isBold = false}) {
+  Widget _buildPriceSummaryRow(
+    String label,
+    String value, {
+    Color? valueColor,
+    bool isBold = false,
+  }) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [

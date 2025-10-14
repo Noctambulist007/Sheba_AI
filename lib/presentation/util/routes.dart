@@ -3,9 +3,11 @@ import 'package:sheba_ai/presentation/screen/auth/sign_in_screen.dart';
 import 'package:sheba_ai/presentation/screen/auth/sign_up_screen.dart';
 import 'package:sheba_ai/presentation/screen/cart/cart_screen.dart';
 import 'package:sheba_ai/presentation/screen/chat/chat_screen.dart';
+import 'package:sheba_ai/presentation/screen/checkout/checkout_screen.dart';
 import 'package:sheba_ai/presentation/screen/intro/intro_screen.dart';
 import 'package:sheba_ai/presentation/screen/main/main_screen.dart';
 import 'package:sheba_ai/presentation/screen/my_orders/my_orders_screen.dart';
+import 'package:sheba_ai/presentation/screen/order_success/order_success_screen.dart';
 import 'package:sheba_ai/presentation/screen/prescription/prescription_screen.dart';
 import 'package:sheba_ai/presentation/screen/profile/profile_screen.dart';
 import 'package:sheba_ai/presentation/screen/reminder/reminder_screen.dart';
@@ -28,7 +30,9 @@ class Routes {
   static const String reminder = 'reminder';
   static const String profile = 'profile';
   static const String cart = 'cart';
+  static const String checkout = 'checkout';
   static const String myOrders = 'myOrders';
+  static const String orderSuccess = 'orderSuccess';
 
   static PageRoute generateRoutes(RouteSettings settings) {
     return PageRouteBuilder(
@@ -39,7 +43,7 @@ class Routes {
             return IntroScreen();
           case splash:
             return const SplashScreen();
-            case signIn:
+          case signIn:
             return const SignInScreen();
           case signUp:
             return const SignUpScreen();
@@ -47,20 +51,24 @@ class Routes {
             return const MainScreen();
           case prescription:
             return const PrescriptionScreen();
-            case store:
+          case store:
             return const StoreScreen();
-            case medicineDetails:
-              return MedicineDetailsScreen();
+          case medicineDetails:
+            return MedicineDetailsScreen();
           case chat:
             return const ChatScreen();
           case reminder:
             return const ReminderScreen();
           case profile:
             return const ProfileScreen();
-            case cart:
+          case cart:
             return const CartScreen();
-            case myOrders:
+          case checkout:
+            return const CheckoutScreen();
+          case myOrders:
             return const MyOrdersScreen();
+            case orderSuccess:
+            return const OrderSuccessScreen();
           default:
             return const MainScreen();
         }

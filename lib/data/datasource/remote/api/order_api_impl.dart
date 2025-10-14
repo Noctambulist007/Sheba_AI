@@ -28,6 +28,7 @@ class OrderApiImpl extends OrderApi {
   Future<void> createOrder({required CreateOrderRequest requestBody}) async {
     await _client.post<JSONObject, CreateOrderResponse>(
       path: createOrderUrl,
+      data: requestBody.toJson(),
       converter: (json) => CreateOrderResponse.fromJson(json),
     );
   }

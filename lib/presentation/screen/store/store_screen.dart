@@ -63,11 +63,48 @@ class _StoreScreenState extends ConsumerState<StoreScreen> {
               onTap: () {
                 Navigator.pushNamed(context, Routes.cart);
               },
-              child: SvgPicture.asset(
-                'assets/icons/ic-cart.svg',
-                width: 24.w,
-                height: 24.h,
-                color: Colors.white,
+              child: Stack(
+                clipBehavior: Clip.none,
+                children: [
+                  SvgPicture.asset(
+                    'assets/icons/ic-cart.svg',
+                    width: 24.w,
+                    height: 24.h,
+                    color: Colors.white,
+                  ),
+                  // Cart item count badge
+                  Consumer(
+                    builder: (context, ref, _) {
+                      final cartItemCount = ref.watch(cartNotifierProvider).items.length;
+                      return cartItemCount > 0
+                          ? Positioned(
+                              right: -5,
+                              top: -5,
+                              child: Container(
+                                padding: EdgeInsets.all(4.r),
+                                decoration: BoxDecoration(
+                                  color: Colors.red,
+                                  shape: BoxShape.circle,
+                                ),
+                                constraints: BoxConstraints(
+                                  minWidth: 16.r,
+                                  minHeight: 16.r,
+                                ),
+                                child: Text(
+                                  cartItemCount.toString(),
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 8.sp,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                            )
+                          : const SizedBox.shrink();
+                    },
+                  ),
+                ],
               ),
             ),
           ),
@@ -155,7 +192,7 @@ class _StoreScreenState extends ConsumerState<StoreScreen> {
                         crossAxisCount: 2,
                         mainAxisSpacing: 12.h,
                         crossAxisSpacing: 12.w,
-                        childAspectRatio: 0.65.r,
+                        childAspectRatio: 0.55.r,
                       ),
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
