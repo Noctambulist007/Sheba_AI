@@ -1,15 +1,10 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:sheba_ai/domain/enum/medicine/medicine_filter.dart';
 import 'package:sheba_ai/domain/model/medicine/medicine.dart';
 import 'package:sheba_ai/domain/usecase/medicine/get_all_medicines_use_case.dart';
 import 'package:sheba_ai/domain/util/result.dart';
 import 'package:sheba_ai/injection.dart';
 import 'package:sheba_ai/presentation/screen/store/state/medicine_ui_state.dart';
-
-enum MedicineFilter {
-  none,
-  lowToHigh,
-  highToLow,
-}
 
 class MedicineNotifier extends StateNotifier<MedicineUiState> {
   MedicineNotifier() : super(const MedicineUiState.initial()) {
@@ -72,21 +67,28 @@ class MedicineNotifier extends StateNotifier<MedicineUiState> {
 
     if (_searchQuery.isNotEmpty) {
       filteredMedicines = filteredMedicines
-          .where((medicine) =>
-              medicine.name.toLowerCase().contains(_searchQuery.toLowerCase()))
+          .where(
+            (medicine) => medicine.name.toLowerCase().contains(
+              _searchQuery.toLowerCase(),
+            ),
+          )
           .toList();
     }
 
     switch (_filter) {
       case MedicineFilter.lowToHigh:
-        filteredMedicines.sort((a, b) =>
-            (double.tryParse(a.price ?? '0') ?? 0)
-                .compareTo(double.tryParse(b.price ?? '0') ?? 0));
+        filteredMedicines.sort(
+          (a, b) => (double.tryParse(a.price ?? '0') ?? 0).compareTo(
+            double.tryParse(b.price ?? '0') ?? 0,
+          ),
+        );
         break;
       case MedicineFilter.highToLow:
-        filteredMedicines.sort((a, b) =>
-            (double.tryParse(b.price ?? '0') ?? 0)
-                .compareTo(double.tryParse(a.price ?? '0') ?? 0));
+        filteredMedicines.sort(
+          (a, b) => (double.tryParse(b.price ?? '0') ?? 0).compareTo(
+            double.tryParse(a.price ?? '0') ?? 0,
+          ),
+        );
         break;
       case MedicineFilter.none:
         break;
@@ -100,5 +102,6 @@ class MedicineNotifier extends StateNotifier<MedicineUiState> {
   }
 
   bool get isLoadingMore => _isLoadingMore;
+
   bool get hasMore => _hasMore;
 }
