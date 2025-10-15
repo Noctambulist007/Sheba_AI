@@ -24,6 +24,21 @@ class PrescriptionRepositoryImpl implements PrescriptionRepository {
   }
 
   @override
+  Future<Prescription> getPrescription({
+    required int prescriptionId,
+}) async {
+    try {
+      final response = await prescriptionRemoteDataSource.getPrescription(
+        prescriptionId: prescriptionId,
+      );
+      return response;
+    } catch (error, stackTrace) {
+      debugPrintStack(stackTrace: stackTrace);
+      rethrow;
+    }
+  }
+
+  @override
   Future<Prescription> createPrescription({
     required CreatePrescriptionRequest requestBody,
   }) async {

@@ -3,10 +3,12 @@ import 'package:sheba_ai/data/datasource/remote/model/request/prescription/creat
 import 'package:sheba_ai/data/datasource/remote/model/response/prescription/analyze_prescription_response.dart';
 import 'package:sheba_ai/data/datasource/remote/model/response/prescription/create_prescription_response.dart';
 import 'package:sheba_ai/data/datasource/remote/model/response/prescription/prescription_list_response.dart';
+import 'package:sheba_ai/data/datasource/remote/model/response/prescription/prescription_response_data.dart';
 import 'package:sheba_ai/data/datasource/remote/util/api_client.dart';
 import 'package:sheba_ai/data/mapper/prescription/analyze_prescription_response_mapper.dart';
 import 'package:sheba_ai/data/mapper/prescription/create_prescription_response_mapper.dart';
 import 'package:sheba_ai/data/mapper/prescription/prescription_list_response_mapper.dart';
+import 'package:sheba_ai/data/mapper/prescription/prescription_response_mapper.dart';
 import 'package:sheba_ai/domain/model/prescription/analyze_prescription.dart';
 import 'package:sheba_ai/domain/model/prescription/prescription.dart';
 import 'package:dio/dio.dart';
@@ -15,6 +17,7 @@ class PrescriptionApiImpl extends PrescriptionApi {
   final ApiClient _client;
 
   static const getAllPrescriptionsUrl = 'prescriptions/';
+  static const getPrescriptionUrl = 'prescriptions/'; // {id}/
   static const createPrescriptionUrl = 'prescriptions/create/';
   static const analyzePrescriptionUrl = 'prescriptions/'; // {id}/analyze/
   static const deletePrescriptionUrl = 'prescriptions/'; // {id}/delete/
@@ -29,6 +32,15 @@ class PrescriptionApiImpl extends PrescriptionApi {
       converter: (json) => PrescriptionListResponse.fromJson(json),
     );
     return response.toPrescriptionList();
+  }
+
+  @override
+  Future<Prescription> getPrescription({required int prescriptionId}) async {
+    final response = await _client.get<JSONObject, PrescriptionResponseData>(
+      path: '$getPrescriptionUrl$prescriptionId/',
+      converter: (json) => PrescriptionResponseData.fromJson(json),
+    );
+    return response.toPrescription();
   }
 
   @override

@@ -9,6 +9,7 @@ import 'package:sheba_ai/domain/usecase/prescription/analyze_prescription_use_ca
 import 'package:sheba_ai/domain/usecase/prescription/create_prescription_use_case.dart';
 import 'package:sheba_ai/domain/usecase/prescription/delete_prescription_use_case.dart';
 import 'package:sheba_ai/domain/usecase/prescription/get_all_prescriptions_use_case.dart';
+import 'package:sheba_ai/domain/usecase/prescription/get_prescription_use_case.dart';
 import 'package:sheba_ai/injection.dart';
 
 Future<void> setUpUseCaseModule() async {
@@ -53,6 +54,10 @@ Future<void> setUpOrderUseCaseModule() async {
 Future<void> setUpPrescriptionUseCaseModule() async {
   getIt.registerLazySingleton(
     () => GetAllPrescriptionsUseCase(prescriptionRepository: getIt()),
+  );
+
+  getIt.registerLazySingleton(
+        () => GetPrescriptionUseCase(prescriptionRepository: getIt()),
   );
 
   getIt.registerLazySingleton(

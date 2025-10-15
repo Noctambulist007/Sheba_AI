@@ -247,9 +247,8 @@ class _PrescriptionScreenState extends ConsumerState<PrescriptionScreen> {
           showModalBottomSheet(
             context: context,
             isScrollControlled: true,
-            builder: (context) => PrescriptionAnalysisBottomSheet(
-              analysis: analyzePrescription,
-            ),
+            builder: (context) =>
+                PrescriptionAnalysisBottomSheet(analysis: analyzePrescription),
           );
         },
         error: (message) {
@@ -354,7 +353,7 @@ class _PrescriptionScreenState extends ConsumerState<PrescriptionScreen> {
                     ),
                   ),
 
-                  SizedBox(height: 8.h),
+                  SizedBox(height: 16.h),
 
                   // My Prescriptions list
                   Padding(
@@ -374,9 +373,12 @@ class _PrescriptionScreenState extends ConsumerState<PrescriptionScreen> {
                             ),
                           ],
                         ),
-                        TextButton(
-                          onPressed: () {
-                            // Navigate to see all
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.pushNamed(
+                              context,
+                              Routes.prescriptionList,
+                            );
                           },
                           child: Text(
                             'See All',
@@ -390,8 +392,6 @@ class _PrescriptionScreenState extends ConsumerState<PrescriptionScreen> {
                       ],
                     ),
                   ),
-
-                  SizedBox(height: 8.h),
 
                   state.maybeWhen(
                     initial: () => const SizedBox.shrink(),
@@ -469,7 +469,16 @@ class _PrescriptionScreenState extends ConsumerState<PrescriptionScreen> {
 
                               itemBuilder: (context, index) {
                                 final item = prescriptions[index];
-                                return PrescriptionItem(prescription: item);
+                                return GestureDetector(
+                                  onTap: () {
+                                    Navigator.pushNamed(
+                                      context,
+                                      Routes.prescriptionDetails,
+                                      arguments: item.id,
+                                    );
+                                  },
+                                  child: PrescriptionItem(prescription: item),
+                                );
                               },
                             ),
                             if (isLoadingMore)

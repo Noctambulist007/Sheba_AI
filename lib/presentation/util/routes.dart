@@ -8,6 +8,8 @@ import 'package:sheba_ai/presentation/screen/intro/intro_screen.dart';
 import 'package:sheba_ai/presentation/screen/main/main_screen.dart';
 import 'package:sheba_ai/presentation/screen/my_orders/my_orders_screen.dart';
 import 'package:sheba_ai/presentation/screen/order_success/order_success_screen.dart';
+import 'package:sheba_ai/presentation/screen/prescription/prescription_details_screen.dart';
+import 'package:sheba_ai/presentation/screen/prescription/prescription_list_screen.dart';
 import 'package:sheba_ai/presentation/screen/prescription/prescription_screen.dart';
 import 'package:sheba_ai/presentation/screen/profile/profile_screen.dart';
 import 'package:sheba_ai/presentation/screen/reminder/reminder_screen.dart';
@@ -33,6 +35,8 @@ class Routes {
   static const String checkout = 'checkout';
   static const String myOrders = 'myOrders';
   static const String orderSuccess = 'orderSuccess';
+  static const String prescriptionList = 'prescriptionList';
+  static const String prescriptionDetails = 'prescriptionDetails';
 
   static PageRoute generateRoutes(RouteSettings settings) {
     return PageRouteBuilder(
@@ -69,6 +73,10 @@ class Routes {
             return const MyOrdersScreen();
             case orderSuccess:
             return const OrderSuccessScreen();
+            case prescriptionList:
+            return const PrescriptionListScreen();
+            case prescriptionDetails:
+            return const PrescriptionDetailsScreen();
           default:
             return const MainScreen();
         }

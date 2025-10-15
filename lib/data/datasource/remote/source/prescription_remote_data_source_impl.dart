@@ -17,6 +17,16 @@ class PrescriptionRemoteDataSourceImpl extends PrescriptionRemoteDataSource {
   }
 
   @override
+  Future<Prescription> getPrescription({
+    required int prescriptionId,
+}) async {
+    var response = await _prescriptionApi.getPrescription(
+      prescriptionId: prescriptionId,
+    );
+    return response;
+  }
+
+  @override
   Future<Prescription> createPrescription({
     required CreatePrescriptionRequest requestBody,
   }) async {

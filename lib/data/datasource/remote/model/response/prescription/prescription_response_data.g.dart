@@ -13,6 +13,14 @@ _PrescriptionResponseData _$PrescriptionResponseDataFromJson(
   image: json['image'] as String,
   status: json['status'] as String,
   createdAt: json['created_at'] as String,
+  matchedMedicines: (json['matched_medicines'] as List<dynamic>?)
+      ?.map((e) => MatchedMedicineResponse.fromJson(e as Map<String, dynamic>))
+      .toList(),
+  unmatchedMedicines: (json['unmatched_medicines'] as List<dynamic>?)
+      ?.map(
+        (e) => UnmatchedMedicineResponse.fromJson(e as Map<String, dynamic>),
+      )
+      .toList(),
 );
 
 Map<String, dynamic> _$PrescriptionResponseDataToJson(
@@ -22,4 +30,6 @@ Map<String, dynamic> _$PrescriptionResponseDataToJson(
   'image': instance.image,
   'status': instance.status,
   'created_at': instance.createdAt,
+  'matched_medicines': instance.matchedMedicines,
+  'unmatched_medicines': instance.unmatchedMedicines,
 };

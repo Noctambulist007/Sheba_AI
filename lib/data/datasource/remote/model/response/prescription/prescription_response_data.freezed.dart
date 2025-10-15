@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$PrescriptionResponseData {
 
-@JsonKey(name: 'id') int get id;@JsonKey(name: 'image') String get image;@JsonKey(name: 'status') String get status;@JsonKey(name: 'created_at') String get createdAt;
+@JsonKey(name: 'id') int get id;@JsonKey(name: 'image') String get image;@JsonKey(name: 'status') String get status;@JsonKey(name: 'created_at') String get createdAt;@JsonKey(name: 'matched_medicines') List<MatchedMedicineResponse>? get matchedMedicines;@JsonKey(name: 'unmatched_medicines') List<UnmatchedMedicineResponse>? get unmatchedMedicines;
 /// Create a copy of PrescriptionResponseData
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $PrescriptionResponseDataCopyWith<PrescriptionResponseData> get copyWith => _$Pr
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is PrescriptionResponseData&&(identical(other.id, id) || other.id == id)&&(identical(other.image, image) || other.image == image)&&(identical(other.status, status) || other.status == status)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is PrescriptionResponseData&&(identical(other.id, id) || other.id == id)&&(identical(other.image, image) || other.image == image)&&(identical(other.status, status) || other.status == status)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&const DeepCollectionEquality().equals(other.matchedMedicines, matchedMedicines)&&const DeepCollectionEquality().equals(other.unmatchedMedicines, unmatchedMedicines));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,image,status,createdAt);
+int get hashCode => Object.hash(runtimeType,id,image,status,createdAt,const DeepCollectionEquality().hash(matchedMedicines),const DeepCollectionEquality().hash(unmatchedMedicines));
 
 @override
 String toString() {
-  return 'PrescriptionResponseData(id: $id, image: $image, status: $status, createdAt: $createdAt)';
+  return 'PrescriptionResponseData(id: $id, image: $image, status: $status, createdAt: $createdAt, matchedMedicines: $matchedMedicines, unmatchedMedicines: $unmatchedMedicines)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $PrescriptionResponseDataCopyWith<$Res>  {
   factory $PrescriptionResponseDataCopyWith(PrescriptionResponseData value, $Res Function(PrescriptionResponseData) _then) = _$PrescriptionResponseDataCopyWithImpl;
 @useResult
 $Res call({
-@JsonKey(name: 'id') int id,@JsonKey(name: 'image') String image,@JsonKey(name: 'status') String status,@JsonKey(name: 'created_at') String createdAt
+@JsonKey(name: 'id') int id,@JsonKey(name: 'image') String image,@JsonKey(name: 'status') String status,@JsonKey(name: 'created_at') String createdAt,@JsonKey(name: 'matched_medicines') List<MatchedMedicineResponse>? matchedMedicines,@JsonKey(name: 'unmatched_medicines') List<UnmatchedMedicineResponse>? unmatchedMedicines
 });
 
 
@@ -65,13 +65,15 @@ class _$PrescriptionResponseDataCopyWithImpl<$Res>
 
 /// Create a copy of PrescriptionResponseData
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? image = null,Object? status = null,Object? createdAt = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? image = null,Object? status = null,Object? createdAt = null,Object? matchedMedicines = freezed,Object? unmatchedMedicines = freezed,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int,image: null == image ? _self.image : image // ignore: cast_nullable_to_non_nullable
 as String,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
 as String,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
-as String,
+as String,matchedMedicines: freezed == matchedMedicines ? _self.matchedMedicines : matchedMedicines // ignore: cast_nullable_to_non_nullable
+as List<MatchedMedicineResponse>?,unmatchedMedicines: freezed == unmatchedMedicines ? _self.unmatchedMedicines : unmatchedMedicines // ignore: cast_nullable_to_non_nullable
+as List<UnmatchedMedicineResponse>?,
   ));
 }
 
@@ -156,10 +158,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: 'id')  int id, @JsonKey(name: 'image')  String image, @JsonKey(name: 'status')  String status, @JsonKey(name: 'created_at')  String createdAt)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: 'id')  int id, @JsonKey(name: 'image')  String image, @JsonKey(name: 'status')  String status, @JsonKey(name: 'created_at')  String createdAt, @JsonKey(name: 'matched_medicines')  List<MatchedMedicineResponse>? matchedMedicines, @JsonKey(name: 'unmatched_medicines')  List<UnmatchedMedicineResponse>? unmatchedMedicines)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _PrescriptionResponseData() when $default != null:
-return $default(_that.id,_that.image,_that.status,_that.createdAt);case _:
+return $default(_that.id,_that.image,_that.status,_that.createdAt,_that.matchedMedicines,_that.unmatchedMedicines);case _:
   return orElse();
 
 }
@@ -177,10 +179,10 @@ return $default(_that.id,_that.image,_that.status,_that.createdAt);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: 'id')  int id, @JsonKey(name: 'image')  String image, @JsonKey(name: 'status')  String status, @JsonKey(name: 'created_at')  String createdAt)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: 'id')  int id, @JsonKey(name: 'image')  String image, @JsonKey(name: 'status')  String status, @JsonKey(name: 'created_at')  String createdAt, @JsonKey(name: 'matched_medicines')  List<MatchedMedicineResponse>? matchedMedicines, @JsonKey(name: 'unmatched_medicines')  List<UnmatchedMedicineResponse>? unmatchedMedicines)  $default,) {final _that = this;
 switch (_that) {
 case _PrescriptionResponseData():
-return $default(_that.id,_that.image,_that.status,_that.createdAt);case _:
+return $default(_that.id,_that.image,_that.status,_that.createdAt,_that.matchedMedicines,_that.unmatchedMedicines);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -197,10 +199,10 @@ return $default(_that.id,_that.image,_that.status,_that.createdAt);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: 'id')  int id, @JsonKey(name: 'image')  String image, @JsonKey(name: 'status')  String status, @JsonKey(name: 'created_at')  String createdAt)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: 'id')  int id, @JsonKey(name: 'image')  String image, @JsonKey(name: 'status')  String status, @JsonKey(name: 'created_at')  String createdAt, @JsonKey(name: 'matched_medicines')  List<MatchedMedicineResponse>? matchedMedicines, @JsonKey(name: 'unmatched_medicines')  List<UnmatchedMedicineResponse>? unmatchedMedicines)?  $default,) {final _that = this;
 switch (_that) {
 case _PrescriptionResponseData() when $default != null:
-return $default(_that.id,_that.image,_that.status,_that.createdAt);case _:
+return $default(_that.id,_that.image,_that.status,_that.createdAt,_that.matchedMedicines,_that.unmatchedMedicines);case _:
   return null;
 
 }
@@ -212,13 +214,31 @@ return $default(_that.id,_that.image,_that.status,_that.createdAt);case _:
 @JsonSerializable()
 
 class _PrescriptionResponseData implements PrescriptionResponseData {
-  const _PrescriptionResponseData({@JsonKey(name: 'id') required this.id, @JsonKey(name: 'image') required this.image, @JsonKey(name: 'status') required this.status, @JsonKey(name: 'created_at') required this.createdAt});
+  const _PrescriptionResponseData({@JsonKey(name: 'id') required this.id, @JsonKey(name: 'image') required this.image, @JsonKey(name: 'status') required this.status, @JsonKey(name: 'created_at') required this.createdAt, @JsonKey(name: 'matched_medicines') final  List<MatchedMedicineResponse>? matchedMedicines, @JsonKey(name: 'unmatched_medicines') final  List<UnmatchedMedicineResponse>? unmatchedMedicines}): _matchedMedicines = matchedMedicines,_unmatchedMedicines = unmatchedMedicines;
   factory _PrescriptionResponseData.fromJson(Map<String, dynamic> json) => _$PrescriptionResponseDataFromJson(json);
 
 @override@JsonKey(name: 'id') final  int id;
 @override@JsonKey(name: 'image') final  String image;
 @override@JsonKey(name: 'status') final  String status;
 @override@JsonKey(name: 'created_at') final  String createdAt;
+ final  List<MatchedMedicineResponse>? _matchedMedicines;
+@override@JsonKey(name: 'matched_medicines') List<MatchedMedicineResponse>? get matchedMedicines {
+  final value = _matchedMedicines;
+  if (value == null) return null;
+  if (_matchedMedicines is EqualUnmodifiableListView) return _matchedMedicines;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(value);
+}
+
+ final  List<UnmatchedMedicineResponse>? _unmatchedMedicines;
+@override@JsonKey(name: 'unmatched_medicines') List<UnmatchedMedicineResponse>? get unmatchedMedicines {
+  final value = _unmatchedMedicines;
+  if (value == null) return null;
+  if (_unmatchedMedicines is EqualUnmodifiableListView) return _unmatchedMedicines;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(value);
+}
+
 
 /// Create a copy of PrescriptionResponseData
 /// with the given fields replaced by the non-null parameter values.
@@ -233,16 +253,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _PrescriptionResponseData&&(identical(other.id, id) || other.id == id)&&(identical(other.image, image) || other.image == image)&&(identical(other.status, status) || other.status == status)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _PrescriptionResponseData&&(identical(other.id, id) || other.id == id)&&(identical(other.image, image) || other.image == image)&&(identical(other.status, status) || other.status == status)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&const DeepCollectionEquality().equals(other._matchedMedicines, _matchedMedicines)&&const DeepCollectionEquality().equals(other._unmatchedMedicines, _unmatchedMedicines));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,image,status,createdAt);
+int get hashCode => Object.hash(runtimeType,id,image,status,createdAt,const DeepCollectionEquality().hash(_matchedMedicines),const DeepCollectionEquality().hash(_unmatchedMedicines));
 
 @override
 String toString() {
-  return 'PrescriptionResponseData(id: $id, image: $image, status: $status, createdAt: $createdAt)';
+  return 'PrescriptionResponseData(id: $id, image: $image, status: $status, createdAt: $createdAt, matchedMedicines: $matchedMedicines, unmatchedMedicines: $unmatchedMedicines)';
 }
 
 
@@ -253,7 +273,7 @@ abstract mixin class _$PrescriptionResponseDataCopyWith<$Res> implements $Prescr
   factory _$PrescriptionResponseDataCopyWith(_PrescriptionResponseData value, $Res Function(_PrescriptionResponseData) _then) = __$PrescriptionResponseDataCopyWithImpl;
 @override @useResult
 $Res call({
-@JsonKey(name: 'id') int id,@JsonKey(name: 'image') String image,@JsonKey(name: 'status') String status,@JsonKey(name: 'created_at') String createdAt
+@JsonKey(name: 'id') int id,@JsonKey(name: 'image') String image,@JsonKey(name: 'status') String status,@JsonKey(name: 'created_at') String createdAt,@JsonKey(name: 'matched_medicines') List<MatchedMedicineResponse>? matchedMedicines,@JsonKey(name: 'unmatched_medicines') List<UnmatchedMedicineResponse>? unmatchedMedicines
 });
 
 
@@ -270,13 +290,15 @@ class __$PrescriptionResponseDataCopyWithImpl<$Res>
 
 /// Create a copy of PrescriptionResponseData
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? image = null,Object? status = null,Object? createdAt = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? image = null,Object? status = null,Object? createdAt = null,Object? matchedMedicines = freezed,Object? unmatchedMedicines = freezed,}) {
   return _then(_PrescriptionResponseData(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int,image: null == image ? _self.image : image // ignore: cast_nullable_to_non_nullable
 as String,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
 as String,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
-as String,
+as String,matchedMedicines: freezed == matchedMedicines ? _self._matchedMedicines : matchedMedicines // ignore: cast_nullable_to_non_nullable
+as List<MatchedMedicineResponse>?,unmatchedMedicines: freezed == unmatchedMedicines ? _self._unmatchedMedicines : unmatchedMedicines // ignore: cast_nullable_to_non_nullable
+as List<UnmatchedMedicineResponse>?,
   ));
 }
 

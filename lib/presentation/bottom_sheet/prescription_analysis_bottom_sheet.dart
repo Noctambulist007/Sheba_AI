@@ -144,7 +144,7 @@ class PrescriptionAnalysisBottomSheet extends ConsumerWidget {
                           unit: '',
                         );
                         ref.read(cartNotifierProvider.notifier).addToCart(med);
-                        ToastHelper.showSuccess(context, 'Added to cart');
+                        ToastHelper.showSuccess(context, '${medicine.name} added to cart');
                       },
                       child: const Text('Add to Cart'),
                     ),
