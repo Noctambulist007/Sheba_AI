@@ -7,6 +7,7 @@ import 'package:sheba_ai/presentation/screen/cart/notifier/cart_notifier.dart';
 import 'package:sheba_ai/presentation/screen/cart/notifier/provider.dart';
 import 'package:sheba_ai/presentation/theme/color.dart';
 import 'package:sheba_ai/presentation/util/toast_helper.dart';
+import 'package:sheba_ai/presentation/widget/custom_button.dart';
 import 'package:sheba_ai/presentation/widget/custom_gradient_app_bar.dart';
 
 class MedicineDetailsArgs {
@@ -129,30 +130,6 @@ class MedicineDetailsScreen extends ConsumerWidget {
                               style: TextStyle(
                                 fontSize: 14.sp,
                                 color: Colors.grey[600],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Container(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 10.w,
-                          vertical: 6.h,
-                        ),
-                        decoration: BoxDecoration(
-                          color: Colors.amber,
-                          borderRadius: BorderRadius.circular(8.r),
-                        ),
-                        child: Row(
-                          children: [
-                            Icon(Icons.star, size: 16.sp, color: Colors.white),
-                            SizedBox(width: 4.w),
-                            Text(
-                              '4.5',
-                              style: TextStyle(
-                                fontSize: 14.sp,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white,
                               ),
                             ),
                           ],
@@ -372,59 +349,26 @@ class MedicineDetailsScreen extends ConsumerWidget {
           ],
         ),
         child: SafeArea(
-          child: Row(
-            children: [
-              // Add to Cart Button
-              Expanded(
-                child: OutlinedButton.icon(
-                  onPressed: () {
-                    final cartItems = ref.read(cartNotifierProvider).items;
-                    final exists = cartItems.any(
-                      (item) => item.medicine.medicineId == medicine.medicineId,
-                    );
+          child: CustomButton.primary(
+            onPressed: () {
+              final cartItems = ref.read(cartNotifierProvider).items;
+              final exists = cartItems.any(
+                (item) => item.medicine.medicineId == medicine.medicineId,
+              );
 
-                    if (!exists) {
-                      ref
-                          .read(cartNotifierProvider.notifier)
-                          .addToCart(medicine);
-                    }
-                    ToastHelper.showSuccess(
-                      context,
-                      '${medicine.name} added to cart',
-                    );
-                  },
-                  icon: const Icon(Icons.add_shopping_cart_outlined),
-                  label: const Text('Add to Cart'),
-                  style: OutlinedButton.styleFrom(
-                    elevation: 0,
-                    foregroundColor: AppColors.primary,
-                    side: BorderSide(color: AppColors.primary, width: 1),
-                    padding: EdgeInsets.symmetric(vertical: 14.h),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12.r),
-                    ),
-                  ),
-                ),
-              ),
-              SizedBox(width: 12.w),
-              // Buy Now Button
-              Expanded(
-                child: ElevatedButton.icon(
-                  onPressed: () {},
-                  icon: const Icon(Icons.shopping_bag_outlined),
-                  label: const Text('Buy Now'),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.primary,
-                    foregroundColor: Colors.white,
-                    padding: EdgeInsets.symmetric(vertical: 14.h),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12.r),
-                    ),
-                    elevation: 0,
-                  ),
-                ),
-              ),
-            ],
+              if (!exists) {
+                ref.read(cartNotifierProvider.notifier).addToCart(medicine);
+              }
+              ToastHelper.showSuccess(
+                context,
+                '${medicine.name} added to cart',
+              );
+            },
+            icon: const Icon(
+              Icons.add_shopping_cart_outlined,
+              color: Colors.white,
+            ),
+            text: 'Add to Cart',
           ),
         ),
       ),

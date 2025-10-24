@@ -1,7 +1,9 @@
 import 'package:sheba_ai/domain/usecase/identity/get_auth_status_use_case.dart';
+import 'package:sheba_ai/domain/usecase/identity/get_lives_use_case.dart';
 import 'package:sheba_ai/domain/usecase/identity/get_profile_use_case.dart';
 import 'package:sheba_ai/domain/usecase/identity/login_use_case.dart';
 import 'package:sheba_ai/domain/usecase/identity/register_use_case.dart';
+import 'package:sheba_ai/domain/usecase/identity/update_profile_use_case.dart';
 import 'package:sheba_ai/domain/usecase/medicine/get_all_medicines_use_case.dart';
 import 'package:sheba_ai/domain/usecase/order/create_order_use_case.dart';
 import 'package:sheba_ai/domain/usecase/order/get_all_orders_use_case.dart';
@@ -32,6 +34,14 @@ Future<void> setUpIdentityUseCaseModule() async {
 
   getIt.registerLazySingleton(
     () => GetProfileUseCase(identityRepository: getIt()),
+  );
+
+  getIt.registerLazySingleton(
+        () => UpdateProfileUseCase(identityRepository: getIt()),
+  );
+
+  getIt.registerLazySingleton(
+        () => GetLivesUseCase(identityRepository: getIt()),
   );
 }
 

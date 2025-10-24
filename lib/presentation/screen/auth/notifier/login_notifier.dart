@@ -33,7 +33,6 @@ class LoginNotifier extends StateNotifier<LoginUiState> {
       },
       failure: (failure) => LoginUiState.error(failure.message),
     );
-
   }
 
   void updateAuthState(TokenData tokenData) {

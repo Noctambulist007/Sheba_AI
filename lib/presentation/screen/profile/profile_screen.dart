@@ -5,9 +5,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sheba_ai/domain/model/identity/profile.dart';
 import 'package:sheba_ai/presentation/screen/auth/notifier/provider.dart';
+import 'package:sheba_ai/presentation/screen/profile/notifier/provider.dart';
+import 'package:sheba_ai/presentation/screen/profile/state/profile_ui_state.dart';
 import 'package:sheba_ai/presentation/util/routes.dart';
 import 'package:sheba_ai/presentation/theme/color.dart';
 import 'package:sheba_ai/presentation/theme/text_styles.dart';
+import 'package:sheba_ai/presentation/util/toast_helper.dart';
 import 'package:sheba_ai/presentation/widget/custom_button.dart';
 import 'package:sheba_ai/presentation/widget/custom_form_field.dart';
 import 'package:sheba_ai/presentation/widget/custom_gradient_app_bar.dart';
@@ -22,9 +25,10 @@ class ProfileArgs {
 class ProfileScreen extends ConsumerWidget {
   const ProfileScreen({super.key});
 
+  static final _formKey = GlobalKey<FormBuilderState>();
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final _formKey = GlobalKey<FormBuilderState>();
     final args = ModalRoute.of(context)!.settings.arguments as ProfileArgs;
     final userProfile = args.userProfile;
 
@@ -32,6 +36,20 @@ class ProfileScreen extends ConsumerWidget {
       backgroundColor: AppColors.background,
       appBar: CustomGradientAppBar(
         title: 'Profile',
+        customActions: [
+          // logout
+          IconButton(
+            icon: Icon(Icons.logout, color: Colors.white),
+            onPressed: () async {
+              await ref.read(authNotifierProvider.notifier).logout();
+              Navigator.pushNamedAndRemoveUntil(
+                context,
+                Routes.main,
+                (route) => false,
+              );
+            },
+          ),
+        ],
         leading: BackButton(
           color: Colors.white,
           onPressed: () => Navigator.pop(context),
@@ -67,22 +85,22 @@ class ProfileScreen extends ConsumerWidget {
                               AssetImage('assets/logo/app-logo.png')
                                   as ImageProvider,
                         ),
-                        Positioned(
-                          bottom: 0,
-                          right: 0,
-                          child: CircleAvatar(
-                            radius: 16.r,
-                            backgroundColor: Colors.white,
-                            child: IconButton(
-                              icon: const Icon(
-                                Icons.camera_alt_outlined,
-                                color: AppColors.colorPrimary,
-                                size: 20,
-                              ),
-                              onPressed: () {},
-                            ),
-                          ),
-                        ),
+                        // Positioned(
+                        //   bottom: 0,
+                        //   right: 0,
+                        //   child: CircleAvatar(
+                        //     radius: 16.r,
+                        //     backgroundColor: Colors.white,
+                        //     child: IconButton(
+                        //       icon: const Icon(
+                        //         Icons.camera_alt_outlined,
+                        //         color: AppColors.colorPrimary,
+                        //         size: 20,
+                        //       ),
+                        //       onPressed: () {},
+                        //     ),
+                        //   ),
+                        // ),
                       ],
                     ),
                   ],
@@ -104,7 +122,8 @@ class ProfileScreen extends ConsumerWidget {
                       child: Column(
                         children: [
                           CustomFormField(
-                            initialValue: '${userProfile.firstName} ${userProfile.lastName}',
+                            initialValue:
+                                '${userProfile.firstName} ${userProfile.lastName}',
                             name: 'full_name',
                             labelText: 'Full Name',
                             hintText: 'Enter your full name',
@@ -169,7 +188,6 @@ class ProfileScreen extends ConsumerWidget {
                             iconPath: 'assets/icons/ic-phone.svg',
                             keyboardType: TextInputType.phone,
                             textInputAction: TextInputAction.next,
-                            readOnly: true,
                           ),
                           SizedBox(height: 16.h),
                           CustomFormField(
@@ -196,17 +214,53 @@ class ProfileScreen extends ConsumerWidget {
           padding: EdgeInsets.all(16.h),
           child: CustomButton.primary(
             width: double.infinity,
-            text: "Logout",
-            onPressed: () async {
-              await ref.read(authNotifierProvider.notifier).logout();
-              Navigator.pushNamedAndRemoveUntil(context, Routes.main, (route) => false);
-            },
+            text: "Save",
+            isLoading: ref
+                .watch(profileNotifierProvider)
+                .maybeWhen(
+                  loading: () => true,
+                  error: (_) => false,
+                  orElse: () => false,
+                ),
+            onPressed: () => _handleProfileUpdate(context, ref),
             textStyle: AppTextStyles.labelL3Regular.copyWith(
               color: Colors.white,
             ),
           ),
         ),
       ),
+    );
+  }
+
+  void _handleProfileUpdate(BuildContext context, WidgetRef ref) async {
+    final isValid = _formKey.currentState?.saveAndValidate() ?? false;
+    if (!isValid) return;
+
+    final formData = _formKey.currentState!.value;
+
+    final fullName = formData['full_name'] as String;
+    final nameParts = fullName.trim().split(' ');
+    final firstName = nameParts.isNotEmpty ? nameParts[0] : '';
+    final lastName = nameParts.length > 1 ? nameParts.sublist(1).join(' ') : '';
+
+    final phone = formData['phone'] as String?;
+    final address = formData['address'] as String?;
+
+    ref
+        .read(profileNotifierProvider.notifier)
+        .updateProfile(firstName, lastName, phone, address);
+
+    final profileState = ref.read(profileNotifierProvider);
+    profileState.maybeWhen(
+
+      success: (profile) {
+        // ToastHelper.showSuccess(context, "Profile updated successfully");
+        ref.read(profileNotifierProvider.notifier).fetchProfile();
+      },
+      error: (message) {
+        ToastHelper.showError(context, message);
+      },
+      orElse: () {},
     );
   }
 }

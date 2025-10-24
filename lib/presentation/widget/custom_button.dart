@@ -84,6 +84,7 @@ class CustomButton extends StatelessWidget {
     Widget? icon,
     bool isLoading = false,
     double borderRadius = 24.0,
+    TextStyle? textStyle,
   }) {
     return CustomButton(
       key: key,
@@ -97,6 +98,7 @@ class CustomButton extends StatelessWidget {
       icon: icon,
       isLoading: isLoading,
       borderRadius: borderRadius,
+      textStyle: textStyle,
     );
   }
 

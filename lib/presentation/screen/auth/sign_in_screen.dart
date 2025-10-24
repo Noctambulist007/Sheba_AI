@@ -11,6 +11,7 @@ import 'package:sheba_ai/presentation/screen/auth/widget/auth_toggle_link.dart';
 import 'package:sheba_ai/presentation/screen/auth/widget/social_login_section.dart';
 import 'package:sheba_ai/presentation/theme/color.dart';
 import 'package:sheba_ai/presentation/theme/text_styles.dart';
+import 'package:sheba_ai/presentation/util/toast_helper.dart';
 import 'package:sheba_ai/presentation/widget/custom_button.dart';
 import 'package:sheba_ai/presentation/widget/custom_form_field.dart';
 
@@ -41,9 +42,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
     if (state is SuccessState) {
       Navigator.pushNamedAndRemoveUntil(context, Routes.main, (route) => false);
     } else if (state is ErrorState) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text(state.message)));
+      ToastHelper.showError(context, state.message);
     }
   }
 

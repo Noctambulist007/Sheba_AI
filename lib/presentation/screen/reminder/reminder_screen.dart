@@ -11,7 +11,7 @@ class ReminderScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.background,
-      appBar: const CustomGradientAppBar(title: 'Mood'),
+      appBar: const CustomGradientAppBar(title: 'Reminder'),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
         child: Center(

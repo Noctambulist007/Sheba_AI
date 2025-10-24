@@ -9,13 +9,21 @@ import 'package:sheba_ai/domain/usecase/prescription/get_prescription_use_case.d
 import 'package:sheba_ai/domain/util/result.dart';
 import 'package:sheba_ai/injection.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:sheba_ai/presentation/screen/auth/state/auth_ui_state.dart';
 import 'package:sheba_ai/presentation/screen/prescription/state/prescription_ui_state.dart';
 
 class PrescriptionNotifier extends StateNotifier<PrescriptionUiState> {
-  PrescriptionNotifier() : super(const PrescriptionUiState.initial()) {
-    fetchAllPrescriptions();
+  PrescriptionNotifier(this._authUiState)
+      : super(const PrescriptionUiState.initial()) {
+    _authUiState.maybeWhen(
+      orElse: () {},
+      authenticated: (user) {
+        fetchAllPrescriptions();
+      },
+    );
   }
 
+  final AuthUiState _authUiState;
   final _useCase = getIt<GetAllPrescriptionsUseCase>();
   int _currentPage = 1;
   bool _hasMore = true;

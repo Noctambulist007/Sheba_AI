@@ -43,7 +43,7 @@ class RegisterNotifier extends StateNotifier<RegisterUiState> {
     state = result.when(
       success: (registerResponse) {
         return RegisterUiState.success(register: registerResponse.toRegister());
-            },
+      },
       failure: (failure) => RegisterUiState.error(failure.message),
     );
   }

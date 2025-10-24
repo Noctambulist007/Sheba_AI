@@ -1,5 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:sheba_ai/data/datasource/remote/model/request/identity/profile_request.dart';
 import 'package:sheba_ai/domain/usecase/identity/get_profile_use_case.dart';
+import 'package:sheba_ai/domain/usecase/identity/update_profile_use_case.dart';
 import 'package:sheba_ai/domain/util/result.dart';
 import 'package:sheba_ai/injection.dart';
 import 'package:sheba_ai/presentation/screen/auth/state/auth_ui_state.dart';
@@ -24,6 +26,32 @@ class ProfileNotifier extends StateNotifier<ProfileUiState> {
 
     final useCase = getIt<GetProfileUseCase>();
     final result = await useCase();
+
+    state = result.when(
+      success: (profile) => ProfileUiState.success(profile),
+      failure: (failure) => ProfileUiState.error(failure.message),
+    );
+  }
+
+  void updateProfile(
+    String? firstName,
+    String? lastName,
+    String? phone,
+    String? address,
+  ) async {
+    if (authState is! AuthenticatedState) return;
+
+    state = const ProfileUiState.loading();
+
+    final useCase = getIt<UpdateProfileUseCase>();
+    final result = await useCase(
+      ProfileRequest(
+        firstName: firstName,
+        lastName: lastName,
+        phone: phone,
+        address: address,
+      ),
+    );
 
     state = result.when(
       success: (profile) => ProfileUiState.success(profile),

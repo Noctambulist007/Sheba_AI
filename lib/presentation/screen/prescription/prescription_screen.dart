@@ -5,8 +5,14 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:lottie/lottie.dart';
 import 'package:sheba_ai/presentation/bottom_sheet/prescription_analysis_bottom_sheet.dart';
+import 'package:sheba_ai/presentation/screen/auth/notifier/provider.dart';
+import 'package:sheba_ai/presentation/screen/auth/state/auth_ui_state.dart';
+import 'package:sheba_ai/presentation/screen/lives/notifier/provider.dart';
+import 'package:sheba_ai/presentation/screen/lives/state/lives_ui_state.dart'
+    hide LoadingState;
 import 'package:sheba_ai/presentation/screen/prescription/notifier/provider.dart';
-import 'package:sheba_ai/presentation/screen/prescription/state/prescription_ui_state.dart';
+import 'package:sheba_ai/presentation/screen/prescription/state/prescription_ui_state.dart'
+    hide LoadingState;
 import 'package:sheba_ai/presentation/screen/prescription/widget/carousel_slider_section.dart';
 import 'package:sheba_ai/presentation/screen/prescription/widget/how_sheba_ai_works.dart';
 import 'package:sheba_ai/presentation/screen/prescription/widget/prescription_item.dart';
@@ -14,11 +20,12 @@ import 'package:sheba_ai/presentation/screen/prescription/widget/prescription_it
 import 'package:sheba_ai/presentation/screen/profile/notifier/provider.dart';
 import 'package:sheba_ai/presentation/screen/profile/profile_screen.dart';
 import 'package:sheba_ai/presentation/screen/profile/state/profile_ui_state.dart'
-    hide LoadingState;
+    hide LoadingState, AnonymousState;
 import 'package:sheba_ai/presentation/theme/color.dart';
 import 'package:sheba_ai/presentation/util/routes.dart';
 import 'package:sheba_ai/presentation/util/toast_helper.dart';
 import 'package:sheba_ai/presentation/widget/custom_gradient_app_bar.dart';
+import 'package:sheba_ai/presentation/dialog/disclaimer_dialog.dart';
 
 class PrescriptionScreen extends ConsumerStatefulWidget {
   const PrescriptionScreen({super.key});
@@ -39,8 +46,11 @@ class _PrescriptionScreenState extends ConsumerState<PrescriptionScreen> {
   }
 
   Future<void> _onRefresh() async {
-    final notifier = ref.read(prescriptionNotifierProvider.notifier);
-    await notifier.fetchAllPrescriptions();
+    final authState = ref.read(authNotifierProvider);
+    if (authState is AuthenticatedState) {
+      final notifier = ref.read(prescriptionNotifierProvider.notifier);
+      await notifier.fetchAllPrescriptions();
+    }
   }
 
   Future<void> _pickImage(ImageSource source) async {
@@ -54,6 +64,111 @@ class _PrescriptionScreenState extends ConsumerState<PrescriptionScreen> {
   }
 
   Future<void> _showImageSourceDialog() async {
+    final authState = ref.read(authNotifierProvider);
+    if (authState is AnonymousState) {
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (context) => Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+          elevation: 0,
+          backgroundColor: AppColors.white,
+          child: Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                // Icon
+                Container(
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color: AppColors.primary.withOpacity(0.1),
+                    shape: BoxShape.circle,
+                  ),
+                  child: const Icon(
+                    Icons.lock_outline,
+                    size: 40,
+                    color: AppColors.primary,
+                  ),
+                ),
+                const SizedBox(height: 20),
+
+                // Title
+                const Text(
+                  'Login Required',
+                  style: TextStyle(
+                    color: AppColors.textPrimary,
+                    fontSize: 20,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                const SizedBox(height: 10),
+
+                // Description
+                const Text(
+                  'You need to be logged in to upload a prescription. Please log in to continue.',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: AppColors.textSecondary,
+                    fontSize: 15,
+                    height: 1.4,
+                  ),
+                ),
+                const SizedBox(height: 25),
+
+                // Buttons
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    // Cancel button
+                    Expanded(
+                      child: OutlinedButton(
+                        style: OutlinedButton.styleFrom(
+                          foregroundColor: AppColors.primary,
+                          side: const BorderSide(color: AppColors.primary),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          padding: const EdgeInsets.symmetric(vertical: 12),
+                        ),
+                        onPressed: () => Navigator.pop(context),
+                        child:  Text('Cancel', style: TextStyle(fontSize: 14, fontWeight: FontWeight.normal))
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    // Login button
+                    Expanded(
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: AppColors.primary,
+                          foregroundColor: AppColors.white,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          padding: const EdgeInsets.symmetric(vertical: 12),
+                          shadowColor: AppColors.primary.withOpacity(0.3),
+                          elevation: 0,
+                        ),
+                        onPressed: () {
+                          Navigator.pop(context);
+                          Navigator.pushNamed(context, Routes.signIn);
+                        },
+                        child:  Text('Login', style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.normal))
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+      return;
+    }
+
+
     return showDialog(
       context: context,
       barrierDismissible: true,
@@ -216,11 +331,20 @@ class _PrescriptionScreenState extends ConsumerState<PrescriptionScreen> {
   }
 
   void _analyzePrescription() {
-    final selectedImage = ref.read(selectedImageProvider);
-    if (selectedImage == null) return;
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return DisclaimerDialog(
+          onAgree: () {
+            final selectedImage = ref.read(selectedImageProvider);
+            if (selectedImage == null) return;
 
-    final notifier = ref.read(prescriptionNotifierProvider.notifier);
-    notifier.createPrescriptionWithPath(selectedImage.path);
+            final notifier = ref.read(prescriptionNotifierProvider.notifier);
+            notifier.createPrescriptionWithPath(selectedImage.path);
+          },
+        );
+      },
+    );
   }
 
   void _cancelUpload() {
@@ -229,9 +353,11 @@ class _PrescriptionScreenState extends ConsumerState<PrescriptionScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final authState = ref.watch(authNotifierProvider);
     final state = ref.watch(prescriptionNotifierProvider);
     final profileState = ref.watch(profileNotifierProvider);
     final selectedImage = ref.watch(selectedImageProvider);
+    final livesUiState = ref.watch(livesNotifierProvider);
 
     ref.listen<PrescriptionUiState>(prescriptionNotifierProvider, (
       previous,
@@ -250,8 +376,10 @@ class _PrescriptionScreenState extends ConsumerState<PrescriptionScreen> {
             builder: (context) =>
                 PrescriptionAnalysisBottomSheet(analysis: analyzePrescription),
           );
+          ref.read(livesNotifierProvider.notifier).fetchMyLives();
         },
         error: (message) {
+          //error: The uploaded image does not appear to be a valid prescription. Please upload a proper prescription image.
           ToastHelper.showError(context, message);
         },
         orElse: () {},
@@ -268,6 +396,39 @@ class _PrescriptionScreenState extends ConsumerState<PrescriptionScreen> {
           error: (message) => 'Error',
         ),
         customActions: [
+          livesUiState.maybeWhen(
+            success: (lives) {
+              return IconButton(
+                onPressed: () {},
+                icon: Container(
+                  padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
+                  decoration: BoxDecoration(
+                    color: AppColors.primary.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(8.r),
+                  ),
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.star_rounded,
+                        size: 16.w,
+                        color: AppColors.colorWhite,
+                      ),
+                      SizedBox(width: 4.w),
+                      Text(
+                        '${lives.livesRemaining}',
+                        style: TextStyle(
+                          fontSize: 12.sp,
+                          fontWeight: FontWeight.w600,
+                          color: AppColors.colorWhite,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            },
+            orElse: () => const SizedBox.shrink(),
+          ),
           Padding(
             padding: EdgeInsets.only(right: 8.w),
             child: IconButton(
@@ -356,42 +517,43 @@ class _PrescriptionScreenState extends ConsumerState<PrescriptionScreen> {
                   SizedBox(height: 16.h),
 
                   // My Prescriptions list
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 16.w),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          children: [
-                            Text(
-                              'My Prescriptions',
+                  if (authState is AuthenticatedState)
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 16.w),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            children: [
+                              Text(
+                                'My Prescriptions',
+                                style: TextStyle(
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.bold,
+                                  color: AppColors.grayscaleTextTitle,
+                                ),
+                              ),
+                            ],
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.pushNamed(
+                                context,
+                                Routes.prescriptionList,
+                              );
+                            },
+                            child: Text(
+                              'See All',
                               style: TextStyle(
-                                fontSize: 14.sp,
-                                fontWeight: FontWeight.bold,
-                                color: AppColors.grayscaleTextTitle,
+                                fontSize: 12.sp,
+                                fontWeight: FontWeight.w600,
+                                color: AppColors.primaryGradient,
                               ),
                             ),
-                          ],
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.pushNamed(
-                              context,
-                              Routes.prescriptionList,
-                            );
-                          },
-                          child: Text(
-                            'See All',
-                            style: TextStyle(
-                              fontSize: 12.sp,
-                              fontWeight: FontWeight.w600,
-                              color: AppColors.primaryGradient,
-                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
 
                   state.maybeWhen(
                     initial: () => const SizedBox.shrink(),
