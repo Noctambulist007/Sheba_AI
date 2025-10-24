@@ -4,60 +4,24 @@ import 'package:sheba_ai/presentation/screen/my_orders/notifier/provider.dart';
 import 'package:sheba_ai/presentation/screen/my_orders/state/my_orders_ui_state.dart';
 import 'package:sheba_ai/presentation/screen/my_orders/widget/my_order_item.dart';
 import 'package:sheba_ai/presentation/screen/my_orders/widget/my_order_item_shimmer.dart';
+import 'package:sheba_ai/presentation/screen/profile/notifier/provider.dart';
 import 'package:sheba_ai/presentation/theme/color.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sheba_ai/presentation/widget/custom_gradient_app_bar.dart';
 
-class MyOrdersScreen extends ConsumerStatefulWidget {
+class MyOrdersScreen extends ConsumerWidget {
   const MyOrdersScreen({super.key});
 
   @override
-  ConsumerState<MyOrdersScreen> createState() => _MyOrdersScreenState();
-}
-
-class _MyOrdersScreenState extends ConsumerState<MyOrdersScreen> {
-  final ScrollController _scrollController = ScrollController();
-
-  @override
-  void initState() {
-    super.initState();
-
-    _scrollController.addListener(() {
-      final notifier = ref.read(myOrdersNotifierProvider.notifier);
-      final state = ref.read(myOrdersNotifierProvider);
-
-      state.maybeWhen(
-        success: (_, isLoadingMore, hasMore) {
-          if (!isLoadingMore &&
-              hasMore &&
-              _scrollController.position.pixels >=
-                  _scrollController.position.maxScrollExtent - 200) {
-            notifier.fetchMyOrders(loadMore: true);
-          }
-        },
-        orElse: () {},
-      );
-    });
-  }
-
-  @override
-  void dispose() {
-    _scrollController.dispose();
-    super.dispose();
-  }
-
-  Future<void> _onRefresh() async {
-    final notifier = ref.read(myOrdersNotifierProvider.notifier);
-    await notifier.fetchMyOrders();
-  }
-
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(myOrdersNotifierProvider);
 
     return Scaffold(
       backgroundColor: AppColors.background,
-      appBar: CustomGradientAppBar(title: 'My Orders', leading: BackButton(color: AppColors.colorWhite)),
+      appBar: CustomGradientAppBar(
+        title: 'My Orders',
+        leading: BackButton(color: AppColors.colorWhite),
+      ),
       body: state.maybeWhen(
         orElse: () => const SizedBox.shrink(),
         initial: () => const SizedBox.shrink(),
@@ -82,14 +46,23 @@ class _MyOrdersScreenState extends ConsumerState<MyOrdersScreen> {
                 textAlign: TextAlign.center,
               ),
               SizedBox(height: 16.h),
-              ElevatedButton(onPressed: _onRefresh, child: const Text("Retry")),
+              ElevatedButton(
+                onPressed: () async {
+                  final notifier = ref.read(myOrdersNotifierProvider.notifier);
+                  await notifier.fetchMyOrders();
+                },
+                child: const Text("Retry"),
+              ),
             ],
           ),
         ),
         success: (order, isLoadingMore, hasMore) {
           if (order.isEmpty) {
             return RefreshIndicator(
-              onRefresh: _onRefresh,
+              onRefresh: () async {
+                final notifier = ref.read(myOrdersNotifierProvider.notifier);
+                await notifier.fetchMyOrders();
+              },
               child: ListView(
                 children: [
                   SizedBox(height: 100.h),
@@ -111,9 +84,11 @@ class _MyOrdersScreenState extends ConsumerState<MyOrdersScreen> {
           }
 
           return RefreshIndicator(
-            onRefresh: _onRefresh,
+            onRefresh: () async {
+              final notifier = ref.read(myOrdersNotifierProvider.notifier);
+              await notifier.fetchMyOrders();
+            },
             child: SingleChildScrollView(
-              controller: _scrollController,
               physics: const AlwaysScrollableScrollPhysics(),
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
@@ -127,7 +102,7 @@ class _MyOrdersScreenState extends ConsumerState<MyOrdersScreen> {
                         final item = order[index];
                         return GestureDetector(
                           onTap: () {},
-                          child: MyOrderItemCard(order: item)
+                          child: MyOrderItemCard(order: item),
                         );
                       },
                     ),

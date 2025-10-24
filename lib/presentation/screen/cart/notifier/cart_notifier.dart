@@ -2,11 +2,27 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sheba_ai/domain/model/cart/cart_item.dart';
 import 'package:sheba_ai/presentation/screen/cart/state/cart_state.dart';
 import 'package:sheba_ai/domain/model/medicine/medicine.dart';
+import 'package:sheba_ai/presentation/screen/auth/state/auth_ui_state.dart';
+import 'package:sheba_ai/presentation/screen/auth/notifier/provider.dart';
 
 class CartNotifier extends StateNotifier<CartState> {
-  CartNotifier() : super(CartState());
+  CartNotifier(this.ref) : super(CartState());
+  
+  final Ref ref;
 
-  void addToCart(Medicine medicine) {
+  // Returns true if user is authenticated, false otherwise
+  bool get isAuthenticated {
+    final authState = ref.read(authNotifierProvider);
+    return authState is AuthenticatedState;
+  }
+
+  // Adds item to cart if authenticated, returns true if successful, false if not authenticated
+  bool addToCart(Medicine medicine) {
+    // Check if user is authenticated
+    if (!isAuthenticated) {
+      return false;
+    }
+    
     final items = [...state.items];
     final existingIndex = items.indexWhere(
       (item) => item.medicine.medicineId == medicine.medicineId,
@@ -21,6 +37,7 @@ class CartNotifier extends StateNotifier<CartState> {
     }
 
     state = state.copyWith(items: items);
+    return true;
   }
 
   void removeFromCart(int medicineId) {

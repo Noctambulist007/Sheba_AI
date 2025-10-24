@@ -8,6 +8,7 @@ import 'package:sheba_ai/domain/model/prescription/analyze_prescription.dart';
 import 'package:sheba_ai/domain/model/prescription/matched_medicine.dart';
 import 'package:sheba_ai/domain/model/prescription/unmatched_medicine.dart';
 import 'package:sheba_ai/presentation/screen/cart/notifier/provider.dart';
+import 'package:sheba_ai/presentation/util/routes.dart';
 import 'package:sheba_ai/presentation/util/toast_helper.dart';
 import 'package:sheba_ai/presentation/widget/custom_button.dart';
 
@@ -143,8 +144,20 @@ class PrescriptionAnalysisBottomSheet extends ConsumerWidget {
                           price: medicine.price,
                           unit: '',
                         );
-                        ref.read(cartNotifierProvider.notifier).addToCart(med);
-                        ToastHelper.showSuccess(context, '${medicine.name} added to cart');
+                        final cartNotifier = ref.read(cartNotifierProvider.notifier);
+                        
+                        // Try to add to cart, returns false if user is not authenticated
+                        final success = cartNotifier.addToCart(med);
+                        
+                        if (success) {
+                          // Successfully added to cart
+                          ToastHelper.showSuccess(context, '${medicine.name} added to cart');
+                        } else {
+                          // User is not authenticated, show login prompt
+                          ToastHelper.showError(context, 'Please login to order');
+                          Navigator.pop(context); // Close bottom sheet
+                          Navigator.pushNamed(context, Routes.signIn);
+                        }
                       },
                       child: const Text('Add to Cart'),
                     ),

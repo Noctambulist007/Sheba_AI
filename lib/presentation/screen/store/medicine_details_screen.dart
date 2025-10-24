@@ -6,6 +6,7 @@ import 'package:sheba_ai/domain/model/medicine/medicine.dart';
 import 'package:sheba_ai/presentation/screen/cart/notifier/cart_notifier.dart';
 import 'package:sheba_ai/presentation/screen/cart/notifier/provider.dart';
 import 'package:sheba_ai/presentation/theme/color.dart';
+import 'package:sheba_ai/presentation/util/routes.dart';
 import 'package:sheba_ai/presentation/util/toast_helper.dart';
 import 'package:sheba_ai/presentation/widget/custom_button.dart';
 import 'package:sheba_ai/presentation/widget/custom_gradient_app_bar.dart';
@@ -265,14 +266,23 @@ class MedicineDetailsScreen extends ConsumerWidget {
                               IconButton(
                                 icon: const Icon(Icons.add),
                                 onPressed: () {
-                                  ref
-                                      .read(cartNotifierProvider.notifier)
-                                      .incrementQuantity(medicine.medicineId);
+                                  final cartNotifier = ref.read(cartNotifierProvider.notifier);
+                                  
+                                  // Check if user is authenticated
+                                  if (!cartNotifier.isAuthenticated) {
+                                    // User is not authenticated, show login prompt
+                                    ToastHelper.showError(
+                                      context,
+                                      'Please login to order',
+                                    );
+                                    Navigator.pushNamed(context, Routes.signIn);
+                                    return;
+                                  }
+                                  
+                                  cartNotifier.incrementQuantity(medicine.medicineId);
 
                                   // If item is not in cart yet, add it
-                                  final cartItems = ref
-                                      .read(cartNotifierProvider)
-                                      .items;
+                                  final cartItems = ref.read(cartNotifierProvider).items;
                                   final exists = cartItems.any(
                                     (item) =>
                                         item.medicine.medicineId ==
@@ -280,9 +290,7 @@ class MedicineDetailsScreen extends ConsumerWidget {
                                   );
 
                                   if (!exists) {
-                                    ref
-                                        .read(cartNotifierProvider.notifier)
-                                        .addToCart(medicine);
+                                    cartNotifier.addToCart(medicine);
                                   }
                                 },
                                 color: AppColors.primary,
@@ -351,18 +359,36 @@ class MedicineDetailsScreen extends ConsumerWidget {
         child: SafeArea(
           child: CustomButton.primary(
             onPressed: () {
+              final cartNotifier = ref.read(cartNotifierProvider.notifier);
               final cartItems = ref.read(cartNotifierProvider).items;
               final exists = cartItems.any(
                 (item) => item.medicine.medicineId == medicine.medicineId,
               );
 
               if (!exists) {
-                ref.read(cartNotifierProvider.notifier).addToCart(medicine);
+                // Try to add to cart, returns false if user is not authenticated
+                final success = cartNotifier.addToCart(medicine);
+                
+                if (success) {
+                  // Successfully added to cart
+                  ToastHelper.showSuccess(
+                    context,
+                    '${medicine.name} added to cart',
+                  );
+                } else {
+                  // User is not authenticated, show login prompt
+                  ToastHelper.showError(
+                    context,
+                    'Please login to order',
+                  );
+                  Navigator.pushNamed(context, Routes.signIn);
+                }
+              } else {
+                ToastHelper.showSuccess(
+                  context,
+                  '${medicine.name} already in cart',
+                );
               }
-              ToastHelper.showSuccess(
-                context,
-                '${medicine.name} added to cart',
-              );
             },
             icon: const Icon(
               Icons.add_shopping_cart_outlined,
