@@ -246,16 +246,27 @@ class ProfileScreen extends ConsumerWidget {
     final phone = formData['phone'] as String?;
     final address = formData['address'] as String?;
 
-    ref
-        .read(profileNotifierProvider.notifier)
+    final args = ModalRoute.of(context)!.settings.arguments as ProfileArgs;
+    final currentProfile = args.userProfile;
+
+    final hasChanges = firstName != currentProfile.firstName ||
+        lastName != currentProfile.lastName ||
+        phone != currentProfile.phone ||
+        address != currentProfile.address;
+
+    if (!hasChanges) {
+      ToastHelper.showInfo(context, "No changes yet");
+      return;
+    }
+
+    ref.read(profileNotifierProvider.notifier)
         .updateProfile(firstName, lastName, phone, address);
 
     final profileState = ref.read(profileNotifierProvider);
     profileState.maybeWhen(
-
       success: (profile) {
-        // ToastHelper.showSuccess(context, "Profile updated successfully");
         ref.read(profileNotifierProvider.notifier).fetchProfile();
+        ToastHelper.showSuccess(context, "Profile updated successfully");
       },
       error: (message) {
         ToastHelper.showError(context, message);
@@ -263,4 +274,5 @@ class ProfileScreen extends ConsumerWidget {
       orElse: () {},
     );
   }
+
 }

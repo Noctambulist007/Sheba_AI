@@ -10,15 +10,12 @@ class CartNotifier extends StateNotifier<CartState> {
   
   final Ref ref;
 
-  // Returns true if user is authenticated, false otherwise
   bool get isAuthenticated {
     final authState = ref.read(authNotifierProvider);
     return authState is AuthenticatedState;
   }
 
-  // Adds item to cart if authenticated, returns true if successful, false if not authenticated
   bool addToCart(Medicine medicine) {
-    // Check if user is authenticated
     if (!isAuthenticated) {
       return false;
     }

@@ -14,7 +14,7 @@ import 'package:sheba_ai/presentation/screen/prescription/state/prescription_ui_
 
 class PrescriptionNotifier extends StateNotifier<PrescriptionUiState> {
   PrescriptionNotifier(this._authUiState)
-      : super(const PrescriptionUiState.initial()) {
+    : super(const PrescriptionUiState.initial()) {
     _authUiState.maybeWhen(
       orElse: () {},
       authenticated: (user) {

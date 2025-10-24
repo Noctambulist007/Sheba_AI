@@ -28,16 +28,24 @@ class PrescriptionDetailsScreen extends ConsumerStatefulWidget {
 
 class _PrescriptionDetailsScreenState
     extends ConsumerState<PrescriptionDetailsScreen> {
-  late final int prescriptionId;
+  int? prescriptionId;
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      prescriptionId = ModalRoute.of(context)!.settings.arguments as int;
-      ref
-          .read(prescriptionNotifierProvider.notifier)
-          .getPrescription(prescriptionId: prescriptionId);
+      final args = ModalRoute.of(context)?.settings.arguments;
+      if (args is PrescriptionDetailsArgs) {
+        prescriptionId = args.prescriptionId;
+      } else if (args is int) {
+        prescriptionId = args;
+      }
+      
+      if (prescriptionId != null) {
+        ref
+            .read(prescriptionNotifierProvider.notifier)
+            .getPrescription(prescriptionId: prescriptionId!);
+      }
     });
   }
 
@@ -51,15 +59,23 @@ class _PrescriptionDetailsScreenState
         title: 'Prescription Details',
         leading: BackButton(color: AppColors.colorWhite),
       ),
-      body: uiState.when(
-        initial: () => const Center(child: Text("Initializing...")),
-        loading: () => const Center(child: CircularProgressIndicator()),
-        success: (prescriptions, _, __) {
-          final prescription = prescriptions.firstWhere(
-            (p) => p.id == prescriptionId,
-          );
-          return _buildPrescriptionDetails(context, prescription);
-        },
+      body: prescriptionId == null
+        ? const Center(child: Text("No prescription ID provided"))
+        : uiState.when(
+            initial: () => const Center(child: Text("Initializing...")),
+            loading: () => const Center(child: CircularProgressIndicator()),
+            success: (prescriptions, _, __) {
+              // Find the prescription with matching ID, or return error if not found
+              final prescriptionIndex = prescriptions.indexWhere(
+                (p) => p.id == prescriptionId,
+              );
+              
+              if (prescriptionIndex == -1) {
+                return Center(child: Text("Prescription #$prescriptionId not found"));
+              }
+              
+              return _buildPrescriptionDetails(context, prescriptions[prescriptionIndex]);
+            },
         analyzeSuccess: (_) =>
             const Center(child: Text("Analysis data not used here.")),
         error: (msg) => Center(child: Text("Error: $msg")),

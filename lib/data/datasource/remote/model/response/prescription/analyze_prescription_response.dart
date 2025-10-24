@@ -13,6 +13,10 @@ abstract class AnalyzePrescriptionResponse with _$AnalyzePrescriptionResponse{
     @JsonKey(name: 'extracted_text') required String extractedText,
     @JsonKey(name: 'matched_medicines')  List<MatchedMedicineResponse>? matchedMedicines,
     @JsonKey(name: 'unmatched_medicines')  List<UnmatchedMedicineResponse>? unmatchedMedicines,
+    @JsonKey(name: 'error') String? error,
+    @JsonKey(name: 'details') String? details,
+    @JsonKey(name: 'confident') int? confident,
+
   }) = _AnalyzePrescriptionResponse;
 
   factory AnalyzePrescriptionResponse.fromJson(Map<String, dynamic> json) =>

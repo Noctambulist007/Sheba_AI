@@ -71,7 +71,7 @@ class _StoreScreenState extends ConsumerState<StoreScreen> {
         title: 'Store',
         customActions: [
           profileUiState.maybeWhen(
-            success: (profile) => Column(
+            success: (profile) => Row(
               children: [
                 Padding(
                   padding: EdgeInsets.only(right: 16.w),

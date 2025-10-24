@@ -75,6 +75,7 @@ class Failure with _$Failure {
           case DioErrorType.badResponse:
             return Failure.serverException(
               message:
+                  (exception.response?.data as Map<String, dynamic>?)?['error'] ??
                   exception.response?.statusMessage ??
                   'Bad response from API server',
               statusCode: exception.response?.statusCode ?? 400,

@@ -29,7 +29,7 @@ class ToastHelper {
       context: context,
       type: ToastificationType.error,
       style: ToastificationStyle.fillColored,
-      autoCloseDuration: const Duration(seconds: 2),
+      autoCloseDuration: const Duration(seconds: 3),
       title: const Text("Error", style: TextStyle(fontWeight: FontWeight.bold)),
       description: Text(message),
       alignment: Alignment.topRight,

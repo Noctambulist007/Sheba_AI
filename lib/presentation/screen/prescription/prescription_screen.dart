@@ -35,6 +35,8 @@ class PrescriptionScreen extends ConsumerStatefulWidget {
 }
 
 class _PrescriptionScreenState extends ConsumerState<PrescriptionScreen> {
+  BuildContext? dialogContext;
+
   @override
   void initState() {
     super.initState();
@@ -134,7 +136,13 @@ class _PrescriptionScreenState extends ConsumerState<PrescriptionScreen> {
                           padding: const EdgeInsets.symmetric(vertical: 12),
                         ),
                         onPressed: () => Navigator.pop(context),
-                        child:  Text('Cancel', style: TextStyle(fontSize: 14, fontWeight: FontWeight.normal))
+                        child: Text(
+                          'Cancel',
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.normal,
+                          ),
+                        ),
                       ),
                     ),
                     const SizedBox(width: 12),
@@ -155,7 +163,13 @@ class _PrescriptionScreenState extends ConsumerState<PrescriptionScreen> {
                           Navigator.pop(context);
                           Navigator.pushNamed(context, Routes.signIn);
                         },
-                        child:  Text('Login', style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.normal))
+                        child: Text(
+                          'Login',
+                          style: TextStyle(
+                            fontSize: 14.sp,
+                            fontWeight: FontWeight.normal,
+                          ),
+                        ),
                       ),
                     ),
                   ],
@@ -167,7 +181,6 @@ class _PrescriptionScreenState extends ConsumerState<PrescriptionScreen> {
       );
       return;
     }
-
 
     return showDialog(
       context: context,
@@ -331,20 +344,72 @@ class _PrescriptionScreenState extends ConsumerState<PrescriptionScreen> {
   }
 
   void _analyzePrescription() {
+    final selectedImage = ref.read(selectedImageProvider);
+    if (selectedImage == null) return;
+
+    // Show analyzing dialog with scanner animation
     showDialog(
       context: context,
-      builder: (BuildContext context) {
-        return DisclaimerDialog(
-          onAgree: () {
-            final selectedImage = ref.read(selectedImageProvider);
-            if (selectedImage == null) return;
-
-            final notifier = ref.read(prescriptionNotifierProvider.notifier);
-            notifier.createPrescriptionWithPath(selectedImage.path);
-          },
+      barrierDismissible: false,
+      builder: (context) {
+        dialogContext = context;
+        return WillPopScope(
+          onWillPop: () async => false,
+          child: Dialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20.r),
+            ),
+            insetPadding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 24.h),
+            child: Padding(
+              padding: EdgeInsets.all(24.w),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Lottie.asset(
+                    'assets/anims/scanner.json',
+                    width: 140.w,
+                    height: 140.h,
+                    fit: BoxFit.contain,
+                  ),
+                  SizedBox(height: 20.h),
+                  Text(
+                    'Analyzing Prescription...',
+                    style: TextStyle(
+                      fontSize: 18.sp,
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.grayscaleTextTitle,
+                    ),
+                  ),
+                  SizedBox(height: 8.h),
+                  Text(
+                    'Please wait while we process your prescription with AI.',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 14.sp,
+                      color: AppColors.grayscaleTextBody,
+                    ),
+                  ),
+                  SizedBox(height: 20.h),
+                  SizedBox(
+                    width: double.infinity,
+                    child: LinearProgressIndicator(
+                      color: AppColors.primary,
+                      backgroundColor: AppColors.primary.withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(8.r),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
         );
       },
     );
+
+
+    // Then create the prescription
+    final notifier = ref.read(prescriptionNotifierProvider.notifier);
+    notifier.createPrescriptionWithPath(selectedImage.path);
   }
 
   void _cancelUpload() {
@@ -359,27 +424,29 @@ class _PrescriptionScreenState extends ConsumerState<PrescriptionScreen> {
     final selectedImage = ref.watch(selectedImageProvider);
     final livesUiState = ref.watch(livesNotifierProvider);
 
-    ref.listen<PrescriptionUiState>(prescriptionNotifierProvider, (
-      previous,
-      next,
-    ) {
+    ref.listen<PrescriptionUiState>(prescriptionNotifierProvider,
+        (previous, next) {
       next.maybeWhen(
         analyzeSuccess: (analyzePrescription) {
+          // Close the analyzing dialog
+          if (dialogContext != null) {
+            Navigator.of(dialogContext!).pop();
+          }
           ref.read(selectedImageProvider.notifier).state = null;
-          ToastHelper.showSuccess(
-            context,
-            'Prescription analyzed successfully!',
-          );
-          showModalBottomSheet(
-            context: context,
-            isScrollControlled: true,
-            builder: (context) =>
-                PrescriptionAnalysisBottomSheet(analysis: analyzePrescription),
-          );
           ref.read(livesNotifierProvider.notifier).fetchMyLives();
+          Navigator.pushNamed(
+            context,
+            Routes.prescriptionDetails,
+            arguments: analyzePrescription.prescriptionId,
+          );
         },
         error: (message) {
-          //error: The uploaded image does not appear to be a valid prescription. Please upload a proper prescription image.
+          // Close the analyzing dialog
+          if (dialogContext != null) {
+            Navigator.of(dialogContext!).pop();
+          }
+          ref.read(selectedImageProvider.notifier).state = null;
+          ref.read(livesNotifierProvider.notifier).fetchMyLives();
           ToastHelper.showError(context, message);
         },
         orElse: () {},
@@ -516,7 +583,7 @@ class _PrescriptionScreenState extends ConsumerState<PrescriptionScreen> {
 
                   SizedBox(height: 16.h),
 
-                  // My Prescriptions list
+                  // // My Prescriptions list
                   if (authState is AuthenticatedState)
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: 16.w),
@@ -526,7 +593,7 @@ class _PrescriptionScreenState extends ConsumerState<PrescriptionScreen> {
                           Row(
                             children: [
                               Text(
-                                'My Prescriptions',
+                                'Recent Prescriptions',
                                 style: TextStyle(
                                   fontSize: 14.sp,
                                   fontWeight: FontWeight.bold,
@@ -542,129 +609,141 @@ class _PrescriptionScreenState extends ConsumerState<PrescriptionScreen> {
                                 Routes.prescriptionList,
                               );
                             },
-                            child: Text(
-                              'See All',
-                              style: TextStyle(
-                                fontSize: 12.sp,
-                                fontWeight: FontWeight.w600,
-                                color: AppColors.primaryGradient,
-                              ),
+                            child: Row(
+                              children: [
+                                Text(
+                                  'See All',
+                                  style: TextStyle(
+                                    fontSize: 12.sp,
+                                    fontWeight: FontWeight.w600,
+                                    color: AppColors.primaryGradient,
+                                  ),
+                                ),
+                                SizedBox(width: 4.w),
+                                Icon(
+                                  Icons.arrow_forward_ios_rounded,
+                                  size: 12.sp,
+                                  color: AppColors.primaryGradient,
+                                )
+                              ],
                             ),
                           ),
                         ],
                       ),
                     ),
-
-                  state.maybeWhen(
-                    initial: () => const SizedBox.shrink(),
-                    loading: () => Padding(
-                      padding: EdgeInsets.all(16.w),
-                      child: ListView.builder(
-                        itemCount: 6,
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemBuilder: (context, index) =>
-                            const PrescriptionItemShimmer(),
-                      ),
-                    ),
-                    error: (message) => Center(
-                      child: Padding(
-                        padding: EdgeInsets.all(16.w),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(
-                              Icons.error_outline,
-                              size: 64.sp,
-                              color: Colors.red,
-                            ),
-                            SizedBox(height: 16.h),
-                            Text(
-                              'Error: $message',
-                              style: TextStyle(
-                                fontSize: 16.sp,
-                                color: Colors.red,
-                              ),
-                            ),
-                            SizedBox(height: 16.h),
-                            ElevatedButton(
-                              onPressed: _onRefresh,
-                              child: const Text('Retry'),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    success: (prescriptions, isLoadingMore, hasMore) {
-                      if (prescriptions.isEmpty) {
-                        return Padding(
-                          padding: EdgeInsets.all(16.w),
-                          child: Column(
-                            children: [
-                              SizedBox(height: 50.h),
-                              Icon(
-                                Icons.receipt_long,
-                                size: 64.sp,
-                                color: Colors.grey,
-                              ),
-                              SizedBox(height: 16.h),
-                              Text(
-                                'No prescriptions found.',
-                                style: TextStyle(
-                                  fontSize: 16.sp,
-                                  color: Colors.grey,
-                                ),
-                              ),
-                            ],
-                          ),
-                        );
-                      }
-
-                      return Padding(
-                        padding: EdgeInsets.all(16.w),
-                        child: Column(
-                          children: [
-                            ListView.builder(
-                              itemCount: prescriptions.length,
-                              shrinkWrap: true,
-                              physics: const NeverScrollableScrollPhysics(),
-
-                              itemBuilder: (context, index) {
-                                final item = prescriptions[index];
-                                return GestureDetector(
-                                  onTap: () {
-                                    Navigator.pushNamed(
-                                      context,
-                                      Routes.prescriptionDetails,
-                                      arguments: item.id,
-                                    );
-                                  },
-                                  child: PrescriptionItem(prescription: item),
-                                );
-                              },
-                            ),
-                            if (isLoadingMore)
-                              Padding(
-                                padding: EdgeInsets.symmetric(vertical: 16.h),
-                                child: Center(
-                                  child: SizedBox(
-                                    width: 200.w,
-                                    child: LinearProgressIndicator(
-                                      color: AppColors.primary,
-                                      backgroundColor: AppColors.colorWhite,
-                                      borderRadius: BorderRadius.all(
-                                        Radius.circular(8.r),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                          ],
-                        ),
-                      );
-                    },
-                    orElse: () => const SizedBox.shrink(),
-                  ),
+                  SizedBox(height: 8.h),
+                  //
+                  // state.maybeWhen(
+                  //   initial: () => const SizedBox.shrink(),
+                  //   loading: () => Padding(
+                  //     padding: EdgeInsets.all(16.w),
+                  //     child: ListView.builder(
+                  //       itemCount: 3,
+                  //       shrinkWrap: true,
+                  //       physics: const NeverScrollableScrollPhysics(),
+                  //       itemBuilder: (context, index) =>
+                  //           const PrescriptionItemShimmer(),
+                  //     ),
+                  //   ),
+                  //   error: (message) => Center(
+                  //     child: Padding(
+                  //       padding: EdgeInsets.all(16.w),
+                  //       child: Column(
+                  //         mainAxisAlignment: MainAxisAlignment.center,
+                  //         children: [
+                  //           Icon(
+                  //             Icons.error_outline,
+                  //             size: 64.sp,
+                  //             color: Colors.red,
+                  //           ),
+                  //           SizedBox(height: 16.h),
+                  //           Text(
+                  //             'Error: $message',
+                  //             style: TextStyle(
+                  //               fontSize: 16.sp,
+                  //               color: Colors.red,
+                  //             ),
+                  //           ),
+                  //           SizedBox(height: 16.h),
+                  //           ElevatedButton(
+                  //             onPressed: _onRefresh,
+                  //             child: const Text('Retry'),
+                  //           ),
+                  //         ],
+                  //       ),
+                  //     ),
+                  //   ),
+                  //   success: (prescriptions, isLoadingMore, hasMore) {
+                  //     if (prescriptions.isEmpty) {
+                  //       return Padding(
+                  //         padding: EdgeInsets.all(16.w),
+                  //         child: Column(
+                  //           children: [
+                  //             SizedBox(height: 50.h),
+                  //             Icon(
+                  //               Icons.receipt_long,
+                  //               size: 64.sp,
+                  //               color: Colors.grey,
+                  //             ),
+                  //             SizedBox(height: 16.h),
+                  //             Text(
+                  //               'No prescriptions found.',
+                  //               style: TextStyle(
+                  //                 fontSize: 16.sp,
+                  //                 color: Colors.grey,
+                  //               ),
+                  //             ),
+                  //           ],
+                  //         ),
+                  //       );
+                  //     }
+                  //
+                  //     return Padding(
+                  //       padding: EdgeInsets.all(16.w),
+                  //       child: Column(
+                  //         children: [
+                  //           ListView.builder(
+                  //             itemCount: prescriptions.length > 3
+                  //                 ? 3
+                  //                 : prescriptions.length,
+                  //             shrinkWrap: true,
+                  //             physics: const NeverScrollableScrollPhysics(),
+                  //             itemBuilder: (context, index) {
+                  //               final item = prescriptions[index];
+                  //               return GestureDetector(
+                  //                 onTap: () {
+                  //                   Navigator.pushNamed(
+                  //                     context,
+                  //                     Routes.prescriptionDetails,
+                  //                     arguments: item.id,
+                  //                   );
+                  //                 },
+                  //                 child: PrescriptionItem(prescription: item),
+                  //               );
+                  //             },
+                  //           ),
+                  //           if (isLoadingMore)
+                  //             Padding(
+                  //               padding: EdgeInsets.symmetric(vertical: 16.h),
+                  //               child: Center(
+                  //                 child: SizedBox(
+                  //                   width: 200.w,
+                  //                   child: LinearProgressIndicator(
+                  //                     color: AppColors.primary,
+                  //                     backgroundColor: AppColors.colorWhite,
+                  //                     borderRadius: BorderRadius.all(
+                  //                       Radius.circular(8.r),
+                  //                     ),
+                  //                   ),
+                  //                 ),
+                  //               ),
+                  //             ),
+                  //         ],
+                  //       ),
+                  //     );
+                  //   },
+                  //   orElse: () => const SizedBox.shrink(),
+                  // ),
                 ],
               ),
             ),

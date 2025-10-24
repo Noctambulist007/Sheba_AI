@@ -15,61 +15,14 @@ import 'package:sheba_ai/presentation/screen/prescription/state/prescription_ui_
 import 'package:sheba_ai/presentation/screen/prescription/widget/prescription_item.dart';
 import 'package:sheba_ai/presentation/screen/prescription/widget/prescription_item_shimmer.dart';
 import 'package:sheba_ai/presentation/theme/color.dart';
+import 'package:sheba_ai/presentation/util/routes.dart';
 import 'package:sheba_ai/presentation/widget/custom_gradient_app_bar.dart';
 
-class PrescriptionListScreen extends ConsumerStatefulWidget {
+class PrescriptionListScreen extends ConsumerWidget {
   const PrescriptionListScreen({super.key});
 
   @override
-  ConsumerState<PrescriptionListScreen> createState() =>
-      _PrescriptionListScreenState();
-}
-
-class _PrescriptionListScreenState
-    extends ConsumerState<PrescriptionListScreen> {
-  final ScrollController _scrollController = ScrollController();
-
-  @override
-  void initState() {
-    super.initState();
-
-    _scrollController.addListener(() {
-      final authState = ref.read(authNotifierProvider);
-      if (authState is AuthenticatedState) {
-        final notifier = ref.read(prescriptionNotifierProvider.notifier);
-        final state = ref.read(prescriptionNotifierProvider);
-
-        state.maybeWhen(
-          success: (_, isLoadingMore, hasMore) {
-            if (!isLoadingMore &&
-                hasMore &&
-                _scrollController.position.pixels >=
-                    _scrollController.position.maxScrollExtent - 200) {
-              notifier.fetchAllPrescriptions(loadMore: true);
-            }
-          },
-          orElse: () {},
-        );
-      }
-    });
-  }
-
-  @override
-  void dispose() {
-    _scrollController.dispose();
-    super.dispose();
-  }
-
-  Future<void> _onRefresh() async {
-    final authState = ref.read(authNotifierProvider);
-    if (authState is AuthenticatedState) {
-      final notifier = ref.read(prescriptionNotifierProvider.notifier);
-      await notifier.fetchAllPrescriptions();
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(prescriptionNotifierProvider);
 
     return Scaffold(
@@ -102,14 +55,33 @@ class _PrescriptionListScreenState
                 textAlign: TextAlign.center,
               ),
               SizedBox(height: 16.h),
-              ElevatedButton(onPressed: _onRefresh, child: const Text("Retry")),
+              ElevatedButton(
+                onPressed: () async {
+                  final authState = ref.read(authNotifierProvider);
+                  if (authState is AuthenticatedState) {
+                    final notifier = ref.read(
+                      prescriptionNotifierProvider.notifier,
+                    );
+                    await notifier.fetchAllPrescriptions();
+                  }
+                },
+                child: const Text("Retry"),
+              ),
             ],
           ),
         ),
         success: (prescription, isLoadingMore, hasMore) {
           if (prescription.isEmpty) {
             return RefreshIndicator(
-              onRefresh: _onRefresh,
+              onRefresh: () async {
+                final authState = ref.read(authNotifierProvider);
+                if (authState is AuthenticatedState) {
+                  final notifier = ref.read(
+                    prescriptionNotifierProvider.notifier,
+                  );
+                  await notifier.fetchAllPrescriptions();
+                }
+              },
               child: ListView(
                 children: [
                   SizedBox(height: MediaQuery.of(context).size.height * 0.3),
@@ -130,27 +102,70 @@ class _PrescriptionListScreenState
             );
           }
 
+          final analyzedPrescriptions = prescription
+              .where((p) => p.status.toLowerCase() == 'analyzed')
+              .toList();
+
           return RefreshIndicator(
-            onRefresh: _onRefresh,
+            onRefresh: () async {
+              final authState = ref.read(authNotifierProvider);
+              if (authState is AuthenticatedState) {
+                final notifier = ref.read(
+                  prescriptionNotifierProvider.notifier,
+                );
+                await notifier.fetchAllPrescriptions();
+              }
+            },
             child: SingleChildScrollView(
-              controller: _scrollController,
               physics: const AlwaysScrollableScrollPhysics(),
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
                 child: Column(
                   children: [
-                    ListView.builder(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemCount: prescription.length,
-                      itemBuilder: (context, index) {
-                        final item = prescription[index];
-                        return GestureDetector(
-                          onTap: () {},
-                          child: PrescriptionItem(prescription: item),
-                        );
-                      },
-                    ),
+                    if (analyzedPrescriptions.isEmpty)
+                      Center(
+                        child: Padding(
+                          padding: EdgeInsets.only(
+                            top: MediaQuery.of(context).size.height * 0.3,
+                          ),
+                          child: Column(
+                            children: [
+                              Icon(
+                                Icons.medication_outlined,
+                                size: 64.sp,
+                                color: Colors.grey,
+                              ),
+                              SizedBox(height: 16.h),
+                              Text(
+                                'No analyzed prescriptions found.',
+                                style: TextStyle(
+                                  fontSize: 16.sp,
+                                  color: Colors.grey,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      )
+                    else
+                      ListView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: analyzedPrescriptions.length,
+                        itemBuilder: (context, index) {
+                          final item = analyzedPrescriptions[index];
+                          return GestureDetector(
+                            onTap: () {
+                              Navigator.pushNamed(
+                                context,
+                                Routes.prescriptionDetails,
+                                arguments: item.id,
+                              );
+                            },
+                            child: PrescriptionItem(prescription: item),
+                          );
+                        },
+                      ),
 
                     if (isLoadingMore)
                       Padding(

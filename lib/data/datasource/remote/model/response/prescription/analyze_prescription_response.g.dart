@@ -19,6 +19,9 @@ _AnalyzePrescriptionResponse _$AnalyzePrescriptionResponseFromJson(
         (e) => UnmatchedMedicineResponse.fromJson(e as Map<String, dynamic>),
       )
       .toList(),
+  error: json['error'] as String?,
+  details: json['details'] as String?,
+  confident: (json['confident'] as num?)?.toInt(),
 );
 
 Map<String, dynamic> _$AnalyzePrescriptionResponseToJson(
@@ -28,4 +31,7 @@ Map<String, dynamic> _$AnalyzePrescriptionResponseToJson(
   'extracted_text': instance.extractedText,
   'matched_medicines': instance.matchedMedicines,
   'unmatched_medicines': instance.unmatchedMedicines,
+  'error': instance.error,
+  'details': instance.details,
+  'confident': instance.confident,
 };

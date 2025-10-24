@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$AnalyzePrescriptionResponse {
 
-@JsonKey(name: 'prescription_id') int get prescriptionId;@JsonKey(name: 'extracted_text') String get extractedText;@JsonKey(name: 'matched_medicines') List<MatchedMedicineResponse>? get matchedMedicines;@JsonKey(name: 'unmatched_medicines') List<UnmatchedMedicineResponse>? get unmatchedMedicines;
+@JsonKey(name: 'prescription_id') int get prescriptionId;@JsonKey(name: 'extracted_text') String get extractedText;@JsonKey(name: 'matched_medicines') List<MatchedMedicineResponse>? get matchedMedicines;@JsonKey(name: 'unmatched_medicines') List<UnmatchedMedicineResponse>? get unmatchedMedicines;@JsonKey(name: 'error') String? get error;@JsonKey(name: 'details') String? get details;@JsonKey(name: 'confident') int? get confident;
 /// Create a copy of AnalyzePrescriptionResponse
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $AnalyzePrescriptionResponseCopyWith<AnalyzePrescriptionResponse> get copyWith =
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is AnalyzePrescriptionResponse&&(identical(other.prescriptionId, prescriptionId) || other.prescriptionId == prescriptionId)&&(identical(other.extractedText, extractedText) || other.extractedText == extractedText)&&const DeepCollectionEquality().equals(other.matchedMedicines, matchedMedicines)&&const DeepCollectionEquality().equals(other.unmatchedMedicines, unmatchedMedicines));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is AnalyzePrescriptionResponse&&(identical(other.prescriptionId, prescriptionId) || other.prescriptionId == prescriptionId)&&(identical(other.extractedText, extractedText) || other.extractedText == extractedText)&&const DeepCollectionEquality().equals(other.matchedMedicines, matchedMedicines)&&const DeepCollectionEquality().equals(other.unmatchedMedicines, unmatchedMedicines)&&(identical(other.error, error) || other.error == error)&&(identical(other.details, details) || other.details == details)&&(identical(other.confident, confident) || other.confident == confident));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,prescriptionId,extractedText,const DeepCollectionEquality().hash(matchedMedicines),const DeepCollectionEquality().hash(unmatchedMedicines));
+int get hashCode => Object.hash(runtimeType,prescriptionId,extractedText,const DeepCollectionEquality().hash(matchedMedicines),const DeepCollectionEquality().hash(unmatchedMedicines),error,details,confident);
 
 @override
 String toString() {
-  return 'AnalyzePrescriptionResponse(prescriptionId: $prescriptionId, extractedText: $extractedText, matchedMedicines: $matchedMedicines, unmatchedMedicines: $unmatchedMedicines)';
+  return 'AnalyzePrescriptionResponse(prescriptionId: $prescriptionId, extractedText: $extractedText, matchedMedicines: $matchedMedicines, unmatchedMedicines: $unmatchedMedicines, error: $error, details: $details, confident: $confident)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $AnalyzePrescriptionResponseCopyWith<$Res>  {
   factory $AnalyzePrescriptionResponseCopyWith(AnalyzePrescriptionResponse value, $Res Function(AnalyzePrescriptionResponse) _then) = _$AnalyzePrescriptionResponseCopyWithImpl;
 @useResult
 $Res call({
-@JsonKey(name: 'prescription_id') int prescriptionId,@JsonKey(name: 'extracted_text') String extractedText,@JsonKey(name: 'matched_medicines') List<MatchedMedicineResponse>? matchedMedicines,@JsonKey(name: 'unmatched_medicines') List<UnmatchedMedicineResponse>? unmatchedMedicines
+@JsonKey(name: 'prescription_id') int prescriptionId,@JsonKey(name: 'extracted_text') String extractedText,@JsonKey(name: 'matched_medicines') List<MatchedMedicineResponse>? matchedMedicines,@JsonKey(name: 'unmatched_medicines') List<UnmatchedMedicineResponse>? unmatchedMedicines,@JsonKey(name: 'error') String? error,@JsonKey(name: 'details') String? details,@JsonKey(name: 'confident') int? confident
 });
 
 
@@ -65,13 +65,16 @@ class _$AnalyzePrescriptionResponseCopyWithImpl<$Res>
 
 /// Create a copy of AnalyzePrescriptionResponse
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? prescriptionId = null,Object? extractedText = null,Object? matchedMedicines = freezed,Object? unmatchedMedicines = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? prescriptionId = null,Object? extractedText = null,Object? matchedMedicines = freezed,Object? unmatchedMedicines = freezed,Object? error = freezed,Object? details = freezed,Object? confident = freezed,}) {
   return _then(_self.copyWith(
 prescriptionId: null == prescriptionId ? _self.prescriptionId : prescriptionId // ignore: cast_nullable_to_non_nullable
 as int,extractedText: null == extractedText ? _self.extractedText : extractedText // ignore: cast_nullable_to_non_nullable
 as String,matchedMedicines: freezed == matchedMedicines ? _self.matchedMedicines : matchedMedicines // ignore: cast_nullable_to_non_nullable
 as List<MatchedMedicineResponse>?,unmatchedMedicines: freezed == unmatchedMedicines ? _self.unmatchedMedicines : unmatchedMedicines // ignore: cast_nullable_to_non_nullable
-as List<UnmatchedMedicineResponse>?,
+as List<UnmatchedMedicineResponse>?,error: freezed == error ? _self.error : error // ignore: cast_nullable_to_non_nullable
+as String?,details: freezed == details ? _self.details : details // ignore: cast_nullable_to_non_nullable
+as String?,confident: freezed == confident ? _self.confident : confident // ignore: cast_nullable_to_non_nullable
+as int?,
   ));
 }
 
@@ -156,10 +159,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: 'prescription_id')  int prescriptionId, @JsonKey(name: 'extracted_text')  String extractedText, @JsonKey(name: 'matched_medicines')  List<MatchedMedicineResponse>? matchedMedicines, @JsonKey(name: 'unmatched_medicines')  List<UnmatchedMedicineResponse>? unmatchedMedicines)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: 'prescription_id')  int prescriptionId, @JsonKey(name: 'extracted_text')  String extractedText, @JsonKey(name: 'matched_medicines')  List<MatchedMedicineResponse>? matchedMedicines, @JsonKey(name: 'unmatched_medicines')  List<UnmatchedMedicineResponse>? unmatchedMedicines, @JsonKey(name: 'error')  String? error, @JsonKey(name: 'details')  String? details, @JsonKey(name: 'confident')  int? confident)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _AnalyzePrescriptionResponse() when $default != null:
-return $default(_that.prescriptionId,_that.extractedText,_that.matchedMedicines,_that.unmatchedMedicines);case _:
+return $default(_that.prescriptionId,_that.extractedText,_that.matchedMedicines,_that.unmatchedMedicines,_that.error,_that.details,_that.confident);case _:
   return orElse();
 
 }
@@ -177,10 +180,10 @@ return $default(_that.prescriptionId,_that.extractedText,_that.matchedMedicines,
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: 'prescription_id')  int prescriptionId, @JsonKey(name: 'extracted_text')  String extractedText, @JsonKey(name: 'matched_medicines')  List<MatchedMedicineResponse>? matchedMedicines, @JsonKey(name: 'unmatched_medicines')  List<UnmatchedMedicineResponse>? unmatchedMedicines)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: 'prescription_id')  int prescriptionId, @JsonKey(name: 'extracted_text')  String extractedText, @JsonKey(name: 'matched_medicines')  List<MatchedMedicineResponse>? matchedMedicines, @JsonKey(name: 'unmatched_medicines')  List<UnmatchedMedicineResponse>? unmatchedMedicines, @JsonKey(name: 'error')  String? error, @JsonKey(name: 'details')  String? details, @JsonKey(name: 'confident')  int? confident)  $default,) {final _that = this;
 switch (_that) {
 case _AnalyzePrescriptionResponse():
-return $default(_that.prescriptionId,_that.extractedText,_that.matchedMedicines,_that.unmatchedMedicines);case _:
+return $default(_that.prescriptionId,_that.extractedText,_that.matchedMedicines,_that.unmatchedMedicines,_that.error,_that.details,_that.confident);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -197,10 +200,10 @@ return $default(_that.prescriptionId,_that.extractedText,_that.matchedMedicines,
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: 'prescription_id')  int prescriptionId, @JsonKey(name: 'extracted_text')  String extractedText, @JsonKey(name: 'matched_medicines')  List<MatchedMedicineResponse>? matchedMedicines, @JsonKey(name: 'unmatched_medicines')  List<UnmatchedMedicineResponse>? unmatchedMedicines)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: 'prescription_id')  int prescriptionId, @JsonKey(name: 'extracted_text')  String extractedText, @JsonKey(name: 'matched_medicines')  List<MatchedMedicineResponse>? matchedMedicines, @JsonKey(name: 'unmatched_medicines')  List<UnmatchedMedicineResponse>? unmatchedMedicines, @JsonKey(name: 'error')  String? error, @JsonKey(name: 'details')  String? details, @JsonKey(name: 'confident')  int? confident)?  $default,) {final _that = this;
 switch (_that) {
 case _AnalyzePrescriptionResponse() when $default != null:
-return $default(_that.prescriptionId,_that.extractedText,_that.matchedMedicines,_that.unmatchedMedicines);case _:
+return $default(_that.prescriptionId,_that.extractedText,_that.matchedMedicines,_that.unmatchedMedicines,_that.error,_that.details,_that.confident);case _:
   return null;
 
 }
@@ -212,7 +215,7 @@ return $default(_that.prescriptionId,_that.extractedText,_that.matchedMedicines,
 @JsonSerializable()
 
 class _AnalyzePrescriptionResponse implements AnalyzePrescriptionResponse {
-  const _AnalyzePrescriptionResponse({@JsonKey(name: 'prescription_id') required this.prescriptionId, @JsonKey(name: 'extracted_text') required this.extractedText, @JsonKey(name: 'matched_medicines') final  List<MatchedMedicineResponse>? matchedMedicines, @JsonKey(name: 'unmatched_medicines') final  List<UnmatchedMedicineResponse>? unmatchedMedicines}): _matchedMedicines = matchedMedicines,_unmatchedMedicines = unmatchedMedicines;
+  const _AnalyzePrescriptionResponse({@JsonKey(name: 'prescription_id') required this.prescriptionId, @JsonKey(name: 'extracted_text') required this.extractedText, @JsonKey(name: 'matched_medicines') final  List<MatchedMedicineResponse>? matchedMedicines, @JsonKey(name: 'unmatched_medicines') final  List<UnmatchedMedicineResponse>? unmatchedMedicines, @JsonKey(name: 'error') this.error, @JsonKey(name: 'details') this.details, @JsonKey(name: 'confident') this.confident}): _matchedMedicines = matchedMedicines,_unmatchedMedicines = unmatchedMedicines;
   factory _AnalyzePrescriptionResponse.fromJson(Map<String, dynamic> json) => _$AnalyzePrescriptionResponseFromJson(json);
 
 @override@JsonKey(name: 'prescription_id') final  int prescriptionId;
@@ -235,6 +238,9 @@ class _AnalyzePrescriptionResponse implements AnalyzePrescriptionResponse {
   return EqualUnmodifiableListView(value);
 }
 
+@override@JsonKey(name: 'error') final  String? error;
+@override@JsonKey(name: 'details') final  String? details;
+@override@JsonKey(name: 'confident') final  int? confident;
 
 /// Create a copy of AnalyzePrescriptionResponse
 /// with the given fields replaced by the non-null parameter values.
@@ -249,16 +255,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AnalyzePrescriptionResponse&&(identical(other.prescriptionId, prescriptionId) || other.prescriptionId == prescriptionId)&&(identical(other.extractedText, extractedText) || other.extractedText == extractedText)&&const DeepCollectionEquality().equals(other._matchedMedicines, _matchedMedicines)&&const DeepCollectionEquality().equals(other._unmatchedMedicines, _unmatchedMedicines));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AnalyzePrescriptionResponse&&(identical(other.prescriptionId, prescriptionId) || other.prescriptionId == prescriptionId)&&(identical(other.extractedText, extractedText) || other.extractedText == extractedText)&&const DeepCollectionEquality().equals(other._matchedMedicines, _matchedMedicines)&&const DeepCollectionEquality().equals(other._unmatchedMedicines, _unmatchedMedicines)&&(identical(other.error, error) || other.error == error)&&(identical(other.details, details) || other.details == details)&&(identical(other.confident, confident) || other.confident == confident));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,prescriptionId,extractedText,const DeepCollectionEquality().hash(_matchedMedicines),const DeepCollectionEquality().hash(_unmatchedMedicines));
+int get hashCode => Object.hash(runtimeType,prescriptionId,extractedText,const DeepCollectionEquality().hash(_matchedMedicines),const DeepCollectionEquality().hash(_unmatchedMedicines),error,details,confident);
 
 @override
 String toString() {
-  return 'AnalyzePrescriptionResponse(prescriptionId: $prescriptionId, extractedText: $extractedText, matchedMedicines: $matchedMedicines, unmatchedMedicines: $unmatchedMedicines)';
+  return 'AnalyzePrescriptionResponse(prescriptionId: $prescriptionId, extractedText: $extractedText, matchedMedicines: $matchedMedicines, unmatchedMedicines: $unmatchedMedicines, error: $error, details: $details, confident: $confident)';
 }
 
 
@@ -269,7 +275,7 @@ abstract mixin class _$AnalyzePrescriptionResponseCopyWith<$Res> implements $Ana
   factory _$AnalyzePrescriptionResponseCopyWith(_AnalyzePrescriptionResponse value, $Res Function(_AnalyzePrescriptionResponse) _then) = __$AnalyzePrescriptionResponseCopyWithImpl;
 @override @useResult
 $Res call({
-@JsonKey(name: 'prescription_id') int prescriptionId,@JsonKey(name: 'extracted_text') String extractedText,@JsonKey(name: 'matched_medicines') List<MatchedMedicineResponse>? matchedMedicines,@JsonKey(name: 'unmatched_medicines') List<UnmatchedMedicineResponse>? unmatchedMedicines
+@JsonKey(name: 'prescription_id') int prescriptionId,@JsonKey(name: 'extracted_text') String extractedText,@JsonKey(name: 'matched_medicines') List<MatchedMedicineResponse>? matchedMedicines,@JsonKey(name: 'unmatched_medicines') List<UnmatchedMedicineResponse>? unmatchedMedicines,@JsonKey(name: 'error') String? error,@JsonKey(name: 'details') String? details,@JsonKey(name: 'confident') int? confident
 });
 
 
@@ -286,13 +292,16 @@ class __$AnalyzePrescriptionResponseCopyWithImpl<$Res>
 
 /// Create a copy of AnalyzePrescriptionResponse
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? prescriptionId = null,Object? extractedText = null,Object? matchedMedicines = freezed,Object? unmatchedMedicines = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? prescriptionId = null,Object? extractedText = null,Object? matchedMedicines = freezed,Object? unmatchedMedicines = freezed,Object? error = freezed,Object? details = freezed,Object? confident = freezed,}) {
   return _then(_AnalyzePrescriptionResponse(
 prescriptionId: null == prescriptionId ? _self.prescriptionId : prescriptionId // ignore: cast_nullable_to_non_nullable
 as int,extractedText: null == extractedText ? _self.extractedText : extractedText // ignore: cast_nullable_to_non_nullable
 as String,matchedMedicines: freezed == matchedMedicines ? _self._matchedMedicines : matchedMedicines // ignore: cast_nullable_to_non_nullable
 as List<MatchedMedicineResponse>?,unmatchedMedicines: freezed == unmatchedMedicines ? _self._unmatchedMedicines : unmatchedMedicines // ignore: cast_nullable_to_non_nullable
-as List<UnmatchedMedicineResponse>?,
+as List<UnmatchedMedicineResponse>?,error: freezed == error ? _self.error : error // ignore: cast_nullable_to_non_nullable
+as String?,details: freezed == details ? _self.details : details // ignore: cast_nullable_to_non_nullable
+as String?,confident: freezed == confident ? _self.confident : confident // ignore: cast_nullable_to_non_nullable
+as int?,
   ));
 }
 

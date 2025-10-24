@@ -10,6 +10,9 @@ extension AnalyzePrescriptionResponseMapper on AnalyzePrescriptionResponse {
       extractedText: extractedText,
       matchedMedicines: matchedMedicines?.map((e) => e.toMatchedMedicine()).toList(),
       unmatchedMedicines: unmatchedMedicines?.map((e) => e.toUnmatchedMedicine()).toList(),
+      error: error,
+      details: details,
+      confident: confident,
     );
   }
 }
