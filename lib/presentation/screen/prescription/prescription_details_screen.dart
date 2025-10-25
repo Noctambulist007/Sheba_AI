@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:sheba_ai/domain/model/medicine/dosage_form.dart';
+import 'package:sheba_ai/domain/model/medicine/generic.dart';
+import 'package:sheba_ai/domain/model/medicine/manufacturer.dart';
 import 'package:sheba_ai/domain/model/prescription/matched_medicine.dart';
 import 'package:sheba_ai/domain/model/prescription/prescription.dart';
 import 'package:sheba_ai/domain/model/prescription/unmatched_medicine.dart';
@@ -8,9 +11,12 @@ import 'package:sheba_ai/presentation/screen/cart/notifier/provider.dart';
 import 'package:sheba_ai/presentation/screen/prescription/notifier/provider.dart';
 import 'package:sheba_ai/presentation/screen/prescription/state/prescription_ui_state.dart';
 import 'package:sheba_ai/presentation/theme/color.dart';
+import 'package:sheba_ai/presentation/util/routes.dart';
 import 'package:sheba_ai/presentation/util/toast_helper.dart';
+import 'package:sheba_ai/presentation/widget/custom_button.dart';
 import 'package:sheba_ai/presentation/widget/custom_gradient_app_bar.dart';
 import 'package:timeago/timeago.dart' as timeago;
+import 'package:sheba_ai/domain/model/medicine/medicine.dart';
 
 class PrescriptionDetailsArgs {
   final int prescriptionId;
@@ -40,7 +46,7 @@ class _PrescriptionDetailsScreenState
       } else if (args is int) {
         prescriptionId = args;
       }
-      
+
       if (prescriptionId != null) {
         ref
             .read(prescriptionNotifierProvider.notifier)
@@ -59,27 +65,43 @@ class _PrescriptionDetailsScreenState
         title: 'Prescription Details',
         leading: BackButton(color: AppColors.colorWhite),
       ),
-      body: prescriptionId == null
-        ? const Center(child: Text("No prescription ID provided"))
-        : uiState.when(
-            initial: () => const Center(child: Text("Initializing...")),
-            loading: () => const Center(child: CircularProgressIndicator()),
-            success: (prescriptions, _, __) {
-              // Find the prescription with matching ID, or return error if not found
-              final prescriptionIndex = prescriptions.indexWhere(
-                (p) => p.id == prescriptionId,
-              );
-              
-              if (prescriptionIndex == -1) {
-                return Center(child: Text("Prescription #$prescriptionId not found"));
-              }
-              
-              return _buildPrescriptionDetails(context, prescriptions[prescriptionIndex]);
+      bottomNavigationBar: SafeArea(
+        child: Padding(
+          padding: EdgeInsets.all(16.w),
+          child: CustomButton.primary(
+            text: 'Go to Cart',
+            onPressed: () {
+              Navigator.pushNamed(context, Routes.cart);
             },
-        analyzeSuccess: (_) =>
-            const Center(child: Text("Analysis data not used here.")),
-        error: (msg) => Center(child: Text("Error: $msg")),
+          ),
+        ),
       ),
+      body: prescriptionId == null
+          ? const Center(child: Text("No prescription ID provided"))
+          : uiState.when(
+              initial: () => const Center(child: Text("Initializing...")),
+              loading: () => const Center(child: CircularProgressIndicator()),
+              success: (prescriptions, _, __) {
+                // Find the prescription with matching ID, or return error if not found
+                final prescriptionIndex = prescriptions.indexWhere(
+                  (p) => p.id == prescriptionId,
+                );
+
+                if (prescriptionIndex == -1) {
+                  return Center(
+                    child: Text("Prescription #$prescriptionId not found"),
+                  );
+                }
+
+                return _buildPrescriptionDetails(
+                  context,
+                  prescriptions[prescriptionIndex],
+                );
+              },
+              analyzeSuccess: (_) =>
+                  const Center(child: Text("Analysis data not used here.")),
+              error: (msg) => Center(child: Text("Error: $msg")),
+            ),
     );
   }
 
@@ -218,22 +240,53 @@ class _PrescriptionDetailsScreenState
             ),
           ),
 
-          // TextButton.icon(
-          //   onPressed: () {
-          //     ref.read(cartNotifierProvider.notifier).addToCart(m);
-          //     ToastHelper.showSuccess(context, '${medicine.name} added to cart');
-          //   },
-          //   icon: const Icon(Icons.add, size: 18),
-          //   label: const Text("Add"),
-          //   style: TextButton.styleFrom(
-          //     foregroundColor: Colors.green.shade700,
-          //     backgroundColor: Colors.green.shade50,
-          //     padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
-          //     shape: RoundedRectangleBorder(
-          //       borderRadius: BorderRadius.circular(8.r),
-          //     ),
-          //   ),
-          // ),
+          TextButton.icon(
+            onPressed: () {
+              final med = Medicine(
+                medicineId: m.id,
+                name: m.name,
+                slug: '',
+                strength: '',
+                manufacturer: Manufacturer(
+                  manufacturerId: 0,
+                  name: '',
+                  slug: '',
+                  genericsCount: 0,
+                  brandNamesCount: 0,
+                  createdAt: '',
+                  updatedAt: '',
+                ),
+                generic: Generic(
+                  genericId: 0,
+                  name: m.genericName,
+                  slug: '',
+                  brandNamesCount: 0,
+                ),
+                dosageForm: DosageForm(
+                  dosageFormId: 0,
+                  name: '',
+                  slug: '',
+                  genericsCount: 0,
+                  createdAt: '',
+                  updatedAt: '',
+                ),
+                price: m.price,
+                unit: '',
+              );
+              ref.read(cartNotifierProvider.notifier).addToCart(med);
+              ToastHelper.showSuccess(context, '${m.name} added to cart');
+            },
+            icon: const Icon(Icons.add_shopping_cart, size: 18),
+            label: const Text("Add"),
+            style: TextButton.styleFrom(
+              backgroundColor: Colors.white,
+              padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(6.r),
+                side: BorderSide(color: Colors.grey.shade300),
+              ),
+            ),
+          ),
         ],
       ),
     );

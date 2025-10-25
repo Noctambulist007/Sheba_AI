@@ -225,12 +225,12 @@ class MyOrderItemCard extends StatelessWidget {
                         fontWeight: FontWeight.w500,
                       ),
                     ),
-                    const Spacer(),
-                    Icon(
-                      Icons.arrow_forward_ios,
-                      size: 14.sp,
-                      color: Colors.grey[400],
-                    ),
+                    // const Spacer(),
+                    // Icon(
+                    //   Icons.arrow_forward_ios,
+                    //   size: 14.sp,
+                    //   color: Colors.grey[400],
+                    // ),
                   ],
                 ),
               ],

@@ -434,10 +434,12 @@ class _PrescriptionScreenState extends ConsumerState<PrescriptionScreen> {
           }
           ref.read(selectedImageProvider.notifier).state = null;
           ref.read(livesNotifierProvider.notifier).fetchMyLives();
-          Navigator.pushNamed(
-            context,
-            Routes.prescriptionDetails,
-            arguments: analyzePrescription.prescriptionId,
+          showModalBottomSheet(
+            context: context,
+            isScrollControlled: true,
+            builder: (context) => PrescriptionAnalysisBottomSheet(
+              analysis: analyzePrescription,
+            ),
           );
         },
         error: (message) {

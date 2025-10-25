@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:lottie/lottie.dart';
 import 'package:sheba_ai/domain/model/medicine/dosage_form.dart';
 import 'package:sheba_ai/domain/model/medicine/generic.dart';
 import 'package:sheba_ai/domain/model/medicine/manufacturer.dart';
@@ -35,6 +36,14 @@ class PrescriptionAnalysisBottomSheet extends ConsumerWidget {
           ),
           child: Column(
             children: [
+              Lottie.asset(
+                'assets/anims/ai-report.json',
+                width: 100,
+                height: 100,
+                fit: BoxFit.contain,
+                repeat: true,
+              ),
+              SizedBox(height: 8),
               const Text(
                 'Analysis Results',
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
@@ -58,6 +67,14 @@ class PrescriptionAnalysisBottomSheet extends ConsumerWidget {
                       ),
                   ],
                 ),
+              ),
+              const SizedBox(height: 16),
+              CustomButton.primary(
+                text: 'Go to Cart',
+                onPressed: () {
+                  Navigator.pop(context); // Close bottom sheet
+                  Navigator.pushNamed(context, Routes.cart);
+                },
               ),
             ],
           ),
@@ -97,69 +114,96 @@ class PrescriptionAnalysisBottomSheet extends ConsumerWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          medicine.name,
-                          style: const TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
+                    Expanded(
+                      flex: 5,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            medicine.name,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            style: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
-                        ),
-                        const SizedBox(height: 4),
-                        Text('${medicine.genericName} - Rs. ${medicine.price}'),
-                      ],
+                          const SizedBox(height: 4),
+                          Text(medicine.genericName),
+                          const SizedBox(height: 4),
+                          Text(
+                            'Price: ${medicine.price} TK',
+                            style: const TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
                     ),
-                    ElevatedButton(
-                      onPressed: () {
-                        final med = Medicine(
-                          medicineId: medicine.id,
-                          name: medicine.name,
-                          slug: '',
-                          strength: '',
-                          manufacturer: Manufacturer(
-                            manufacturerId: 0,
-                            name: '',
+                    Expanded(
+                      flex: 2,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          final med = Medicine(
+                            medicineId: medicine.id,
+                            name: medicine.name,
                             slug: '',
-                            genericsCount: 0,
-                            brandNamesCount: 0,
-                            createdAt: '',
-                            updatedAt: '',
-                          ),
-                          generic: Generic(
-                            genericId: 0,
-                            name: medicine.genericName,
-                            slug: '',
-                            brandNamesCount: 0,
-                          ),
-                          dosageForm: DosageForm(
-                            dosageFormId: 0,
-                            name: '',
-                            slug: '',
-                            genericsCount: 0,
-                            createdAt: '',
-                            updatedAt: '',
-                          ),
-                          price: medicine.price,
-                          unit: '',
-                        );
-                        final cartNotifier = ref.read(cartNotifierProvider.notifier);
-                        
-                        // Try to add to cart, returns false if user is not authenticated
-                        final success = cartNotifier.addToCart(med);
-                        
-                        if (success) {
-                          // Successfully added to cart
-                          ToastHelper.showSuccess(context, '${medicine.name} added to cart');
-                        } else {
-                          // User is not authenticated, show login prompt
-                          ToastHelper.showError(context, 'Please login to order');
-                          Navigator.pop(context); // Close bottom sheet
-                          Navigator.pushNamed(context, Routes.signIn);
-                        }
-                      },
-                      child: const Text('Add to Cart'),
+                            strength: '',
+                            manufacturer: Manufacturer(
+                              manufacturerId: 0,
+                              name: '',
+                              slug: '',
+                              genericsCount: 0,
+                              brandNamesCount: 0,
+                              createdAt: '',
+                              updatedAt: '',
+                            ),
+                            generic: Generic(
+                              genericId: 0,
+                              name: medicine.genericName,
+                              slug: '',
+                              brandNamesCount: 0,
+                            ),
+                            dosageForm: DosageForm(
+                              dosageFormId: 0,
+                              name: '',
+                              slug: '',
+                              genericsCount: 0,
+                              createdAt: '',
+                              updatedAt: '',
+                            ),
+                            price: medicine.price,
+                            unit: '',
+                          );
+                          final cartNotifier = ref.read(
+                            cartNotifierProvider.notifier,
+                          );
+
+                          // Try to add to cart, returns false if user is not authenticated
+                          final success = cartNotifier.addToCart(med);
+
+                          if (success) {
+                            // Successfully added to cart
+                            ToastHelper.showSuccess(
+                              context,
+                              '${medicine.name} added to cart',
+                            );
+                          } else {
+                            // User is not authenticated, show login prompt
+                            ToastHelper.showError(
+                              context,
+                              'Please login to order',
+                            );
+                            Navigator.pop(context); // Close bottom sheet
+                            Navigator.pushNamed(context, Routes.signIn);
+                          }
+                        },
+                        child: Row(
+                          children: [
+                            const Icon(Icons.add_shopping_cart),
+                            const SizedBox(width: 4),
+                            const Text('Add', style: TextStyle(fontSize: 14)),
+                          ],
+                        ),
+                      ),
                     ),
                   ],
                 ),
@@ -199,6 +243,8 @@ class PrescriptionAnalysisBottomSheet extends ConsumerWidget {
               child: ListTile(
                 title: Text(
                   medicine.name,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                   style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
