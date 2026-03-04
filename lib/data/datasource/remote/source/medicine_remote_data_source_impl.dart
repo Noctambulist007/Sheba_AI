@@ -9,8 +9,8 @@ class MedicineRemoteDataSourceImpl extends MedicineRemoteDataSource {
     : _medicineApi = medicineApi;
 
   @override
-  Future<List<Medicine>> getAllMedicines({int? page}) async {
-    var response = await _medicineApi.getAllMedicines(page: page);
+  Future<List<Medicine>> getAllMedicines({int? page, String? search}) async {
+    var response = await _medicineApi.getAllMedicines(page: page, search: search);
     return response;
   }
 }

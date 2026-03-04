@@ -128,4 +128,10 @@ class IdentityRepositoryImpl implements IdentityRepository {
     var lives = await identityRemoteDataSource.getLives();
     return lives;
   }
+
+  @override
+  Future<bool> isEmailVerified(String email) async {
+    final response = await identityRemoteDataSource.verifyEmail(email);
+    return response['is_verified'] == true;
+  }
 }

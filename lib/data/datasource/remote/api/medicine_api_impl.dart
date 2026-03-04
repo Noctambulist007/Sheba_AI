@@ -12,10 +12,13 @@ class MedicineApiImpl extends MedicineApi {
   MedicineApiImpl({required ApiClient client}) : _client = client;
 
   @override
-  Future<List<Medicine>> getAllMedicines({int? page}) async {
+  Future<List<Medicine>> getAllMedicines({int? page, String? search}) async {
     final response = await _client.get<JSONObject, MedicineListResponse>(
       path: getAllMedicinesUrl,
-      queryParameters: {if (page != null) 'page': page},
+      queryParameters: {
+        if (page != null) 'page': page,
+        if (search != null && search.isNotEmpty) 'search': search,
+      },
       converter: (json) => MedicineListResponse.fromJson(json),
     );
     return response.toMedicineList();

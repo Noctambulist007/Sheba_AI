@@ -15,9 +15,9 @@ import 'package:sheba_ai/domain/model/prescription/prescription.dart';
 import 'package:sheba_ai/injection.dart';
 
 Future<void> setUpNetworkModule() async {
-  const int timeOut = 120 * 1000;
+  const int timeOut = 60;
 
-  const baseUrl = 'https://shebaai.portfolioaistudio.com/api/';
+  const baseUrl = 'http://shebaai.kernostudio.com/api/';
 
   // Interceptor
   getIt.registerLazySingleton<AuthInterceptor>(

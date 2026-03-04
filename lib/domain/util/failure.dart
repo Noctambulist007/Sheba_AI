@@ -118,4 +118,10 @@ class Failure with _$Failure {
       serializationException: (message) => message,
     );
   }
+  int? get statusCode {
+    return maybeWhen(
+      serverException: (message, statusCode, data) => statusCode,
+      orElse: () => null,
+    );
+  }
 }

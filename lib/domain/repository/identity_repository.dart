@@ -30,4 +30,6 @@ abstract class IdentityRepository {
   Future<Profile> updateProfile(ProfileRequest profile);
 
   Future<Lives> getLives();
+
+  Future<bool> isEmailVerified(String email);
 }

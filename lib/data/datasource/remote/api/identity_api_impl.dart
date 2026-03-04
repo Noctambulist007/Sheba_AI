@@ -21,6 +21,7 @@ class IdentityApiImpl extends IdentityApi {
   static const refreshTokenUrl = 'accounts/auth/refresh/';
   static const profileUrl = 'accounts/auth/profile/';
   static const livesUrl = 'accounts/user/lives/';
+  static const verifyEmailUrl = 'accounts/auth/verify-email/';
 
   IdentityApiImpl({required ApiClient client}) : _client = client;
 
@@ -98,5 +99,24 @@ class IdentityApiImpl extends IdentityApi {
       converter: (json) => LivesResponse.fromJson(json),
     );
     return response.toLives();
+  }
+
+  @override
+  Future<Map<String, dynamic>> verifyEmail(String email) async {
+    try {
+      debugPrint("Verify email request: $email");
+      final response = await _client.get<JSONObject, Map<String, dynamic>>(
+        path: verifyEmailUrl,
+        queryParameters: {'email': '$email@gmail.com'},
+        converter: (json) {
+          debugPrint("Verify email response: $json");
+          return json;
+        },
+      );
+      return response;
+    } catch (e) {
+      debugPrint("Verify email error: $e");
+      rethrow;
+    }
   }
 }

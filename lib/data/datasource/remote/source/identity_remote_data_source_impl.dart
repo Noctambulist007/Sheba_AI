@@ -66,4 +66,9 @@ class IdentityRemoteDataSourceImpl extends IdentityRemoteDataSource {
   Future<Lives> getLives() async {
     return await _identityApi.getLives();
   }
+
+  @override
+  Future<Map<String, dynamic>> verifyEmail(String email) async {
+    return await _identityApi.verifyEmail(email);
+  }
 }

@@ -9,10 +9,11 @@ class MedicineRepositoryImpl implements MedicineRepository {
   MedicineRepositoryImpl({required this.medicineRemoteDataSource});
 
   @override
-  Future<List<Medicine>> getAllMedicines({int? page}) async {
+  Future<List<Medicine>> getAllMedicines({int? page, String? search}) async {
     try {
       final response = await medicineRemoteDataSource.getAllMedicines(
         page: page,
+        search: search,
       );
       return response;
     } catch (error, stackTrace) {

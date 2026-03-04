@@ -29,4 +29,6 @@ abstract class IdentityRemoteDataSource {
   Future<Profile> updateProfile(ProfileRequest profile);
 
   Future<Lives> getLives();
+
+  Future<Map<String, dynamic>> verifyEmail(String email);
 }

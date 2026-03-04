@@ -9,9 +9,9 @@ class GetAllMedicinesUseCase {
   GetAllMedicinesUseCase({required MedicineRepository medicineRepository})
     : _medicineRepository = medicineRepository;
 
-  Future<Result<List<Medicine>>> call({int? page}) async {
+  Future<Result<List<Medicine>>> call({int? page, String? search}) async {
     return await _medicineRepository
-        .getAllMedicines(page: page)
+        .getAllMedicines(page: page, search: search)
         .then((medicines) => Result.success(medicines))
         .onError((Failure failure, stackTrace) => Result.failure(failure));
   }

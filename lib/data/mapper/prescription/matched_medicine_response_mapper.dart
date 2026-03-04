@@ -8,6 +8,15 @@ extension MatchedMedicineResponseMapper on MatchedMedicineResponse {
       name: name,
       genericName: genericName,
       price: price,
+      extractDetails: extractDetails != null
+          ? ExtractionDetails(
+              strength: extractDetails!.strength,
+              frequency: extractDetails!.frequency,
+              duration: extractDetails!.duration,
+              instructions: extractDetails!.instructions,
+              type: extractDetails!.type,
+            )
+          : null,
     );
   }
 }
