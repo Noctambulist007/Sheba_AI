@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sheba_ai/domain/model/identity/token_data.dart';
 import 'package:sheba_ai/domain/usecase/identity/login_use_case.dart';
+import 'package:sheba_ai/domain/util/failure.dart';
 import 'package:sheba_ai/domain/util/result.dart';
 import 'package:sheba_ai/injection.dart';
 import 'package:sheba_ai/presentation/screen/auth/notifier/provider.dart';
@@ -26,16 +27,37 @@ class LoginNotifier extends StateNotifier<LoginUiState> {
           return const LoginUiState.error('Token data is null');
         } //
         else {
-          ref.read(authNotifierProvider.notifier).updateAuthState(tokenData);
-          ref.read(loginNotifierProvider.notifier).updateAuthState(tokenData);
+          // Don't update authNotifierProvider here — sign-in screen
+          // will do it after email verification passes.
           return LoginUiState.success(tokenData: tokenData);
         }
       },
-      failure: (failure) => LoginUiState.error(failure.message),
+      failure: (failure) {
+        // Check if failure is due to unverified email
+        failure.maybeWhen(
+          serverException: (message, statusCode, data) {
+            if (data is Map<String, dynamic>) {
+              if (data.containsKey('is_verified') &&
+                  data['is_verified'] == false) {
+                 // Mark email as unverified in the verify notifier
+                ref
+                    .read(verifyEmailNotifierProvider.notifier)
+                    .setUnverified(); 
+              }
+            }
+          },
+          orElse: () {},
+        );
+        return LoginUiState.error(failure.message);
+      },
     );
   }
 
   void updateAuthState(TokenData tokenData) {
     state = LoginUiState.success(tokenData: tokenData);
+  }
+
+  void reset() {
+    state = const LoginUiState.initial();
   }
 }

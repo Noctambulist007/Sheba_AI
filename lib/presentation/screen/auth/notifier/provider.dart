@@ -2,9 +2,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sheba_ai/presentation/screen/auth/notifier/auth_notifier.dart';
 import 'package:sheba_ai/presentation/screen/auth/notifier/login_notifier.dart';
 import 'package:sheba_ai/presentation/screen/auth/notifier/register_notifier.dart';
+import 'package:sheba_ai/presentation/screen/auth/notifier/verify_email_notifier.dart';
 import 'package:sheba_ai/presentation/screen/auth/state/auth_ui_state.dart';
 import 'package:sheba_ai/presentation/screen/auth/state/login_ui_state.dart';
 import 'package:sheba_ai/presentation/screen/auth/state/register_ui_state.dart';
+import 'package:sheba_ai/presentation/screen/auth/state/verify_email_ui_state.dart';
 
 // region :: AuthNotifierProvider
 typedef AuthNotifierProvider //
@@ -30,3 +32,11 @@ final registerNotifierProvider =
       return RegisterNotifier(ref);
     });
 
+// Provider for VerifyEmailNotifier
+typedef VerifyEmailNotifierProvider =
+    StateNotifierProvider<VerifyEmailNotifier, VerifyEmailUiState>;
+
+final verifyEmailNotifierProvider =
+    StateNotifierProvider<VerifyEmailNotifier, VerifyEmailUiState>((ref) {
+      return VerifyEmailNotifier();
+    });
