@@ -8,7 +8,7 @@ import 'package:sheba_ai/presentation/screen/cart/notifier/provider.dart';
 import 'package:sheba_ai/presentation/screen/profile/notifier/provider.dart';
 import 'package:sheba_ai/presentation/screen/profile/state/profile_ui_state.dart';
 import 'package:sheba_ai/presentation/screen/store/notifier/provider.dart';
-import 'package:sheba_ai/presentation/screen/store/notifier/medicine_notifier.dart';
+
 import 'package:sheba_ai/presentation/screen/store/state/medicine_ui_state.dart';
 import 'package:sheba_ai/presentation/screen/store/medicine_details_screen.dart';
 import 'package:sheba_ai/presentation/screen/store/widget/medicine_item.dart';
@@ -43,6 +43,9 @@ class _StoreScreenState extends ConsumerState<StoreScreen> {
     });
 
     _searchController.addListener(() {
+      if (_searchController.text.isNotEmpty && _scrollController.hasClients) {
+        _scrollController.jumpTo(0);
+      }
       ref
           .read(medicineNotifierProvider.notifier)
           .search(_searchController.text);
@@ -309,6 +312,7 @@ class _StoreScreenState extends ConsumerState<StoreScreen> {
                     vertical: 16.h,
                   ),
                   sliver: SliverMasonryGrid.count(
+                    key: ValueKey(medicine.length),
                     crossAxisCount: 2,
                     mainAxisSpacing: 12.h,
                     crossAxisSpacing: 12.w,
@@ -326,10 +330,10 @@ class _StoreScreenState extends ConsumerState<StoreScreen> {
                         },
                         onAddToCart: () {
                           final cartNotifier = ref.read(cartNotifierProvider.notifier);
-                          
+
                           // Try to add to cart, returns false if user is not authenticated
                           final success = cartNotifier.addToCart(item);
-                          
+
                           if (success) {
                             // Successfully added to cart
                             ToastHelper.showSuccess(

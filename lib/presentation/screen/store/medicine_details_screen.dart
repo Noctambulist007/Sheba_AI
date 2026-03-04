@@ -38,61 +38,61 @@ class MedicineDetailsScreen extends ConsumerWidget {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            // Product Image Section
-            Container(
-              width: double.infinity,
-              color: Colors.white,
-              padding: EdgeInsets.symmetric(vertical: 24.h, horizontal: 16.w),
-              child: Column(
-                children: [
-                  Container(
-                    height: 200.h,
-                    width: 200.w,
-                    decoration: BoxDecoration(
-                      color: Colors.grey[50],
-                      borderRadius: BorderRadius.circular(16.r),
-                    ),
-                    child: Center(
-                      child: Icon(
-                        Icons.medication_outlined,
-                        size: 100.sp,
-                        color: AppColors.primary.withOpacity(0.3),
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: 16.h),
-                  // Thumbnail Images (Placeholder)
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: List.generate(
-                      3,
-                      (index) => Container(
-                        margin: EdgeInsets.symmetric(horizontal: 4.w),
-                        width: 50.w,
-                        height: 50.h,
-                        decoration: BoxDecoration(
-                          color: Colors.grey[100],
-                          borderRadius: BorderRadius.circular(8.r),
-                          border: Border.all(
-                            color: index == 0
-                                ? AppColors.primary
-                                : Colors.transparent,
-                            width: 2,
-                          ),
-                        ),
-                        child: Icon(
-                          Icons.medication,
-                          size: 24.sp,
-                          color: Colors.grey[400],
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-
-            SizedBox(height: 8.h),
+            // // Product Image Section
+            // Container(
+            //   width: double.infinity,
+            //   color: Colors.white,
+            //   padding: EdgeInsets.symmetric(vertical: 24.h, horizontal: 16.w),
+            //   child: Column(
+            //     children: [
+            //       Container(
+            //         height: 200.h,
+            //         width: 200.w,
+            //         decoration: BoxDecoration(
+            //           color: Colors.grey[50],
+            //           borderRadius: BorderRadius.circular(16.r),
+            //         ),
+            //         child: Center(
+            //           child: Icon(
+            //             Icons.medication_outlined,
+            //             size: 100.sp,
+            //             color: AppColors.primary.withOpacity(0.3),
+            //           ),
+            //         ),
+            //       ),
+            //       SizedBox(height: 16.h),
+            //       // Thumbnail Images (Placeholder)
+            //       Row(
+            //         mainAxisAlignment: MainAxisAlignment.center,
+            //         children: List.generate(
+            //           3,
+            //           (index) => Container(
+            //             margin: EdgeInsets.symmetric(horizontal: 4.w),
+            //             width: 50.w,
+            //             height: 50.h,
+            //             decoration: BoxDecoration(
+            //               color: Colors.grey[100],
+            //               borderRadius: BorderRadius.circular(8.r),
+            //               border: Border.all(
+            //                 color: index == 0
+            //                     ? AppColors.primary
+            //                     : Colors.transparent,
+            //                 width: 2,
+            //               ),
+            //             ),
+            //             child: Icon(
+            //               Icons.medication,
+            //               size: 24.sp,
+            //               color: Colors.grey[400],
+            //             ),
+            //           ),
+            //         ),
+            //       ),
+            //     ],
+            //   ),
+            // ),
+            //
+            // SizedBox(height: 8.h),
 
             // Main Content
             Container(

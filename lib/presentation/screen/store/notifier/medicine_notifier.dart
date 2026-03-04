@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sheba_ai/domain/enum/medicine/medicine_filter.dart';
 import 'package:sheba_ai/domain/model/medicine/medicine.dart';
@@ -18,6 +19,13 @@ class MedicineNotifier extends StateNotifier<MedicineUiState> {
   final List<Medicine> _allMedicines = [];
   String _searchQuery = '';
   MedicineFilter _filter = MedicineFilter.none;
+  Timer? _debounceTimer;
+
+  @override
+  void dispose() {
+    _debounceTimer?.cancel();
+    super.dispose();
+  }
 
   Future<void> fetchAllMedicines({bool loadMore = false}) async {
     if (_isLoadingMore) return;
@@ -32,7 +40,9 @@ class MedicineNotifier extends StateNotifier<MedicineUiState> {
       _isLoadingMore = true;
     }
 
-    final result = await _useCase(page: _currentPage);
+    final result = await _useCase(page: _currentPage, search: _searchQuery);
+
+    if (!mounted) return;
 
     result.when(
       success: (newMedicines) {
@@ -45,7 +55,12 @@ class MedicineNotifier extends StateNotifier<MedicineUiState> {
         _applyFilters();
       },
       failure: (error) {
-        state = MedicineUiState.error(error.message);
+        if (loadMore && error.statusCode == 404) {
+          _hasMore = false;
+          _applyFilters();
+        } else {
+          state = MedicineUiState.error(error.message);
+        }
       },
     );
 
@@ -53,8 +68,13 @@ class MedicineNotifier extends StateNotifier<MedicineUiState> {
   }
 
   void search(String query) {
+    if (_searchQuery == query) return;
     _searchQuery = query;
-    _applyFilters();
+    
+    _debounceTimer?.cancel();
+    _debounceTimer = Timer(const Duration(milliseconds: 500), () {
+      fetchAllMedicines();
+    });
   }
 
   void filter(MedicineFilter filter) {
@@ -66,13 +86,7 @@ class MedicineNotifier extends StateNotifier<MedicineUiState> {
     List<Medicine> filteredMedicines = List.from(_allMedicines);
 
     if (_searchQuery.isNotEmpty) {
-      filteredMedicines = filteredMedicines
-          .where(
-            (medicine) => medicine.name.toLowerCase().contains(
-              _searchQuery.toLowerCase(),
-            ),
-          )
-          .toList();
+      // Server side search is implemented, so no need to filter locally
     }
 
     switch (_filter) {
@@ -93,6 +107,8 @@ class MedicineNotifier extends StateNotifier<MedicineUiState> {
       case MedicineFilter.none:
         break;
     }
+
+    if (!mounted) return;
 
     state = MedicineUiState.success(
       medicine: List.unmodifiable(filteredMedicines),

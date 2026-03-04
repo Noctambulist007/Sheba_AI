@@ -8,11 +8,7 @@ class MyOrderItemCard extends StatelessWidget {
   final ListOfOrderItem order;
   final VoidCallback? onTap;
 
-  const MyOrderItemCard({
-    super.key,
-    required this.order,
-    this.onTap,
-  });
+  const MyOrderItemCard({super.key, required this.order, this.onTap});
 
   Color _getStatusColor() {
     switch (order.status.toLowerCase()) {
@@ -61,7 +57,7 @@ class MyOrderItemCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: AppColors.colorWhite,
         borderRadius: BorderRadius.circular(16.r),
-        border: Border.all(color: Colors.grey[200]!, width: 1)
+        border: Border.all(color: Colors.grey[200]!, width: 1),
       ),
       child: Material(
         color: Colors.transparent,
@@ -142,10 +138,7 @@ class MyOrderItemCard extends StatelessWidget {
                 SizedBox(height: 16.h),
 
                 // Divider
-                Divider(
-                  color: Colors.grey[200],
-                  height: 1,
-                ),
+                Divider(color: Colors.grey[200], height: 1),
 
                 SizedBox(height: 16.h),
 
@@ -218,10 +211,14 @@ class MyOrderItemCard extends StatelessWidget {
                     ),
                     SizedBox(width: 6.w),
                     Text(
-                      order.paymentStatus ? 'Payment Completed' : 'Payment Pending',
+                      order.paymentStatus
+                          ? 'Payment Completed'
+                          : 'Payment Pending',
                       style: TextStyle(
                         fontSize: 12.sp,
-                        color: order.paymentStatus ? Colors.green : Colors.orange,
+                        color: order.paymentStatus
+                            ? Colors.green
+                            : Colors.orange,
                         fontWeight: FontWeight.w500,
                       ),
                     ),
@@ -255,11 +252,7 @@ class MyOrderItemCard extends StatelessWidget {
             color: iconColor.withOpacity(0.1),
             borderRadius: BorderRadius.circular(8.r),
           ),
-          child: Icon(
-            icon,
-            size: 16.sp,
-            color: iconColor,
-          ),
+          child: Icon(icon, size: 16.sp, color: iconColor),
         ),
         SizedBox(width: 8.w),
         Expanded(

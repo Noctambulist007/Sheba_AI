@@ -3,8 +3,9 @@ import 'package:sheba_ai/presentation/screen/store/notifier/medicine_notifier.da
 import 'package:sheba_ai/presentation/screen/store/state/medicine_ui_state.dart';
 
 typedef MedicineNotifierProvider =
-    StateNotifierProvider<MedicineNotifier, MedicineUiState>;
+    AutoDisposeStateNotifierProvider<MedicineNotifier, MedicineUiState>;
 
-final MedicineNotifierProvider medicineNotifierProvider = StateNotifierProvider(
+final MedicineNotifierProvider medicineNotifierProvider =
+    StateNotifierProvider.autoDispose(
   (ref) => MedicineNotifier(),
 );
