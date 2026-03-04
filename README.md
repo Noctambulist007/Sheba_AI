@@ -1,4 +1,4 @@
-# Sheba.AI
+# Sheba.AI 🏥
 
 **Revolutionizing Healthcare Accessibility in Bangladesh**
 
@@ -6,20 +6,20 @@ Sheba.AI is a cross-platform mobile application designed to bridge the gap betwe
 
 ---
 
-## Features
+## 🚀 Key Features
 
-- **AI-Powered Prescription Analysis**: Utilizes **Gemini Pro 2.5 Vision-Language Model** to decipher complex handwritten prescriptions with high accuracy.
-- **Comprehensive Medicine Database**: Instant access to **21,000+ medicines** with detailed information including brand, generic name, strength, and pricing (Sourced via MedEx scraping).
-- **One-Click Ordering**: Streamlined cart management and checkout process for quick medicine purchase.
-- **Image Scan & Upload**: Robust image processing to capture and analyze prescriptions.
-- **Order Tracking**: Real-time updates on order status and history.
-- **Secure Authentication**: **JWT-based** user management ensures data privacy and security.
-- **Smart Reminders**: (Coming Soon) Medication adherence notifications.
-- **Modern UI/UX**: Built with **Material Design**, featuring smooth animations, glassmorphism elements, and **Dark Mode** support.
+- **🧠 AI-Powered Prescription Analysis**: Utilizes **Gemini Pro 2.5 Vision-Language Model** to decipher complex handwritten prescriptions with high accuracy.
+- **📚 Comprehensive Medicine Database**: Instant access to **21,000+ medicines** with detailed information including brand, generic name, strength, and pricing (Sourced via MedEx scraping).
+- **🛒 One-Click Ordering**: Streamlined cart management and checkout process for quick medicine purchase.
+- **📷 Image Scan & Upload**: Robust image processing to capture and analyze prescriptions.
+- **📦 Order Tracking**: Real-time updates on order status and history.
+- **🔐 Secure Authentication**: **JWT-based** user management ensures data privacy and security.
+- **🔔 Smart Reminders**: (Coming Soon) Medication adherence notifications.
+- **🎨 Modern UI/UX**: Built with **Material Design**, featuring smooth animations, glassmorphism elements, and **Dark Mode** support.
 
 ---
 
-## Architecture
+## 🏗 Architecture
 
 Sheba.AI follows a strict **Clean Architecture** pattern to ensure scalability, testability, and maintainability. This separation of concerns allows for independent development of core business logic and UI/Frameworks.
 
@@ -45,7 +45,7 @@ Sheba.AI follows a strict **Clean Architecture** pattern to ensure scalability, 
 
 ---
 
-## Tech Stack & Dependencies
+## 🛠 Tech Stack & Dependencies
 
 ### Core
 - **Framework**: Flutter (Dart)
@@ -78,7 +78,7 @@ Sheba.AI follows a strict **Clean Architecture** pattern to ensure scalability, 
 
 ---
 
-## Project Structure
+## 📂 Project Structure
 
 ```
 lib/
@@ -101,7 +101,7 @@ lib/
 
 ---
 
-## Getting Started
+## 🚀 Getting Started
 
 ### Prerequisites
 - Flutter SDK (`^3.8.1`)
@@ -131,7 +131,7 @@ lib/
    flutter run
    ```
 
-### Build for Release
+### 📱 Build for Release
 
 **Android**
 ```bash
