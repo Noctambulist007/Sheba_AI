@@ -279,6 +279,8 @@ class AppColors {
   static const Color grayscaleBody = Color(0xFF212529);
   static const Color primaryIconBackground = Color(0xFF699AB5);
   static const Color colorBackgroundPrimary = Color(0xFFEEFCF5);
+  static const Color grayscaleText = grayscaleTextBody;
+  static const Color grayscaleBorder = grayscaleBorderDefault;
 }
 
 // ------------------------------ Global Color Constants ------------------------------

@@ -27,10 +27,10 @@ class BottomNavBar extends StatelessWidget {
         icon: "assets/icons/store-light-icon.png",
         label: "Store",
       ),
-      NavigationItem(
-        icon: "assets/icons/chat-light-icon.png",
-        label: "Mood",
-      ),
+      // NavigationItem(
+      //   icon: "assets/icons/chat-light-icon.png",
+      //   label: "Mood",
+      // ),
       NavigationItem(
         icon: "assets/icons/reminder-light-icon.png",
         label: "Reminder",
@@ -66,6 +66,7 @@ class BottomNavBar extends StatelessWidget {
 
           child: NavigationBar(
             height: 60.h,
+            indicatorColor: AppColors.colorPrimary.withOpacity(0.1),
             selectedIndex: selectedIndex,
             onDestinationSelected: onItemSelected,
             backgroundColor: Colors.white,

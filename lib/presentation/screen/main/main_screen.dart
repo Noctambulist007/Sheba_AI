@@ -37,7 +37,7 @@ class _MainScreenState extends ConsumerState<MainScreen> {
     _pages = [
       const PrescriptionScreen(),
       const StoreScreen(),
-      const ChatScreen(),
+      // const ChatScreen(),
       const ReminderScreen(),
 
     ];
