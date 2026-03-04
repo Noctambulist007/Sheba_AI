@@ -1,4 +1,4 @@
-package com.kernostudio.shebaai.sheba_ai
+package com.shebaai.app
 
 import io.flutter.embedding.android.FlutterActivity
 

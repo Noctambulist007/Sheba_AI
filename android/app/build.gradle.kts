@@ -15,13 +15,14 @@ if (keystorePropertiesFile.exists()) {
 }
 
 android {
-    namespace = "com.kernostudio.shebaai.sheba_ai"
+    namespace = "com.shebaai.app"
     compileSdk = 35
     ndkVersion = "27.0.12077973"
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
+        isCoreLibraryDesugaringEnabled = true
     }
 
     kotlinOptions {
@@ -29,8 +30,8 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.kernostudio.shebaai.sheba_ai"
-        minSdk = 23
+        applicationId = "com.shebaai.app"
+        minSdk = flutter.minSdkVersion
         targetSdk = 35
         versionCode = flutter.versionCode
         versionName = flutter.versionName
@@ -69,3 +70,8 @@ android {
 flutter {
     source = "../.."
 }
+
+dependencies {
+    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.5")
+}
+
