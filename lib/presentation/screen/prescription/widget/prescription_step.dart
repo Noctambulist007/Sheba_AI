@@ -59,7 +59,7 @@ class PrescriptionStep extends StatelessWidget {
             children: [
               Expanded(
                 child: SizedBox(
-                  height: 80.h,
+                  height: 70.h,
                   child: Lottie.asset(animation, fit: BoxFit.contain),
                 ),
               ),

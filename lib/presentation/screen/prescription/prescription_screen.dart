@@ -634,118 +634,122 @@ class _PrescriptionScreenState extends ConsumerState<PrescriptionScreen> {
                       ),
                     ),
                   SizedBox(height: 8.h),
-                  //
-                  // state.maybeWhen(
-                  //   initial: () => const SizedBox.shrink(),
-                  //   loading: () => Padding(
-                  //     padding: EdgeInsets.all(16.w),
-                  //     child: ListView.builder(
-                  //       itemCount: 3,
-                  //       shrinkWrap: true,
-                  //       physics: const NeverScrollableScrollPhysics(),
-                  //       itemBuilder: (context, index) =>
-                  //           const PrescriptionItemShimmer(),
-                  //     ),
-                  //   ),
-                  //   error: (message) => Center(
-                  //     child: Padding(
-                  //       padding: EdgeInsets.all(16.w),
-                  //       child: Column(
-                  //         mainAxisAlignment: MainAxisAlignment.center,
-                  //         children: [
-                  //           Icon(
-                  //             Icons.error_outline,
-                  //             size: 64.sp,
-                  //             color: Colors.red,
-                  //           ),
-                  //           SizedBox(height: 16.h),
-                  //           Text(
-                  //             'Error: $message',
-                  //             style: TextStyle(
-                  //               fontSize: 16.sp,
-                  //               color: Colors.red,
-                  //             ),
-                  //           ),
-                  //           SizedBox(height: 16.h),
-                  //           ElevatedButton(
-                  //             onPressed: _onRefresh,
-                  //             child: const Text('Retry'),
-                  //           ),
-                  //         ],
-                  //       ),
-                  //     ),
-                  //   ),
-                  //   success: (prescriptions, isLoadingMore, hasMore) {
-                  //     if (prescriptions.isEmpty) {
-                  //       return Padding(
-                  //         padding: EdgeInsets.all(16.w),
-                  //         child: Column(
-                  //           children: [
-                  //             SizedBox(height: 50.h),
-                  //             Icon(
-                  //               Icons.receipt_long,
-                  //               size: 64.sp,
-                  //               color: Colors.grey,
-                  //             ),
-                  //             SizedBox(height: 16.h),
-                  //             Text(
-                  //               'No prescriptions found.',
-                  //               style: TextStyle(
-                  //                 fontSize: 16.sp,
-                  //                 color: Colors.grey,
-                  //               ),
-                  //             ),
-                  //           ],
-                  //         ),
-                  //       );
-                  //     }
-                  //
-                  //     return Padding(
-                  //       padding: EdgeInsets.all(16.w),
-                  //       child: Column(
-                  //         children: [
-                  //           ListView.builder(
-                  //             itemCount: prescriptions.length > 3
-                  //                 ? 3
-                  //                 : prescriptions.length,
-                  //             shrinkWrap: true,
-                  //             physics: const NeverScrollableScrollPhysics(),
-                  //             itemBuilder: (context, index) {
-                  //               final item = prescriptions[index];
-                  //               return GestureDetector(
-                  //                 onTap: () {
-                  //                   Navigator.pushNamed(
-                  //                     context,
-                  //                     Routes.prescriptionDetails,
-                  //                     arguments: item.id,
-                  //                   );
-                  //                 },
-                  //                 child: PrescriptionItem(prescription: item),
-                  //               );
-                  //             },
-                  //           ),
-                  //           if (isLoadingMore)
-                  //             Padding(
-                  //               padding: EdgeInsets.symmetric(vertical: 16.h),
-                  //               child: Center(
-                  //                 child: SizedBox(
-                  //                   width: 200.w,
-                  //                   child: LinearProgressIndicator(
-                  //                     color: AppColors.primary,
-                  //                     backgroundColor: AppColors.colorWhite,
-                  //                     borderRadius: BorderRadius.all(
-                  //                       Radius.circular(8.r),
-                  //                     ),
-                  //                   ),
-                  //                 ),
-                  //               ),
-                  //             ),
-                  //         ],
-                  //       ),
-                  //     );
-                  //   },
-                  //   orElse: () => const SizedBox.shrink(),
-                  // ),
+
+                  state.maybeWhen(
+                    initial: () => const SizedBox.shrink(),
+                    loading: () => Padding(
+                      padding: EdgeInsets.all(16.w),
+                      child: ListView.builder(
+                        itemCount: 3,
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemBuilder: (context, index) =>
+                            const PrescriptionItemShimmer(),
+                      ),
+                    ),
+                    error: (message) => Center(
+                      child: Padding(
+                        padding: EdgeInsets.all(16.w),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.error_outline,
+                              size: 64.sp,
+                              color: Colors.red,
+                            ),
+                            SizedBox(height: 16.h),
+                            Text(
+                              'Error: $message',
+                              style: TextStyle(
+                                fontSize: 16.sp,
+                                color: Colors.red,
+                              ),
+                            ),
+                            SizedBox(height: 16.h),
+                            ElevatedButton(
+                              onPressed: _onRefresh,
+                              child: const Text('Retry'),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    success: (prescriptions, isLoadingMore, hasMore) {
+                      final analyzed = prescriptions
+                          .where((p) => p.status.toLowerCase() == 'analyzed')
+                          .toList();
+
+                      if (analyzed.isEmpty) {
+                        return Padding(
+                          padding: EdgeInsets.all(16.w),
+                          child: Column(
+                            children: [
+                              SizedBox(height: 20.h),
+                              Icon(
+                                Icons.receipt_long,
+                                size: 48.sp,
+                                color: Colors.grey,
+                              ),
+                              SizedBox(height: 12.h),
+                              Text(
+                                'No recent prescriptions',
+                                style: TextStyle(
+                                  fontSize: 14.sp,
+                                  color: Colors.grey,
+                                ),
+                              ),
+                            ],
+                          ),
+                        );
+                      }
+
+                      return Padding(
+                        padding: EdgeInsets.all(16.w),
+                        child: Column(
+                          children: [
+                            ListView.builder(
+                              itemCount: analyzed.length > 3
+                                  ? 3
+                                  : analyzed.length,
+                              shrinkWrap: true,
+                              physics: const NeverScrollableScrollPhysics(),
+                              itemBuilder: (context, index) {
+                                final item = analyzed[index];
+                                return GestureDetector(
+                                  onTap: () {
+                                    Navigator.pushNamed(
+                                      context,
+                                      Routes.prescriptionDetails,
+                                      arguments: item.id,
+                                    );
+                                  },
+                                  child: PrescriptionItem(prescription: item),
+                                );
+                              },
+                            ),
+                            if (isLoadingMore)
+                              Padding(
+                                padding: EdgeInsets.symmetric(vertical: 16.h),
+                                child: Center(
+                                  child: SizedBox(
+                                    width: 200.w,
+                                    child: LinearProgressIndicator(
+                                      color: AppColors.primary,
+                                      backgroundColor: AppColors.colorWhite,
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(8.r),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                          ],
+                        ),
+                      );
+                    },
+                    orElse: () => const SizedBox.shrink(),
+                  ),
                 ],
               ),
             ),

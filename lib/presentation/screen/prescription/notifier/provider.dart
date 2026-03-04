@@ -9,7 +9,7 @@ typedef PrescriptionNotifierProvider =
 
 final PrescriptionNotifierProvider prescriptionNotifierProvider =
     StateNotifierProvider(
-  (ref) => PrescriptionNotifier(ref.watch(authNotifierProvider)),
+  (ref) => PrescriptionNotifier(ref, ref.watch(authNotifierProvider)),
 );
 
 // State provider for selected image

@@ -9,11 +9,20 @@ import 'package:sheba_ai/domain/usecase/prescription/get_prescription_use_case.d
 import 'package:sheba_ai/domain/util/result.dart';
 import 'package:sheba_ai/injection.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:sheba_ai/presentation/screen/auth/notifier/provider.dart';
 import 'package:sheba_ai/presentation/screen/auth/state/auth_ui_state.dart';
 import 'package:sheba_ai/presentation/screen/prescription/state/prescription_ui_state.dart';
+import 'package:sheba_ai/presentation/screen/cart/notifier/provider.dart';
+import 'package:sheba_ai/presentation/screen/reminder/notifier/reminder_notifier.dart';
+import 'package:sheba_ai/domain/model/medicine/medicine.dart';
+import 'package:sheba_ai/domain/model/medicine/manufacturer.dart';
+import 'package:sheba_ai/domain/model/medicine/generic.dart';
+import 'package:sheba_ai/domain/model/medicine/dosage_form.dart';
+import 'package:sheba_ai/data/model/reminder_model.dart';
+import 'package:sheba_ai/presentation/screen/prescription/util/medicine_time_parser.dart';
 
 class PrescriptionNotifier extends StateNotifier<PrescriptionUiState> {
-  PrescriptionNotifier(this._authUiState)
+  PrescriptionNotifier(this._ref, this._authUiState)
     : super(const PrescriptionUiState.initial()) {
     _authUiState.maybeWhen(
       orElse: () {},
@@ -23,6 +32,7 @@ class PrescriptionNotifier extends StateNotifier<PrescriptionUiState> {
     );
   }
 
+  final Ref _ref;
   final AuthUiState _authUiState;
   final _useCase = getIt<GetAllPrescriptionsUseCase>();
   int _currentPage = 1;
@@ -80,6 +90,9 @@ class PrescriptionNotifier extends StateNotifier<PrescriptionUiState> {
   }
 
   Future<void> getPrescription({required int prescriptionId}) async {
+    // Preserve the existing list while loading a single prescription's details
+    final previousPrescriptions = List<Prescription>.from(_prescription);
+
     state = const PrescriptionUiState.loading();
 
     final useCase = getIt<GetPrescriptionUseCase>();
@@ -87,13 +100,31 @@ class PrescriptionNotifier extends StateNotifier<PrescriptionUiState> {
 
     result.when(
       success: (prescription) {
+        // Upsert the fetched prescription into the existing list
+        final index = previousPrescriptions.indexWhere((p) => p.id == prescriptionId);
+        if (index != -1) {
+          previousPrescriptions[index] = prescription;
+        } else {
+          previousPrescriptions.insert(0, prescription);
+        }
+        _prescription
+          ..clear()
+          ..addAll(previousPrescriptions);
+
         state = PrescriptionUiState.success(
-          prescription: [prescription],
-          hasMore: false,
+          prescription: List.unmodifiable(_prescription),
+          hasMore: _hasMore,
         );
       },
       failure: (error) {
-        state = PrescriptionUiState.error(error.message);
+        // On failure, restore the previous list instead of showing error
+        _prescription
+          ..clear()
+          ..addAll(previousPrescriptions);
+        state = PrescriptionUiState.success(
+          prescription: List.unmodifiable(_prescription),
+          hasMore: _hasMore,
+        );
       },
     );
   }
@@ -137,6 +168,84 @@ class PrescriptionNotifier extends StateNotifier<PrescriptionUiState> {
         state = PrescriptionUiState.analyzeSuccess(
           analyzePrescription: analyzePrescription,
         );
+
+        // Auto Add to Cart & Create Reminders
+        if (analyzePrescription.matchedMedicines != null) {
+          final cartNotifier = _ref.read(cartNotifierProvider.notifier);
+          final reminderNotifier = _ref.read(reminderNotifierProvider.notifier);
+
+          for (final matchedMedicine in analyzePrescription.matchedMedicines!) {
+            // Create Medicine Object
+             final medicine = Medicine(
+              medicineId: matchedMedicine.id,
+              name: matchedMedicine.name,
+              slug: matchedMedicine.name.toLowerCase().replaceAll(' ', '-'),
+              strength: matchedMedicine.extractDetails?.strength ?? '',
+              manufacturer: Manufacturer(
+                  manufacturerId: 0,
+                  name: '',
+                  slug: '',
+                  genericsCount: 0,
+                  brandNamesCount: 0,
+                  createdAt: DateTime.now().toIso8601String(),
+                  updatedAt: DateTime.now().toIso8601String()), // Placeholder
+              generic: Generic(
+                genericId: 0,
+                name: matchedMedicine.genericName,
+                slug: matchedMedicine.genericName.toLowerCase().replaceAll(' ', '-'),
+                brandNamesCount: 0,
+              ),
+              dosageForm: DosageForm(
+                dosageFormId: 0,
+                name: matchedMedicine.extractDetails?.type ?? 'Tablet',
+                slug: (matchedMedicine.extractDetails?.type ?? 'Tablet')
+                    .toLowerCase(),
+                genericsCount: 0,
+                createdAt: DateTime.now().toIso8601String(),
+                updatedAt: DateTime.now().toIso8601String(),
+              ),
+              price: matchedMedicine.price,
+              formattedPrice: '৳${matchedMedicine.price}',
+              unit: 'Piece', // Defaulting to unit
+            );
+
+            // Add to Cart
+            cartNotifier.addToCart(medicine);
+
+            // Create Reminders
+            final frequency = matchedMedicine.extractDetails?.frequency ?? '';
+            final instructions = matchedMedicine.extractDetails?.instructions;
+
+            final times = MedicineTimeParser.parse(frequency, instructions);
+
+            for (final time in times) {
+              final now = DateTime.now();
+              final scheduledTime = DateTime(
+                now.year,
+                now.month,
+                now.day,
+                time.hour,
+                time.minute,
+              );
+
+              // If time is in the past for today, scheduledTime will be in the past.
+              // The notification service presumably handles this or it fires immediately.
+
+              final reminder = ReminderModel(
+                id: '${matchedMedicine.id}_${time.hour}_${time.minute}',
+                medicineName: matchedMedicine.name,
+                dosage: matchedMedicine.extractDetails?.strength ?? '',
+                type: matchedMedicine.extractDetails?.type ?? 'Tablet',
+                frequency: 'Daily',
+                time: scheduledTime,
+                isEnabled: true,
+              );
+
+              reminderNotifier.addReminder(reminder);
+            }
+          }
+        }
+
         fetchAllPrescriptions();
       },
       failure: (error) {
