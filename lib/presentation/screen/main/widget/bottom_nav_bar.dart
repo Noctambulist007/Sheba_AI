@@ -35,6 +35,10 @@ class BottomNavBar extends StatelessWidget {
         icon: "assets/icons/reminder-light-icon.png",
         label: "Reminder",
       ),
+      NavigationItem(
+        iconData: Icons.health_and_safety_rounded,
+        label: "Skin Check",
+      ),
     ];
 
     return Column(
@@ -72,16 +76,20 @@ class BottomNavBar extends StatelessWidget {
             backgroundColor: Colors.white,
             labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
             destinations: items.map((item) {
+              final isSelected = selectedIndex == items.indexOf(item);
+              final color = isSelected
+                  ? AppColors.colorPrimary
+                  : AppColors.grayscaleBorderDisabled;
               return NavigationDestination(
                 label: item.label,
-                icon: Image.asset(
-                  item.icon,
-                  width: 24.w,
-                  height: 24.h,
-                  color: selectedIndex == items.indexOf(item)
-                      ? AppColors.colorPrimary
-                      : AppColors.grayscaleBorderDisabled,
-                ),
+                icon: item.icon != null
+                    ? Image.asset(
+                        item.icon!,
+                        width: 24.w,
+                        height: 24.h,
+                        color: color,
+                      )
+                    : Icon(item.iconData, size: 24.r, color: color),
               );
             }).toList(),
           ),
