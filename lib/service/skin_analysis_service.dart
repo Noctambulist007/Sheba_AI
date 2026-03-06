@@ -1,17 +1,28 @@
 import 'dart:io';
+import 'package:flutter/foundation.dart';
 import 'package:google_generative_ai/google_generative_ai.dart';
 import 'package:sheba_ai/domain/model/skin_analysis/skin_analysis_result.dart';
 
 class SkinAnalysisService {
-  static const String _apiKey = 'AIzaSyBOF8RFiGiWA1LMggP-PJNdWd2BFRRU1yg';
+  static const String _apiKey = 'AIzaSyAKAWuDKAkI74fjPGIZSyZcHdcg5dOETQI';
 
-  late final GenerativeModel _model;
+  late final List<GenerativeModel> _models;
 
   SkinAnalysisService() {
-    _model = GenerativeModel(
-      model: 'gemini-1.5-flash',
-      apiKey: _apiKey,
-    );
+    _models = [
+      GenerativeModel(
+        model: 'gemini-2.5-flash',
+        apiKey: _apiKey,
+      ),
+      GenerativeModel(
+        model: 'gemini-1.5-pro',
+        apiKey: _apiKey,
+      ),
+      GenerativeModel(
+        model: 'gemini-1.5-flash',
+        apiKey: _apiKey,
+      ),
+    ];
   }
 
   Future<SkinAnalysisResult> analyzeSkinCondition({
@@ -27,7 +38,28 @@ class SkinAnalysisService {
       ]),
     ];
 
-    final response = await _model.generateContent(content);
+    GenerateContentResponse? response;
+    Exception? lastException;
+
+    for (final model in _models) {
+      try {
+        response = await model.generateContent(content);
+        break; // Success, break the loop
+      } catch (e) {
+        lastException = e is Exception ? e : Exception(e.toString());
+        debugPrint('Model \${model.model} failed: \$e');
+        // Continue to the next model
+      }
+    }
+
+    if (response == null) {
+      final errorStr = lastException.toString();
+      if (errorStr.contains('503') || errorStr.contains('UNAVAILABLE') || errorStr.contains('high demand')) {
+        throw Exception('The AI service is currently experiencing high demand. Please try again in a few moments.');
+      }
+      throw lastException ?? Exception('Unable to analyze the image. Please try again.');
+    }
+
     final text = response.text;
 
     if (text == null || text.isEmpty) {
@@ -71,9 +103,21 @@ class SkinAnalysisService {
     );
     final startMatch = startPattern.firstMatch(text);
     if (startMatch == null) return null;
-    final endMatch = endPattern.firstMatch(text);
+
     final startIdx = startMatch.end;
-    final endIdx = endMatch?.start ?? (startIdx + 200).clamp(0, text.length);
+    final remainingText = text.substring(startIdx);
+    final endMatch = endPattern.firstMatch(remainingText);
+
+    int endIdx;
+    if (endMatch != null) {
+      endIdx = startIdx + endMatch.start;
+    } else {
+      endIdx = startIdx + 200;
+      if (endIdx > text.length) {
+        endIdx = text.length;
+      }
+    }
+
     return text.substring(startIdx, endIdx).trim();
   }
 
