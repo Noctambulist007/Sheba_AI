@@ -41,7 +41,7 @@ class AnalysisLoading extends StatelessWidget {
             width: double.infinity,
             child: LinearProgressIndicator(
               color: AppColors.primary,
-              backgroundColor: AppColors.primary.withOpacity(0.1),
+              backgroundColor: AppColors.primary.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(8.r),
             ),
           ),

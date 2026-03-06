@@ -133,7 +133,7 @@ class _SourceOption extends StatelessWidget {
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(16.r),
-          border: Border.all(color: iconColor.withOpacity(0.3), width: 0.5),
+          border: Border.all(color: iconColor.withValues(alpha: 0.3), width: 0.5),
         ),
         child: Row(
           children: [

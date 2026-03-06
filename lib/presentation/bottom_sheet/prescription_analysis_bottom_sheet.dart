@@ -72,7 +72,7 @@ class PrescriptionAnalysisBottomSheet extends ConsumerWidget {
               CustomButton.primary(
                 text: 'Go to Cart',
                 onPressed: () {
-                  Navigator.pop(context); // Close bottom sheet
+                  Navigator.pop(context);
                   Navigator.pushNamed(context, Routes.cart);
                 },
               ),
@@ -177,22 +177,19 @@ class PrescriptionAnalysisBottomSheet extends ConsumerWidget {
                             cartNotifierProvider.notifier,
                           );
 
-                          // Try to add to cart, returns false if user is not authenticated
                           final success = cartNotifier.addToCart(med);
 
                           if (success) {
-                            // Successfully added to cart
                             ToastHelper.showSuccess(
                               context,
                               '${medicine.name} added to cart',
                             );
                           } else {
-                            // User is not authenticated, show login prompt
                             ToastHelper.showError(
                               context,
                               'Please login to order',
                             );
-                            Navigator.pop(context); // Close bottom sheet
+                            Navigator.pop(context);
                             Navigator.pushNamed(context, Routes.signIn);
                           }
                         },

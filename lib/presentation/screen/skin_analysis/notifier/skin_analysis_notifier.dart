@@ -1,9 +1,9 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sheba_ai/data/datasource/local/database_helper.dart';
-import 'package:sheba_ai/data/model/skin_analysis_record.dart';
+import 'package:sheba_ai/domain/model/skin_analysis/skin_analysis_record.dart';
 import 'package:sheba_ai/injection.dart';
 import 'package:sheba_ai/presentation/screen/skin_analysis/state/skin_analysis_ui_state.dart';
-import 'package:sheba_ai/service/skin_analysis_service.dart';
+import 'package:sheba_ai/data/datasource/remote/service/skin_analysis_service.dart';
 
 class SkinAnalysisNotifier extends StateNotifier<SkinAnalysisUiState> {
   SkinAnalysisNotifier() : super(const SkinAnalysisInitial());

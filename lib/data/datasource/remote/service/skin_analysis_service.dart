@@ -4,7 +4,7 @@ import 'package:google_generative_ai/google_generative_ai.dart';
 import 'package:sheba_ai/domain/model/skin_analysis/skin_analysis_result.dart';
 
 class SkinAnalysisService {
-  static const String _apiKey = 'AIzaSyAKAWuDKAkI74fjPGIZSyZcHdcg5dOETQI';
+  static const String _apiKey = 'AIzaSyA3UT4oxoOhH_S6qhMw37LNR-oTOHlP0Ek';
 
   late final List<GenerativeModel> _models;
 
@@ -14,14 +14,14 @@ class SkinAnalysisService {
         model: 'gemini-2.5-flash',
         apiKey: _apiKey,
       ),
-      GenerativeModel(
-        model: 'gemini-1.5-pro',
-        apiKey: _apiKey,
-      ),
-      GenerativeModel(
-        model: 'gemini-1.5-flash',
-        apiKey: _apiKey,
-      ),
+      // GenerativeModel(
+      //   model: 'gemini-1.5-pro',
+      //   apiKey: _apiKey,
+      // ),
+      // GenerativeModel(
+      //   model: 'gemini-1.5-flash',
+      //   apiKey: _apiKey,
+      // ),
     ];
   }
 
@@ -44,11 +44,10 @@ class SkinAnalysisService {
     for (final model in _models) {
       try {
         response = await model.generateContent(content);
-        break; // Success, break the loop
+        break;
       } catch (e) {
         lastException = e is Exception ? e : Exception(e.toString());
         debugPrint('Model \${model.model} failed: \$e');
-        // Continue to the next model
       }
     }
 

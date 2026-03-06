@@ -62,12 +62,10 @@ class PrescriptionItem extends StatelessWidget {
                     ),
                     const SizedBox(width: 16),
 
-                    // Prescription Details
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          // ID and Status Row
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
@@ -79,7 +77,6 @@ class PrescriptionItem extends StatelessWidget {
                                   color: Colors.black87,
                                 ),
                               ),
-                              // Date
                               Row(
                                 children: [
                                   Icon(
@@ -140,7 +137,6 @@ class PrescriptionItem extends StatelessWidget {
 
                           const SizedBox(height: 8),
 
-                          // View Details
                           Row(
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [

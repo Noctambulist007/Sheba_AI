@@ -1,4 +1,4 @@
-import 'package:sheba_ai/data/model/skin_analysis_record.dart';
+import 'package:sheba_ai/domain/model/skin_analysis/skin_analysis_record.dart';
 
 sealed class SkinAnalysisHistoryUiState {
   const SkinAnalysisHistoryUiState();

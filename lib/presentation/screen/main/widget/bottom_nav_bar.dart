@@ -36,8 +36,8 @@ class BottomNavBar extends StatelessWidget {
         label: "Reminder",
       ),
       NavigationItem(
-        iconData: Icons.health_and_safety_rounded,
-        label: "Skin Check",
+        iconData: Icons.health_and_safety_outlined,
+        label: "Skin",
       ),
     ];
 

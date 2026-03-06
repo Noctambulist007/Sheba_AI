@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:sheba_ai/data/model/reminder_model.dart';
+import 'package:sheba_ai/domain/model/reminder/reminder.dart';
 import 'package:sheba_ai/presentation/screen/reminder/notifier/reminder_notifier.dart';
 import 'package:sheba_ai/presentation/theme/color.dart';
 import 'package:sheba_ai/presentation/widget/custom_gradient_app_bar.dart';
 
 class AddEditReminderScreen extends ConsumerStatefulWidget {
-  final ReminderModel? reminder;
+  final Reminder? reminder;
 
   const AddEditReminderScreen({super.key, this.reminder});
 
@@ -109,7 +109,7 @@ class _AddEditReminderScreenState extends ConsumerState<AddEditReminderScreen>
           ? scheduledTime.add(const Duration(days: 1))
           : scheduledTime;
 
-      final reminder = ReminderModel(
+      final reminder = Reminder(
         id: widget.reminder?.id ??
             DateTime.now().millisecondsSinceEpoch.toString(),
         medicineName: _medicineNameController.text,
@@ -146,7 +146,6 @@ class _AddEditReminderScreenState extends ConsumerState<AddEditReminderScreen>
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // ── Hero Time Picker ──
                 _buildHeroTimePicker(),
                 SizedBox(height: 24.h),
 
@@ -155,7 +154,6 @@ class _AddEditReminderScreenState extends ConsumerState<AddEditReminderScreen>
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // ── Medicine Name ──
                       _buildSectionLabel('Medicine Name'),
                       SizedBox(height: 8.h),
                       _buildStyledTextField(
@@ -167,7 +165,6 @@ class _AddEditReminderScreenState extends ConsumerState<AddEditReminderScreen>
                       ),
                       SizedBox(height: 20.h),
 
-                      // ── Dosage ──
                       _buildSectionLabel('Dosage'),
                       SizedBox(height: 8.h),
                       _buildStyledTextField(
@@ -179,19 +176,16 @@ class _AddEditReminderScreenState extends ConsumerState<AddEditReminderScreen>
                       ),
                       SizedBox(height: 24.h),
 
-                      // ── Medicine Type ──
                       _buildSectionLabel('Medicine Type'),
                       SizedBox(height: 12.h),
                       _buildTypeSelector(),
                       SizedBox(height: 24.h),
 
-                      // ── Frequency ──
                       _buildSectionLabel('Frequency'),
                       SizedBox(height: 12.h),
                       _buildFrequencySelector(),
                       SizedBox(height: 36.h),
 
-                      // ── Save Button ──
                       _buildGradientSaveButton(),
                       SizedBox(height: 24.h),
                     ],
@@ -205,7 +199,6 @@ class _AddEditReminderScreenState extends ConsumerState<AddEditReminderScreen>
     );
   }
 
-  // ─────────────────────── Hero Time Picker ───────────────────────
   Widget _buildHeroTimePicker() {
     final hour = _selectedTime.hourOfPeriod == 0 ? 12 : _selectedTime.hourOfPeriod;
     final minute = _selectedTime.minute.toString().padLeft(2, '0');
@@ -307,7 +300,6 @@ class _AddEditReminderScreenState extends ConsumerState<AddEditReminderScreen>
     );
   }
 
-  // ─────────────────────── Section Label ───────────────────────
   Widget _buildSectionLabel(String text) {
     return Text(
       text,
@@ -320,7 +312,6 @@ class _AddEditReminderScreenState extends ConsumerState<AddEditReminderScreen>
     );
   }
 
-  // ─────────────────────── Styled Text Field ───────────────────────
   Widget _buildStyledTextField({
     required TextEditingController controller,
     required String hint,
@@ -384,7 +375,6 @@ class _AddEditReminderScreenState extends ConsumerState<AddEditReminderScreen>
     );
   }
 
-  // ─────────────────────── Type Selector ───────────────────────
   Widget _buildTypeSelector() {
     return Wrap(
       spacing: 10.w,
@@ -446,7 +436,6 @@ class _AddEditReminderScreenState extends ConsumerState<AddEditReminderScreen>
     );
   }
 
-  // ─────────────────────── Frequency Selector ───────────────────────
   Widget _buildFrequencySelector() {
     return Row(
       children: _frequencyOptions.map((freq) {
@@ -500,7 +489,6 @@ class _AddEditReminderScreenState extends ConsumerState<AddEditReminderScreen>
     );
   }
 
-  // ─────────────────────── Gradient Save Button ───────────────────────
   Widget _buildGradientSaveButton() {
     return GestureDetector(
       onTap: _saveReminder,

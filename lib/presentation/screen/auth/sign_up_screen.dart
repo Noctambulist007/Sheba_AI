@@ -169,7 +169,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
               width: double.infinity,
               text: 'Go to Sign In',
               onPressed: () {
-                Navigator.of(context).pop(); // close dialog
+                Navigator.of(context).pop();
                 Navigator.pushReplacementNamed(context, Routes.signIn);
               },
             ),
@@ -223,7 +223,6 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
         body: SafeArea(
           child: Column(
             children: [
-              // Progress Indicator — stays fixed at top
               Padding(
                 padding: EdgeInsets.fromLTRB(24.w, 8.h, 24.w, 0),
                 child: StepProgressIndicator(
@@ -234,7 +233,6 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
 
               SizedBox(height: 8.h),
 
-              // Scrollable page content (includes buttons)
               Expanded(
                 child: FormBuilder(
                   key: _formKey,

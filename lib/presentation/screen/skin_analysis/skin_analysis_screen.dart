@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:sheba_ai/presentation/screen/auth/notifier/provider.dart';
+import 'package:sheba_ai/presentation/screen/auth/state/auth_ui_state.dart';
 import 'package:sheba_ai/presentation/screen/skin_analysis/notifier/provider.dart';
 import 'package:sheba_ai/presentation/screen/skin_analysis/state/skin_analysis_ui_state.dart';
 import 'package:sheba_ai/presentation/screen/skin_analysis/widget/analysis_error_banner.dart';
@@ -36,7 +38,117 @@ class _SkinAnalysisScreenState extends ConsumerState<SkinAnalysisScreen> {
     }
   }
 
+  void _showLoginRequiredDialog() {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => Dialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+        ),
+        elevation: 0,
+        backgroundColor: AppColors.white,
+        child: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: AppColors.primary.withValues(alpha: 0.1),
+                  shape: BoxShape.circle,
+                ),
+                child: const Icon(
+                  Icons.lock_outline,
+                  size: 40,
+                  color: AppColors.primary,
+                ),
+              ),
+              const SizedBox(height: 20),
+              const Text(
+                'Login Required',
+                style: TextStyle(
+                  color: AppColors.textPrimary,
+                  fontSize: 20,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              const SizedBox(height: 10),
+              const Text(
+                'You need to be logged in to perform a skin analysis. Please log in to continue.',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: AppColors.textSecondary,
+                  fontSize: 15,
+                  height: 1.4,
+                ),
+              ),
+              const SizedBox(height: 25),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Expanded(
+                    child: OutlinedButton(
+                      style: OutlinedButton.styleFrom(
+                        foregroundColor: AppColors.primary,
+                        side: const BorderSide(color: AppColors.primary),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        padding: const EdgeInsets.symmetric(vertical: 12),
+                      ),
+                      onPressed: () => Navigator.pop(context),
+                      child: const Text(
+                        'Cancel',
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.normal,
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppColors.primary,
+                        foregroundColor: AppColors.white,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        padding: const EdgeInsets.symmetric(vertical: 12),
+                        shadowColor: AppColors.primary.withValues(alpha: 0.3),
+                        elevation: 0,
+                      ),
+                      onPressed: () {
+                        Navigator.pop(context);
+                        Navigator.pushNamed(context, Routes.signIn);
+                      },
+                      child: Text(
+                        'Login',
+                        style: TextStyle(
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.normal,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
   void _showImageSourceDialog() {
+    final authState = ref.read(authNotifierProvider);
+    if (authState is AnonymousState) {
+      _showLoginRequiredDialog();
+      return;
+    }
     ImageSourceDialog.show(context, onPickImage: _pickImage);
   }
 
@@ -73,8 +185,14 @@ class _SkinAnalysisScreenState extends ConsumerState<SkinAnalysisScreen> {
           IconButton(
             icon: const Icon(Icons.history_rounded, color: Colors.white),
             tooltip: 'History',
-            onPressed: () =>
-                Navigator.pushNamed(context, Routes.skinAnalysisHistory),
+            onPressed: () {
+              final authState = ref.read(authNotifierProvider);
+              if (authState is AnonymousState) {
+                _showLoginRequiredDialog();
+              } else {
+                Navigator.pushNamed(context, Routes.skinAnalysisHistory);
+              }
+            },
           ),
         ],
       ),
@@ -90,7 +208,7 @@ class _SkinAnalysisScreenState extends ConsumerState<SkinAnalysisScreen> {
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(16.r),
                     border: Border.all(
-                      color: AppColors.primary.withOpacity(0.2),
+                      color: AppColors.primary.withValues(alpha: 0.2),
                     ),
                   ),
                   child: selectedImage == null

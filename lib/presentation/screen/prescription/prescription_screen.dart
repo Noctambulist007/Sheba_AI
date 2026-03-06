@@ -82,7 +82,6 @@ class _PrescriptionScreenState extends ConsumerState<PrescriptionScreen> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                // Icon
                 Container(
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
@@ -97,7 +96,6 @@ class _PrescriptionScreenState extends ConsumerState<PrescriptionScreen> {
                 ),
                 const SizedBox(height: 20),
 
-                // Title
                 const Text(
                   'Login Required',
                   style: TextStyle(
@@ -108,7 +106,6 @@ class _PrescriptionScreenState extends ConsumerState<PrescriptionScreen> {
                 ),
                 const SizedBox(height: 10),
 
-                // Description
                 const Text(
                   'You need to be logged in to upload a prescription. Please log in to continue.',
                   textAlign: TextAlign.center,
@@ -120,11 +117,9 @@ class _PrescriptionScreenState extends ConsumerState<PrescriptionScreen> {
                 ),
                 const SizedBox(height: 25),
 
-                // Buttons
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    // Cancel button
                     Expanded(
                       child: OutlinedButton(
                         style: OutlinedButton.styleFrom(
@@ -146,7 +141,6 @@ class _PrescriptionScreenState extends ConsumerState<PrescriptionScreen> {
                       ),
                     ),
                     const SizedBox(width: 12),
-                    // Login button
                     Expanded(
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
@@ -200,7 +194,6 @@ class _PrescriptionScreenState extends ConsumerState<PrescriptionScreen> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              // Header
               Container(
                 padding: EdgeInsets.all(16.w),
                 decoration: BoxDecoration(
@@ -234,7 +227,6 @@ class _PrescriptionScreenState extends ConsumerState<PrescriptionScreen> {
               ),
               SizedBox(height: 24.h),
 
-              // Camera Option
               _buildSourceOption(
                 icon: Icons.camera_alt_rounded,
                 title: 'Take Photo',
@@ -245,7 +237,6 @@ class _PrescriptionScreenState extends ConsumerState<PrescriptionScreen> {
 
               SizedBox(height: 12.h),
 
-              // Gallery Option
               _buildSourceOption(
                 icon: Icons.photo_library_rounded,
                 title: 'Choose from Gallery',
@@ -256,7 +247,6 @@ class _PrescriptionScreenState extends ConsumerState<PrescriptionScreen> {
 
               SizedBox(height: 20.h),
 
-              // Cancel Button
               TextButton(
                 onPressed: () => Navigator.pop(context),
                 style: TextButton.styleFrom(
@@ -347,7 +337,6 @@ class _PrescriptionScreenState extends ConsumerState<PrescriptionScreen> {
     final selectedImage = ref.read(selectedImageProvider);
     if (selectedImage == null) return;
 
-    // Show analyzing dialog with scanner animation
     showDialog(
       context: context,
       barrierDismissible: false,
@@ -407,7 +396,6 @@ class _PrescriptionScreenState extends ConsumerState<PrescriptionScreen> {
     );
 
 
-    // Then create the prescription
     final notifier = ref.read(prescriptionNotifierProvider.notifier);
     notifier.createPrescriptionWithPath(selectedImage.path);
   }
@@ -428,7 +416,6 @@ class _PrescriptionScreenState extends ConsumerState<PrescriptionScreen> {
         (previous, next) {
       next.maybeWhen(
         analyzeSuccess: (analyzePrescription) {
-          // Close the analyzing dialog
           if (dialogContext != null) {
             Navigator.of(dialogContext!).pop();
           }
@@ -443,7 +430,6 @@ class _PrescriptionScreenState extends ConsumerState<PrescriptionScreen> {
           );
         },
         error: (message) {
-          // Close the analyzing dialog
           if (dialogContext != null) {
             Navigator.of(dialogContext!).pop();
           }
@@ -539,7 +525,6 @@ class _PrescriptionScreenState extends ConsumerState<PrescriptionScreen> {
               physics: const AlwaysScrollableScrollPhysics(),
               child: Column(
                 children: [
-                  // Carousel and How It Works Section
                   if (selectedImage == null)
                     Padding(
                       padding: EdgeInsets.all(16.w),
@@ -566,7 +551,6 @@ class _PrescriptionScreenState extends ConsumerState<PrescriptionScreen> {
 
                   SizedBox(height: selectedImage == null ? 8.h : 16.h),
 
-                  // Upload/Preview Section
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 16.w),
                     child: Container(
@@ -585,7 +569,6 @@ class _PrescriptionScreenState extends ConsumerState<PrescriptionScreen> {
 
                   SizedBox(height: 16.h),
 
-                  // // My Prescriptions list
                   if (authState is AuthenticatedState)
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: 16.w),
@@ -755,7 +738,6 @@ class _PrescriptionScreenState extends ConsumerState<PrescriptionScreen> {
             ),
           ),
 
-          // Processing Overlay with Lottie Animation
           if (state is LoadingState && selectedImage != null)
             Container(
               color: Colors.black.withOpacity(0.7),

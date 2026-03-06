@@ -18,7 +18,7 @@ class ToastHelper {
       icon: const Icon(Icons.check_circle, color: Colors.white),
       primaryColor: successColor,
       callbacks: ToastificationCallbacks(
-        onDismissed: (_) {}, // Add onDismissed callback to fix Dismissible widget error
+        onDismissed: (_) {},
       ),
     );
   }
@@ -36,7 +36,7 @@ class ToastHelper {
       icon: const Icon(Icons.error, color: Colors.white),
       primaryColor: errorColor,
       callbacks: ToastificationCallbacks(
-        onDismissed: (_) {}, // Add onDismissed callback to fix Dismissible widget error
+        onDismissed: (_) {},
       ),
     );
   }
@@ -57,7 +57,7 @@ class ToastHelper {
       icon: const Icon(Icons.warning, color: Colors.white),
       primaryColor: warningColor,
       callbacks: ToastificationCallbacks(
-        onDismissed: (_) {}, // Add onDismissed callback to fix Dismissible widget error
+        onDismissed: (_) {},
       ),
     );
   }

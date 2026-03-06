@@ -30,7 +30,7 @@ class UploadPromptSection extends StatelessWidget {
           color: Colors.white,
           borderRadius: BorderRadius.circular(16.r),
           border: Border.all(
-            color: AppColors.primary.withOpacity(0.1),
+            color: AppColors.primary.withValues(alpha: 0.1),
             width: 1,
           ),
         ),
@@ -43,7 +43,7 @@ class UploadPromptSection extends StatelessWidget {
                 Container(
                   padding: EdgeInsets.all(20.w),
                   decoration: BoxDecoration(
-                    color: AppColors.primary.withOpacity(0.08),
+                    color: AppColors.primary.withValues(alpha: 0.08),
                     shape: BoxShape.circle,
                   ),
                   child: Icon(
@@ -62,7 +62,7 @@ class UploadPromptSection extends StatelessWidget {
                       shape: BoxShape.circle,
                       boxShadow: [
                         BoxShadow(
-                          color: AppColors.primary.withOpacity(0.4),
+                          color: AppColors.primary.withValues(alpha: 0.4),
                           blurRadius: 8,
                         ),
                       ],
@@ -101,7 +101,7 @@ class UploadPromptSection extends StatelessWidget {
                 vertical: 8.h,
               ),
               decoration: BoxDecoration(
-                color: AppColors.primary.withOpacity(0.1),
+                color: AppColors.primary.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(20.r),
               ),
               child: Text(
@@ -125,7 +125,7 @@ class UploadPromptSection extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(12.r),
-        border: Border.all(color: AppColors.primary.withOpacity(0.1)),
+        border: Border.all(color: AppColors.primary.withValues(alpha: 0.1)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -167,7 +167,7 @@ class UploadPromptSection extends StatelessWidget {
         color: AppColors.warningSurfaceSubtitle,
         borderRadius: BorderRadius.circular(12.r),
         border: Border.all(
-          color: AppColors.warningBorderLighter.withOpacity(0.3),
+          color: AppColors.warningBorderLighter.withValues(alpha: 0.3),
         ),
       ),
       child: Row(
@@ -210,7 +210,7 @@ class _TipItem extends StatelessWidget {
           Container(
             padding: EdgeInsets.all(6.w),
             decoration: BoxDecoration(
-              color: AppColors.primary.withOpacity(0.1),
+              color: AppColors.primary.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(6.r),
             ),
             child: Icon(icon, size: 16.sp, color: AppColors.primary),

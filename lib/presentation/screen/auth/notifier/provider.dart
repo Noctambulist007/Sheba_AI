@@ -8,8 +8,7 @@ import 'package:sheba_ai/presentation/screen/auth/state/login_ui_state.dart';
 import 'package:sheba_ai/presentation/screen/auth/state/register_ui_state.dart';
 import 'package:sheba_ai/presentation/screen/auth/state/verify_email_ui_state.dart';
 
-// region :: AuthNotifierProvider
-typedef AuthNotifierProvider //
+typedef AuthNotifierProvider
 = StateNotifierProvider<AuthNotifier, AuthUiState>;
 
 final AuthNotifierProvider authNotifierProvider =
@@ -23,7 +22,6 @@ final loginNotifierProvider =
       return LoginNotifier(ref);
     });
 
-// Provider for RegisterNotifier
 typedef RegisterNotifierProvider =
     StateNotifierProvider<RegisterNotifier, RegisterUiState>;
 
@@ -32,7 +30,6 @@ final registerNotifierProvider =
       return RegisterNotifier(ref);
     });
 
-// Provider for VerifyEmailNotifier
 typedef VerifyEmailNotifierProvider =
     StateNotifierProvider<VerifyEmailNotifier, VerifyEmailUiState>;
 

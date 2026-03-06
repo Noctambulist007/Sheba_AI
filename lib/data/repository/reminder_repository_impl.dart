@@ -1,5 +1,5 @@
 import 'package:sheba_ai/data/datasource/local/database_helper.dart';
-import 'package:sheba_ai/data/model/reminder_model.dart';
+import 'package:sheba_ai/domain/model/reminder/reminder_model.dart';
 import 'package:sheba_ai/domain/repository/reminder_repository.dart';
 
 class ReminderRepositoryImpl implements ReminderRepository {

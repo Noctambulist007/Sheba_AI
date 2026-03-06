@@ -37,7 +37,6 @@ class MedicineItem extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Image section
             Container(
               height: 80.h,
               width: double.infinity,
@@ -57,13 +56,11 @@ class MedicineItem extends StatelessWidget {
               ),
             ),
 
-            // Details section
             Padding(
               padding: EdgeInsets.all(12.w),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  // Medicine Name
                   Text(
                     medicine.name,
                     style: TextStyle(
@@ -76,7 +73,6 @@ class MedicineItem extends StatelessWidget {
                   ),
                   SizedBox(height: 6.h),
 
-                  // Strength & Form
                   Row(
                     mainAxisSize: MainAxisSize.max,
                     children: [
@@ -123,7 +119,6 @@ class MedicineItem extends StatelessWidget {
 
                   SizedBox(height: 6.h),
 
-                  // Manufacturer
                   Text(
                     medicine.manufacturer.name,
                     style: TextStyle(fontSize: 12.sp, color: Colors.grey[700]),
@@ -132,7 +127,6 @@ class MedicineItem extends StatelessWidget {
                   ),
                   SizedBox(height: 8.h),
 
-                  // Price Row
                   Row(
                     children: [
                       Expanded(
@@ -146,7 +140,6 @@ class MedicineItem extends StatelessWidget {
                           overflow: TextOverflow.ellipsis,
                         ),
                       ),
-                      // add to cart button
                       Container(
                         decoration: BoxDecoration(
                           color: AppColors.colorWhite,

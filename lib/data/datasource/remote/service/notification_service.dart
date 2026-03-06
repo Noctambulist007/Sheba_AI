@@ -31,7 +31,6 @@ class NotificationService {
     try {
       tz.setLocalLocation(tz.getLocation(tzId));
     } catch (e) {
-      // Fallback if timezone lookup fails
       tz.setLocalLocation(tz.getLocation('UTC'));
     }
 
@@ -53,11 +52,9 @@ class NotificationService {
     await flutterLocalNotificationsPlugin.initialize(
       initializationSettings,
       onDidReceiveNotificationResponse: (NotificationResponse response) async {
-        // Handle notification tap
       },
     );
 
-    // Request notification permission for Android 13+
     final androidImplementation = flutterLocalNotificationsPlugin
         .resolvePlatformSpecificImplementation<
             AndroidFlutterLocalNotificationsPlugin>();
@@ -73,7 +70,6 @@ class NotificationService {
     required String body,
     required DateTime scheduledTime,
   }) async {
-    // Request exact alarm permission on Android 12+
     final androidPlugin = flutterLocalNotificationsPlugin
         .resolvePlatformSpecificImplementation<
             AndroidFlutterLocalNotificationsPlugin>();
@@ -92,13 +88,13 @@ class NotificationService {
         tzScheduledTime,
         NotificationDetails(
           android: AndroidNotificationDetails(
-            'medicine_reminder_channel_v4', // Changed channel ID
+            'medicine_reminder_channel_v4',
             'Medicine Reminders',
             channelDescription: 'Channel for medicine reminders',
             importance: Importance.max,
-            priority: Priority.max, // Increased to max
+            priority: Priority.max,
             ticker: 'ticker',
-            additionalFlags: Int32List.fromList(<int>[4]), // FLAG_INSISTENT
+            additionalFlags: Int32List.fromList(<int>[4]),
             category: AndroidNotificationCategory.alarm,
             audioAttributesUsage: AudioAttributesUsage.alarm,
             visibility: NotificationVisibility.public,
@@ -108,7 +104,7 @@ class NotificationService {
             presentSound: true,
             presentAlert: true,
             presentBadge: true,
-            sound: 'default_sound.caf', // Ensure sound plays on iOS
+            sound: 'default_sound.caf',
           ),
         ),
         androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
@@ -116,7 +112,6 @@ class NotificationService {
       );
     } on PlatformException catch (e) {
       debugPrint('Error scheduling exact alarm: $e');
-      // Fallback to inexact scheduling if exact alarms are not permitted
       await flutterLocalNotificationsPlugin.zonedSchedule(
         id,
         title,
@@ -124,13 +119,13 @@ class NotificationService {
         tzScheduledTime,
         NotificationDetails(
           android: AndroidNotificationDetails(
-            'medicine_reminder_channel_v4', // Changed channel ID
+            'medicine_reminder_channel_v4',
             'Medicine Reminders',
             channelDescription: 'Channel for medicine reminders',
             importance: Importance.max,
-            priority: Priority.max, // Increased to max
+            priority: Priority.max,
             ticker: 'ticker',
-            additionalFlags: Int32List.fromList(<int>[4]), // FLAG_INSISTENT
+            additionalFlags: Int32List.fromList(<int>[4]),
             category: AndroidNotificationCategory.alarm,
             audioAttributesUsage: AudioAttributesUsage.alarm,
             visibility: NotificationVisibility.public,

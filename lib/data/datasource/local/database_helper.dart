@@ -1,7 +1,7 @@
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
-import 'package:sheba_ai/data/model/reminder_model.dart';
-import 'package:sheba_ai/data/model/skin_analysis_record.dart';
+import 'package:sheba_ai/domain/model/reminder/reminder_model.dart';
+import 'package:sheba_ai/domain/model/skin_analysis/skin_analysis_record.dart';
 
 class DatabaseHelper {
   static final DatabaseHelper _instance = DatabaseHelper._internal();

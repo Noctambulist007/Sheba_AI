@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:sheba_ai/data/model/skin_analysis_record.dart';
+import 'package:sheba_ai/domain/model/skin_analysis/skin_analysis_record.dart';
 import 'package:sheba_ai/presentation/screen/skin_analysis/history/notifier/provider.dart';
 import 'package:sheba_ai/presentation/screen/skin_analysis/history/state/skin_analysis_history_ui_state.dart';
 import 'package:sheba_ai/presentation/screen/skin_analysis/history/widget/skin_analysis_history_item.dart';
@@ -66,7 +66,9 @@ class _SkinAnalysisHistoryScreenState
 
     return Scaffold(
       backgroundColor: AppColors.background,
-      appBar: const CustomGradientAppBar(title: 'Skin Check History'),
+      appBar: const CustomGradientAppBar(title: 'Skin Check History', leading: BackButton(
+        color: AppColors.colorWhite,
+      )),
       body: switch (state) {
         SkinAnalysisHistoryLoading() => const Center(
             child: CircularProgressIndicator(),

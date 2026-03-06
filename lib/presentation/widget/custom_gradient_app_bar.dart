@@ -5,7 +5,7 @@ import 'package:sheba_ai/presentation/theme/text_styles.dart';
 
 class CustomGradientAppBar extends StatelessWidget
     implements PreferredSizeWidget {
-  final dynamic title; // can be String or Widget
+  final dynamic title;
   final bool? centerTitle;
   final TextStyle? titleStyle;
   final List<Color> gradientColors;

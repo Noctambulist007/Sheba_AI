@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:sheba_ai/data/model/reminder_model.dart';
+import 'package:sheba_ai/domain/model/reminder/reminder.dart';
 import 'package:sheba_ai/presentation/screen/reminder/add_edit_reminder_screen.dart';
 import 'package:sheba_ai/presentation/screen/reminder/notifier/reminder_notifier.dart';
 import 'package:sheba_ai/presentation/theme/color.dart';
@@ -23,7 +23,6 @@ class ReminderScreen extends ConsumerWidget {
     );
   }
 
-  // ─────────────────────── Empty State ───────────────────────
   Widget _buildEmptyState() {
     return Center(
       child: Padding(
@@ -68,13 +67,11 @@ class ReminderScreen extends ConsumerWidget {
     );
   }
 
-  // ─────────────────────── Reminder List ───────────────────────
   Widget _buildReminderList(
-      BuildContext context, WidgetRef ref, List<ReminderModel> reminders) {
+      BuildContext context, WidgetRef ref, List<Reminder> reminders) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // Section Header
         Padding(
           padding: EdgeInsets.fromLTRB(20.w, 20.h, 20.w, 12.h),
           child: Row(
@@ -109,7 +106,6 @@ class ReminderScreen extends ConsumerWidget {
           ),
         ),
 
-        // List
         Expanded(
           child: ListView.builder(
             physics: const BouncingScrollPhysics(),
@@ -125,9 +121,8 @@ class ReminderScreen extends ConsumerWidget {
     );
   }
 
-  // ─────────────────────── Reminder Card ───────────────────────
   Widget _buildReminderCard(
-      BuildContext context, WidgetRef ref, ReminderModel reminder) {
+      BuildContext context, WidgetRef ref, Reminder reminder) {
     final typeData = _getTypeVisual(reminder.type);
     final timeStr = DateFormat.jm().format(reminder.time);
 
@@ -213,7 +208,6 @@ class ReminderScreen extends ConsumerWidget {
           child: IntrinsicHeight(
             child: Row(
               children: [
-                // Left Accent Bar
                 AnimatedContainer(
                   duration: const Duration(milliseconds: 300),
                   width: 5.w,
@@ -316,7 +310,6 @@ class ReminderScreen extends ConsumerWidget {
                           ),
                         ),
 
-                        // Toggle
                         Switch.adaptive(
                           value: reminder.isEnabled,
                           activeColor: AppColors.primary,
@@ -343,7 +336,6 @@ class ReminderScreen extends ConsumerWidget {
     );
   }
 
-  // ─────────────────────── Info Badge ───────────────────────
   Widget _buildInfoBadge(String text, Color color, bool isEnabled) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 3.h),
@@ -362,7 +354,6 @@ class ReminderScreen extends ConsumerWidget {
     );
   }
 
-  // ─────────────────────── Gradient FAB ───────────────────────
   Widget _buildGradientFAB(BuildContext context) {
     return GestureDetector(
       onTap: () {
@@ -386,7 +377,6 @@ class ReminderScreen extends ConsumerWidget {
     );
   }
 
-  // ─────────────────────── Type Visuals ───────────────────────
   _TypeVisual _getTypeVisual(String type) {
     switch (type.toLowerCase()) {
       case 'pill':

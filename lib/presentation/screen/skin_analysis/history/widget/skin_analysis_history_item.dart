@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:sheba_ai/data/model/skin_analysis_record.dart';
+import 'package:sheba_ai/domain/model/skin_analysis/skin_analysis_record.dart';
 import 'package:sheba_ai/presentation/theme/color.dart';
 
 class SkinAnalysisHistoryItem extends StatelessWidget {

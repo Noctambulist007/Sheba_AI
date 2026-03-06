@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sheba_ai/domain/model/identity/profile.dart';
 import 'package:sheba_ai/presentation/screen/auth/notifier/provider.dart';
 import 'package:sheba_ai/presentation/screen/profile/notifier/provider.dart';
@@ -37,7 +36,6 @@ class ProfileScreen extends ConsumerWidget {
       appBar: CustomGradientAppBar(
         title: 'Profile',
         customActions: [
-          // logout
           IconButton(
             icon: Icon(Icons.logout, color: Colors.white),
             onPressed: () async {

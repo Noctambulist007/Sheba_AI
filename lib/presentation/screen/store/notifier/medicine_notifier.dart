@@ -86,7 +86,6 @@ class MedicineNotifier extends StateNotifier<MedicineUiState> {
     List<Medicine> filteredMedicines = List.from(_allMedicines);
 
     if (_searchQuery.isNotEmpty) {
-      // Server side search is implemented, so no need to filter locally
     }
 
     switch (_filter) {

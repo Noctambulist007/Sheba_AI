@@ -23,11 +23,9 @@ class MyOrderItemShimmer extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Header Row
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  // Order Number
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -46,7 +44,6 @@ class MyOrderItemShimmer extends StatelessWidget {
                       ],
                     ),
                   ),
-                  // Status Badge
                   Container(
                     width: 80.w,
                     height: 28.h,
@@ -62,7 +59,6 @@ class MyOrderItemShimmer extends StatelessWidget {
               Divider(color: Colors.grey[200], height: 1),
               SizedBox(height: 16.h),
 
-              // Order Details Row 1
               Row(
                 children: [
                   Expanded(child: _shimmerBox(width: double.infinity, height: 40.h)),
@@ -72,7 +68,6 @@ class MyOrderItemShimmer extends StatelessWidget {
               ),
               SizedBox(height: 12.h),
 
-              // Order Details Row 2
               Row(
                 children: [
                   Expanded(child: _shimmerBox(width: double.infinity, height: 40.h)),
@@ -82,7 +77,6 @@ class MyOrderItemShimmer extends StatelessWidget {
               ),
               SizedBox(height: 12.h),
 
-              // Payment Status Row
               Row(
                 children: [
                   _shimmerBox(width: 16.w, height: 16.h),

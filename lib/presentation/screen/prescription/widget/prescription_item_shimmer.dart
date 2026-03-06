@@ -23,11 +23,9 @@ class PrescriptionItemShimmer extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Header row (Doctor + Date)
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  // Doctor name
                   Container(
                     width: 140.w,
                     height: 14.h,
@@ -36,7 +34,6 @@ class PrescriptionItemShimmer extends StatelessWidget {
                       borderRadius: BorderRadius.circular(4.r),
                     ),
                   ),
-                  // Date
                   Container(
                     width: 80.w,
                     height: 12.h,
@@ -52,10 +49,8 @@ class PrescriptionItemShimmer extends StatelessWidget {
               Divider(color: Colors.grey[200], height: 1),
               SizedBox(height: 16.h),
 
-              // Prescription image and details row
               Row(
                 children: [
-                  // Image placeholder
                   Container(
                     width: 80.w,
                     height: 80.w,
@@ -66,7 +61,6 @@ class PrescriptionItemShimmer extends StatelessWidget {
                   ),
                   SizedBox(width: 16.w),
 
-                  // Details placeholder
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -86,7 +80,6 @@ class PrescriptionItemShimmer extends StatelessWidget {
               Divider(color: Colors.grey[200], height: 1),
               SizedBox(height: 12.h),
 
-              // Status and action row
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [

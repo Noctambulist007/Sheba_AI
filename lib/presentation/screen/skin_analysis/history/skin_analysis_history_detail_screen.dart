@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:sheba_ai/data/model/skin_analysis_record.dart';
+import 'package:sheba_ai/domain/model/skin_analysis/skin_analysis_record.dart';
 import 'package:sheba_ai/presentation/screen/skin_analysis/widget/analysis_results_section.dart';
 import 'package:sheba_ai/presentation/theme/color.dart';
 import 'package:sheba_ai/presentation/widget/custom_gradient_app_bar.dart';

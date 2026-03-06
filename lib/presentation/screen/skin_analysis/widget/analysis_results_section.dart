@@ -26,50 +26,83 @@ class AnalysisResultsSection extends StatelessWidget {
       children: [
         if (selectedImage != null)
           Padding(
-            padding: EdgeInsets.fromLTRB(16.w, 16.w, 16.w, 0),
-            child: Row(
-              children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(12.r),
-                  child: Image.file(
-                    File(selectedImage!.path),
-                    width: 60.w,
-                    height: 60.w,
-                    fit: BoxFit.cover,
+            padding: EdgeInsets.fromLTRB(20.w, 20.w, 20.w, 0),
+            child: Container(
+              padding: EdgeInsets.all(12.w),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(16.r),
+                boxShadow: [
+                  BoxShadow(
+                    color: AppColors.primary.withValues(alpha: 0.05),
+                    blurRadius: 15,
+                    offset: const Offset(0, 4),
                   ),
-                ),
-                SizedBox(width: 12.w),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Analysis Complete',
-                        style: TextStyle(
-                          fontSize: 16.sp,
-                          fontWeight: FontWeight.bold,
-                          color: AppColors.grayscaleTextTitle,
-                        ),
+                ],
+                border: Border.all(color: AppColors.gray200.withValues(alpha: 0.5)),
+              ),
+              child: Row(
+                children: [
+                  Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(12.r),
+                      border: Border.all(
+                        color: AppColors.primary.withValues(alpha: 0.1),
+                        width: 2,
                       ),
-                      SizedBox(height: 4.h),
-                      if (result.severity != null)
-                        _SeverityBadge(severity: result.severity!),
-                    ],
+                    ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(10.r),
+                      child: Image.file(
+                        File(selectedImage!.path),
+                        width: 64.w,
+                        height: 64.w,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
                   ),
-                ),
-                IconButton(
-                  onPressed: onNewAnalysis,
-                  icon: Icon(
-                    Icons.refresh_rounded,
-                    color: AppColors.primary,
+                  SizedBox(width: 16.w),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Analysis Complete',
+                          style: TextStyle(
+                            fontSize: 17.sp,
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.grayscaleTextTitle,
+                            letterSpacing: -0.3,
+                          ),
+                        ),
+                        SizedBox(height: 6.h),
+                        if (result.severity != null)
+                          _SeverityBadge(severity: result.severity!),
+                      ],
+                    ),
                   ),
-                  tooltip: 'New Analysis',
-                ),
-              ],
+                  Container(
+                    decoration: BoxDecoration(
+                      color: AppColors.primary.withValues(alpha: 0.1),
+                      shape: BoxShape.circle,
+                    ),
+                    child: IconButton(
+                      onPressed: onNewAnalysis,
+                      icon: Icon(
+                        Icons.refresh_rounded,
+                        color: AppColors.primary,
+                        size: 22.sp,
+                      ),
+                      tooltip: 'New Analysis',
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
-        SizedBox(height: 12.h),
+        SizedBox(height: 16.h),
         ...sections.map((section) => _SectionCard(section: section)),
+        SizedBox(height: 16.h),
       ],
     );
   }
@@ -161,31 +194,49 @@ class _SeverityBadge extends StatelessWidget {
   Widget build(BuildContext context) {
     Color bgColor;
     Color textColor;
+    IconData iconData;
     final lower = severity.toLowerCase();
-    if (lower.contains('mild')) {
+    
+    if (lower.contains('mild') || lower.contains('normal') || lower.contains('clear')) {
       bgColor = AppColors.successContainer;
       textColor = AppColors.successDark;
-    } else if (lower.contains('severe')) {
+      iconData = Icons.check_circle_rounded;
+    } else if (lower.contains('severe') || lower.contains('high') || lower.contains('critical')) {
       bgColor = AppColors.errorContainer;
       textColor = AppColors.errorDark;
+      iconData = Icons.error_rounded;
     } else {
       bgColor = AppColors.warningContainer;
       textColor = AppColors.warningDark;
+      iconData = Icons.warning_rounded;
     }
 
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 4.h),
+      padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 6.h),
       decoration: BoxDecoration(
-        color: bgColor,
-        borderRadius: BorderRadius.circular(8.r),
+        color: bgColor.withValues(alpha: 0.8),
+        borderRadius: BorderRadius.circular(20.r),
+        border: Border.all(color: textColor.withValues(alpha: 0.2)),
       ),
-      child: Text(
-        severity,
-        style: TextStyle(
-          fontSize: 11.sp,
-          fontWeight: FontWeight.w600,
-          color: textColor,
-        ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(
+            iconData,
+            size: 14.sp,
+            color: textColor,
+          ),
+          SizedBox(width: 4.w),
+          Text(
+            severity.toUpperCase(),
+            style: TextStyle(
+              fontSize: 10.sp,
+              fontWeight: FontWeight.w700,
+              color: textColor,
+              letterSpacing: 0.5,
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -199,19 +250,22 @@ class _SectionCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 6.h),
+      padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 8.h),
       child: Container(
         width: double.infinity,
-        padding: EdgeInsets.all(16.w),
+        padding: EdgeInsets.all(20.w),
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.circular(12.r),
-          border: Border.all(color: AppColors.gray200),
+          borderRadius: BorderRadius.circular(20.r),
+          border: Border.all(
+            color: section.iconColor.withValues(alpha: 0.15),
+            width: 1.5,
+          ),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.03),
-              blurRadius: 8,
-              offset: const Offset(0, 2),
+              color: section.iconColor.withValues(alpha: 0.06),
+              blurRadius: 16,
+              offset: const Offset(0, 6),
             ),
           ],
         ),
@@ -221,31 +275,47 @@ class _SectionCard extends StatelessWidget {
             if (section.title.isNotEmpty)
               Row(
                 children: [
-                  Icon(
-                    section.icon,
-                    size: 18.sp,
-                    color: section.iconColor,
+                  Container(
+                    padding: EdgeInsets.all(10.w),
+                    decoration: BoxDecoration(
+                      color: section.iconColor.withValues(alpha: 0.12),
+                      borderRadius: BorderRadius.circular(12.r),
+                    ),
+                    child: Icon(
+                      section.icon,
+                      size: 22.sp,
+                      color: section.iconColor,
+                    ),
                   ),
-                  SizedBox(width: 8.w),
+                  SizedBox(width: 14.w),
                   Expanded(
                     child: Text(
-                      section.title,
+                      section.title.toUpperCase(),
                       style: TextStyle(
                         fontSize: 14.sp,
-                        fontWeight: FontWeight.w600,
+                        fontWeight: FontWeight.w700,
                         color: AppColors.grayscaleTextTitle,
+                        letterSpacing: 0.5,
                       ),
                     ),
                   ),
                 ],
               ),
-            if (section.title.isNotEmpty) SizedBox(height: 10.h),
+            if (section.title.isNotEmpty) ...[
+              SizedBox(height: 14.h),
+              Divider(
+                color: AppColors.gray200.withValues(alpha: 0.6),
+                height: 1,
+              ),
+              SizedBox(height: 14.h),
+            ],
             Text(
               section.content,
               style: TextStyle(
-                fontSize: 13.sp,
-                color: AppColors.grayscaleTextBody,
-                height: 1.6,
+                fontSize: 14.sp,
+                color: AppColors.grayscaleTextBody.withValues(alpha: 0.9),
+                height: 1.65,
+                fontWeight: FontWeight.w400,
               ),
             ),
           ],

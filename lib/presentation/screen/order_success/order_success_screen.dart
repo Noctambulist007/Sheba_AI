@@ -45,7 +45,6 @@ class OrderSuccessScreen extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  // Success checkmark circle
                   SizedBox(
                     height: 220.h,
                     width: 220.w,
@@ -56,7 +55,6 @@ class OrderSuccessScreen extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 30),
-                  // Thank you text
                   const Text(
                     'Thank you',
                     style: TextStyle(
@@ -66,7 +64,6 @@ class OrderSuccessScreen extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 20),
-                  // Order details
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 40),
                     child: RichText(
