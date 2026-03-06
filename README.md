@@ -1,21 +1,292 @@
-# ShebaAI — Your Intelligent Healthcare Companion
+<div align="center">
 
-<p align="center">
-<img src="lu.png" width="120"/>
-</p>
+# ShebaAI
+### Your Intelligent Healthcare Companion
 
-## CSE 4801 — Undergraduate Project
-**Department of Computer Science and Engineering**  
-**Leading University, Sylhet — Bangladesh**
+[![Flutter](https://img.shields.io/badge/Flutter-02569B?style=for-the-badge&logo=flutter&logoColor=white)](https://flutter.dev)
+[![Django](https://img.shields.io/badge/Django-092E20?style=for-the-badge&logo=django&logoColor=white)](https://djangoproject.com)
+[![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://python.org)
+[![Dart](https://img.shields.io/badge/Dart-0175C2?style=for-the-badge&logo=dart&logoColor=white)](https://dart.dev)
+
+[![License: Academic](https://img.shields.io/badge/License-Academic_Project-red?style=flat-square)](.)
+[![University](https://img.shields.io/badge/Leading_University-Sylhet%2C_BD-blue?style=flat-square)](.)
+[![Course](https://img.shields.io/badge/CSE_4801-Undergraduate_Project-green?style=flat-square)](.)
 
 ---
 
-## Project Title
-**ShebaAI: Your Intelligent Healthcare Companion**
+> Snap a prescription. Get your meds. Never miss a dose.
+>
+> ShebaAI eliminates the friction between a doctor's handwriting and your medicine cabinet — powered by AI.
+
+</div>
 
 ---
 
-## Authors
+## Table of Contents
+
+- [What is ShebaAI?](#what-is-shebaai)
+- [Key Features](#key-features)
+- [System Architecture](#system-architecture)
+- [Tech Stack](#tech-stack)
+- [Core Workflows](#core-workflows)
+- [Requirements](#requirements)
+- [Development Timeline](#development-timeline)
+- [Competitive Analysis](#competitive-analysis)
+- [Limitations](#limitations)
+- [Future Roadmap](#future-roadmap)
+- [Team](#team)
+- [Academic Info](#academic-info)
+- [Disclaimer](#disclaimer)
+
+---
+
+## What is ShebaAI?
+
+ShebaAI is an AI-powered mobile healthcare ecosystem that transforms the way people manage their medications. At its core, it uses an OCR-based AI engine to read handwritten medical prescriptions — and then does the heavy lifting for you.
+
+```
+Photo of Prescription
+        |
+AI extracts medicines, dosages & frequencies
+        |
+Auto-adds to cart  +  Auto-creates reminders
+        |
+Order with one tap  +  Never miss a dose
+```
+
+No more squinting at illegible handwriting. No more manually searching for each medicine. No more forgotten doses.
+
+---
+
+## Key Features
+
+**AI Prescription Scanner**
+
+Upload a photo of any handwritten prescription. The AI engine extracts medicine names, dosage amounts, and frequency and duration instructions with high accuracy.
+
+**Auto Add-to-Cart**
+
+Extracted medicines are automatically matched against the database and added to your cart. Zero manual searching required.
+
+**Smart Medication Reminders**
+
+Reminders are auto-generated directly from the prescription. A `1-0-1` dosage pattern automatically becomes morning and night push notifications — no setup needed.
+
+**AI Skin Analysis**
+
+Powered by Google Gemini, users can photograph a skin condition and receive a preliminary dermatological assessment with suggested next steps.
+
+**Medicine E-Commerce**
+
+Browse, search, and order medicines directly. Full cart management, checkout with delivery address, and order status tracking.
+
+**Admin Panel**
+
+Complete management dashboard for administrators — users, medicines, orders, inventory, and system content with full CRUD operations.
+
+---
+
+## System Architecture
+
+ShebaAI is built on a three-tier architecture ensuring clean separation of concerns and scalability.
+
+```
++--------------------------------------------------+
+|              Flutter Mobile App                  |
+|  +------------+  +------------+  +------------+  |
+|  |Presentation|  |   Domain   |  |    Data    |  |
+|  |   Layer    |  |   Layer    |  |   Layer    |  |
+|  |  Screens   |  | Use Cases  |  |  Repos &   |  |
+|  |  Widgets   |  | Entities   |  |  Remote DS |  |
+|  |  Riverpod  |  | Interfaces |  |  Models    |  |
+|  +------------+  +------------+  +------------+  |
++---------------------+----------------------------+
+                      |  REST API (HTTPS)
++---------------------v----------------------------+
+|             Django Backend Server                |
+|  +-----------+  +----------+  +--------------+  |
+|  |  Models   |  |  Views / |  |   Services   |  |
+|  |  Django   |  |  Serial. |  | AI Analysis  |  |
+|  |    ORM    |  |   DRF    |  | Auto-Cart    |  |
+|  +-----------+  +----------+  | Auto-Reminder|  |
+|                               +--------------+  |
++---------------------+----------------------------+
+                      |
++---------------------v----------------------------+
+|         AI / OCR Engine  +  Gemini               |
+|    Prescription Analysis   .  Skin Analysis      |
++--------------------------------------------------+
+```
+
+---
+
+## Tech Stack
+
+| Layer | Technology | Purpose |
+|-------|-----------|---------|
+| Mobile Frontend | Flutter + Dart | Cross-platform Android & iOS |
+| Architecture Pattern | Clean Architecture | Separation of concerns |
+| State Management | Riverpod | Reactive, testable state |
+| Backend | Python + Django | REST API server |
+| API Layer | Django REST Framework | Serialization & endpoints |
+| AI / OCR | Custom OCR Engine | Prescription text extraction |
+| Skin AI | Google Gemini | Dermatology analysis |
+| Database | PostgreSQL / SQLite | Data persistence |
+| UI Design | Figma | Wireframes & prototyping |
+| Version Control | Git | Source management |
+
+---
+
+## Core Workflows
+
+### Prescription to Order Flow
+
+```
+User
+ |
+ v
+Upload Prescription Image
+ |
+ v
+AI Analysis
+ |
+ +--[Skin Image]--> Gemini Skin Analysis --------+
+ |                                                |
+ +--[Prescription]--> OCR Extracts Medicines      |
+                           |                      |
+                    Medicines Matched?             |
+                     |          |                 |
+                   [Yes]       [No]               |
+                     |          |                 |
+              Auto-Add      Show Unmatched        |
+              to Cart          List               |
+                     |          |                 |
+              Auto-Create       |                 |
+              Reminders         |                 |
+                     |          |                 |
+                     +----------+-----------------+
+                                |
+                     User Reviews Cart & Reminders
+                                |
+                            Checkout
+                                |
+                          Order Placed
+```
+
+### Reminder Engine Logic
+
+| Dosage Pattern | Generated Reminders |
+|---------------|-------------------|
+| `1-0-1` | Morning + Night |
+| `1-1-1` | Morning + Noon + Night |
+| `0-0-1` | Night only |
+| `1-0-0` | Morning only |
+
+---
+
+## Requirements
+
+### Functional
+
+- [x] User authentication — register and login
+- [x] Prescription upload and AI analysis
+- [x] Automatic add-to-cart on prescription match
+- [x] Automatic reminder creation from prescription
+- [x] Medicine browsing, search, and ordering
+- [x] Push notification reminders
+- [x] User profile and order history
+- [x] AI-powered skin analysis via Gemini
+- [x] Admin dashboard with full CRUD
+- [x] Order management and status tracking
+
+### Non-Functional
+
+| Requirement | Target |
+|------------|--------|
+| Screen load time | Under 2 seconds |
+| OCR analysis time | Under 5 seconds |
+| Security | Token-based auth, encrypted transport |
+| Compatibility | Android 6.0+ and iOS 12.0+ |
+| Uptime | 99% availability |
+| UI Standard | Material Design Guidelines |
+
+---
+
+## Development Timeline
+
+```
+Week 1      Phase 1 -- Planning & Architecture
+            API contract, DB design, environment setup
+
+Week 2-4    Phase 2 -- Parallel Core Development
+            Backend: Auth API, Medicine CRUD, Orders
+            Frontend: Static UI, Clean Architecture, Riverpod
+
+Week 4-6    Phase 3 -- Integration & AI Features
+            Connect frontend to backend APIs
+            AI OCR integration
+            Auto-cart and auto-reminder implementation
+
+Week 7      Phase 4 -- Admin Panel & Testing
+            Django admin panel, full user flow testing
+
+Week 8      Phase 5 -- Refinement & UAT
+            UI polish, performance optimization, user testing
+
+Week 9-10   Phase 6 -- Documentation & Submission
+            Report writing, slides, demo preparation
+```
+
+---
+
+## Competitive Analysis
+
+| Platform | AI OCR | Auto-Cart | Auto-Reminders | E-Commerce |
+|----------|:------:|:---------:|:--------------:|:----------:|
+| PharmEasy / Netmeds | No — manual review | No | No | Yes |
+| Medisafe / MyTherapy | No — manual input | No | Yes | No |
+| Google Lens / Adobe Scan | Yes — generic only | No | No | No |
+| **ShebaAI** | **Yes — medical-specific** | **Yes** | **Yes** | **Yes** |
+
+ShebaAI is the only platform integrating all four into a single seamless workflow.
+
+---
+
+## Limitations
+
+**OCR Accuracy** — Heavily stylized or unclear handwriting may reduce extraction quality. Manual review by the user is always recommended.
+
+**Medicine Matching** — Brand name variations, regional abbreviations, or uncommon generics may cause imperfect matches.
+
+**Complex Dosages** — Non-standard dosage instructions may require manual adjustment of generated reminders.
+
+**Connectivity Required** — All core features require an active internet connection.
+
+**Geographic Coverage** — Medicine ordering is initially limited to partnered pharmacy locations.
+
+---
+
+## Future Roadmap
+
+```
+v2.0    Doctor appointment booking
+        Telemedicine support
+
+v2.5    AI symptom checker
+        Medication adherence analytics dashboard
+
+v3.0    Smart wearable integration
+        Real-time pharmacy delivery tracking
+        Multilingual support -- Bangla first
+
+v3.5    Voice-enabled hands-free operation
+        Insurance integration and direct billing
+        Doctor and Pharmacist portal
+```
+
+---
+
+## Team
 
 | Name | Student ID |
 |------|------------|
@@ -23,220 +294,40 @@
 | Riyad Ahmed Sagor | 0182210012101198 |
 | Sojib Ahmed | 0182210012101202 |
 
----
+### Supervisor
 
-## Supervisor
 **Md. Jehadul Islam Mony**  
-Assistant Professor  
-Department of Computer Science and Engineering  
-Leading University, Sylhet
+Assistant Professor, Department of Computer Science and Engineering  
+Leading University, Sylhet — Bangladesh
 
 ---
 
-## Submission Date
-**8 March 2026**
+## Academic Info
+
+| Detail | Info |
+|--------|------|
+| University | Leading University, Sylhet |
+| Department | Computer Science and Engineering |
+| Course | CSE 4801 — Undergraduate Project |
+| Degree | Bachelor of Science in CSE |
+| Submission | 8th March, 2026 |
 
 ---
 
-# Abstract
+## Disclaimer
 
-**ShebaAI** is an innovative mobile healthcare ecosystem designed to simplify and automate medication management.
+ShebaAI does not provide medical diagnosis or treatment.
 
-The core of the system is an **AI-powered Optical Character Recognition (OCR)** engine capable of reading and interpreting handwritten medical prescriptions. Users can upload an image of their prescription and the AI automatically extracts:
+All AI-powered analysis — including prescription reading and skin analysis — is provided for informational purposes only. Results should always be reviewed by the user before taking any action.
 
-- Medicine names  
-- Dosage information  
-- Frequency of use  
-
-A key innovation is the **automatic add-to-cart feature**. Once the prescription is analyzed, the extracted medicines are automatically matched with the system database and added to the user’s shopping cart.
-
-The system also includes an **intelligent reminder module** that automatically creates medication reminders based on the extracted prescription data. Push notifications are sent to users to remind them when to take medicine.
-
-The backend is developed using **Python and Django**, while the mobile application is built with **Flutter using Clean Architecture and Riverpod** for state management.
-
-ShebaAI integrates:
-
-- AI prescription analysis  
-- Automatic medicine cart generation  
-- Medicine ordering system  
-- Automated medication reminders  
-
-All within a single platform to improve healthcare accessibility and medication adherence.
+Always consult a licensed healthcare professional for medical advice.
 
 ---
 
-# Introduction
+<div align="center">
 
-Managing personal healthcare remains a significant challenge for many individuals. One of the most common problems is **reading handwritten medical prescriptions**, which are often difficult to understand.
+Built with dedication at **Leading University, Sylhet** — Bangladesh
 
-Patients must then manually search for medicines and manage complex medication schedules.
+*CSE 4801 Undergraduate Project — 2026*
 
-Poor medication adherence can lead to:
-
-- Reduced treatment effectiveness  
-- Increased healthcare costs  
-- Medical complications
-
-**ShebaAI** aims to solve these problems by creating an integrated healthcare platform powered by Artificial Intelligence.
-
-The system introduces:
-
-- AI-powered prescription reading  
-- Automatic medicine matching
-- Automatic cart creation
-- Medication reminder system
-- Online medicine ordering
-
-The mobile application is built using **Flutter**, while the backend system uses **Python Django REST APIs**.
-
----
-
-# Problem Description
-
-Managing medication today is a **fragmented and error-prone process**.
-
-Patients often face these problems:
-
-- Illegible handwritten prescriptions
-- Manual medicine searching
-- Difficulty maintaining medication schedules
-- No unified healthcare platform
-
-ShebaAI provides an **all-in-one intelligent healthcare solution**.
-
----
-
-# Project Goals
-
-- Develop an **AI-based OCR system** to read handwritten prescriptions
-- Automatically **extract medicine names and dosage**
-- Automatically **add medicines to cart**
-- Automatically **create medication reminders**
-- Provide **medicine ordering functionality**
-- Build a **secure Django backend**
-- Develop a **Flutter cross-platform mobile application**
-- Create an **admin panel for system management**
-
----
-
-# Core Features
-
-## 1. AI Prescription Scanner
-Users upload a prescription image and the AI extracts medicine details.
-
-## 2. Automatic Add-to-Cart
-Matched medicines are automatically added to the user’s cart.
-
-## 3. Automatic Medication Reminders
-Reminders are created automatically based on prescription dosage.
-
-## 4. Medicine Ordering
-Users can browse medicines and place orders directly.
-
-## 5. User Authentication
-Secure user registration and login system.
-
-## 6. User Profile Management
-Users can manage personal information and view order history.
-
-## 7. Admin Dashboard
-Admins can manage:
-
-- Users
-- Medicines
-- Orders
-- Inventory
-
----
-
-# System Architecture
-
-The system consists of three main components:
-
-### Mobile Application
-Built using **Flutter** with Clean Architecture and Riverpod.
-
-### Backend Server
-Built with **Python Django REST Framework**.
-
-### AI Module
-Handles:
-
-- Prescription OCR
-- Medicine extraction
-- AI analysis
-
----
-
-# Technology Stack
-
-## Mobile App
-- Flutter
-- Dart
-- Riverpod
-- Clean Architecture
-
-## Backend
-- Python
-- Django
-- Django REST Framework
-
-## AI
-- OCR Engine
-- Gemini AI Integration
-
-## Database
-- PostgreSQL / MySQL
-
----
-
-# Development Methodology
-
-The project followed an **Agile development process**:
-
-1. Requirement analysis
-2. UI/UX design using Figma
-3. Backend API development
-4. Flutter mobile app development
-5. AI model integration
-6. Testing and deployment
-
----
-
-# Related Work
-
-| Platform | Strengths | Weakness |
-|--------|--------|--------|
-| PharmEasy / Netmeds | Easy medicine ordering | Manual prescription review |
-| Medisafe / MyTherapy | Medication reminders | Manual medicine input |
-| Google Lens / Adobe Scan | General OCR | Not medical-specific |
-| Wysa / Youper | AI mental health support | No medicine ordering |
-| **ShebaAI** | AI OCR + Auto Cart + Reminders + E-commerce | Integrated solution |
-
----
-
-# Future Improvements
-
-Possible future enhancements include:
-
-- Doctor appointment booking
-- Telemedicine support
-- AI symptom checker
-- Smart wearable integration
-- Pharmacy delivery tracking
-- Multilingual support
-
----
-
-# Disclaimer
-
-ShebaAI does **not provide medical diagnosis or treatment**.  
-AI analysis is for informational purposes only.
-
-Users should always consult a **licensed healthcare professional** for medical advice.
-
----
-
-# License
-
-This project is developed as part of an **Undergraduate CSE Project at Leading University**.
+</div>
