@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sheba_ai/data/datasource/remote/model/request/prescription/create_prescription_request.dart';
 import 'package:sheba_ai/domain/model/prescription/prescription.dart';
+import 'package:sheba_ai/domain/model/reminder/reminder.dart';
 import 'package:sheba_ai/domain/usecase/prescription/analyze_prescription_use_case.dart';
 import 'package:sheba_ai/domain/usecase/prescription/create_prescription_use_case.dart';
 import 'package:sheba_ai/domain/usecase/prescription/delete_prescription_use_case.dart';
@@ -9,7 +10,6 @@ import 'package:sheba_ai/domain/usecase/prescription/get_prescription_use_case.d
 import 'package:sheba_ai/domain/util/result.dart';
 import 'package:sheba_ai/injection.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:sheba_ai/presentation/screen/auth/notifier/provider.dart';
 import 'package:sheba_ai/presentation/screen/auth/state/auth_ui_state.dart';
 import 'package:sheba_ai/presentation/screen/prescription/state/prescription_ui_state.dart';
 import 'package:sheba_ai/presentation/screen/cart/notifier/provider.dart';
@@ -18,7 +18,6 @@ import 'package:sheba_ai/domain/model/medicine/medicine.dart';
 import 'package:sheba_ai/domain/model/medicine/manufacturer.dart';
 import 'package:sheba_ai/domain/model/medicine/generic.dart';
 import 'package:sheba_ai/domain/model/medicine/dosage_form.dart';
-import 'package:sheba_ai/data/model/reminder_model.dart';
 import 'package:sheba_ai/presentation/screen/prescription/util/medicine_time_parser.dart';
 
 class PrescriptionNotifier extends StateNotifier<PrescriptionUiState> {
@@ -90,7 +89,6 @@ class PrescriptionNotifier extends StateNotifier<PrescriptionUiState> {
   }
 
   Future<void> getPrescription({required int prescriptionId}) async {
-    // Preserve the existing list while loading a single prescription's details
     final previousPrescriptions = List<Prescription>.from(_prescription);
 
     state = const PrescriptionUiState.loading();
@@ -100,7 +98,6 @@ class PrescriptionNotifier extends StateNotifier<PrescriptionUiState> {
 
     result.when(
       success: (prescription) {
-        // Upsert the fetched prescription into the existing list
         final index = previousPrescriptions.indexWhere((p) => p.id == prescriptionId);
         if (index != -1) {
           previousPrescriptions[index] = prescription;
@@ -117,7 +114,6 @@ class PrescriptionNotifier extends StateNotifier<PrescriptionUiState> {
         );
       },
       failure: (error) {
-        // On failure, restore the previous list instead of showing error
         _prescription
           ..clear()
           ..addAll(previousPrescriptions);
@@ -169,13 +165,11 @@ class PrescriptionNotifier extends StateNotifier<PrescriptionUiState> {
           analyzePrescription: analyzePrescription,
         );
 
-        // Auto Add to Cart & Create Reminders
         if (analyzePrescription.matchedMedicines != null) {
           final cartNotifier = _ref.read(cartNotifierProvider.notifier);
           final reminderNotifier = _ref.read(reminderNotifierProvider.notifier);
 
           for (final matchedMedicine in analyzePrescription.matchedMedicines!) {
-            // Create Medicine Object
              final medicine = Medicine(
               medicineId: matchedMedicine.id,
               name: matchedMedicine.name,
@@ -188,7 +182,7 @@ class PrescriptionNotifier extends StateNotifier<PrescriptionUiState> {
                   genericsCount: 0,
                   brandNamesCount: 0,
                   createdAt: DateTime.now().toIso8601String(),
-                  updatedAt: DateTime.now().toIso8601String()), // Placeholder
+                  updatedAt: DateTime.now().toIso8601String()),
               generic: Generic(
                 genericId: 0,
                 name: matchedMedicine.genericName,
@@ -206,13 +200,11 @@ class PrescriptionNotifier extends StateNotifier<PrescriptionUiState> {
               ),
               price: matchedMedicine.price,
               formattedPrice: '৳${matchedMedicine.price}',
-              unit: 'Piece', // Defaulting to unit
+              unit: 'Piece',
             );
 
-            // Add to Cart
             cartNotifier.addToCart(medicine);
 
-            // Create Reminders
             final frequency = matchedMedicine.extractDetails?.frequency ?? '';
             final instructions = matchedMedicine.extractDetails?.instructions;
 
@@ -228,10 +220,7 @@ class PrescriptionNotifier extends StateNotifier<PrescriptionUiState> {
                 time.minute,
               );
 
-              // If time is in the past for today, scheduledTime will be in the past.
-              // The notification service presumably handles this or it fires immediately.
-
-              final reminder = ReminderModel(
+              final reminder = Reminder(
                 id: '${matchedMedicine.id}_${time.hour}_${time.minute}',
                 medicineName: matchedMedicine.name,
                 dosage: matchedMedicine.extractDetails?.strength ?? '',

@@ -82,7 +82,6 @@ class _PrescriptionDetailsScreenState
               initial: () => const Center(child: Text("Initializing...")),
               loading: () => const Center(child: CircularProgressIndicator()),
               success: (prescriptions, _, __) {
-                // Find the prescription with matching ID, or return error if not found
                 final prescriptionIndex = prescriptions.indexWhere(
                   (p) => p.id == prescriptionId,
                 );
@@ -121,12 +120,10 @@ class _PrescriptionDetailsScreenState
               backgroundColor: Colors.transparent,
               body: Stack(
                 children: [
-                  // Dismiss on tap outside image
                   GestureDetector(
                     onTap: () => Navigator.pop(context),
                     child: Container(color: Colors.transparent),
                   ),
-                  // Zoomable Image
                   Center(
                     child: InteractiveViewer(
                       minScale: 1.0,
@@ -142,7 +139,6 @@ class _PrescriptionDetailsScreenState
                       ),
                     ),
                   ),
-                  // Close button
                   Positioned(
                     top: MediaQuery.of(context).padding.top + 8,
                     right: 12,
@@ -163,7 +159,6 @@ class _PrescriptionDetailsScreenState
                       ),
                     ),
                   ),
-                  // Hint text
                   Positioned(
                     bottom: MediaQuery.of(context).padding.bottom + 16,
                     left: 0,
@@ -201,7 +196,6 @@ class _PrescriptionDetailsScreenState
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Image — tap to view fullscreen with zoom
           GestureDetector(
             onTap: () => _openImageViewer(context, p.image),
             child: Stack(

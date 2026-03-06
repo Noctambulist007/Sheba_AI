@@ -38,7 +38,6 @@ class MedicineDetailsScreen extends ConsumerWidget {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            // // Product Image Section
             // Container(
             //   width: double.infinity,
             //   color: Colors.white,
@@ -94,7 +93,6 @@ class MedicineDetailsScreen extends ConsumerWidget {
             //
             // SizedBox(height: 8.h),
 
-            // Main Content
             Container(
               width: double.infinity,
               decoration: BoxDecoration(
@@ -108,7 +106,6 @@ class MedicineDetailsScreen extends ConsumerWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Name and Rating
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -141,7 +138,6 @@ class MedicineDetailsScreen extends ConsumerWidget {
 
                   SizedBox(height: 16.h),
 
-                  // Manufacturer Badge
                   Container(
                     padding: EdgeInsets.symmetric(
                       horizontal: 12.w,
@@ -205,7 +201,6 @@ class MedicineDetailsScreen extends ConsumerWidget {
                             ),
                           ],
                         ),
-                        // Quantity Selector
                         Container(
                           decoration: BoxDecoration(
                             color: Colors.white,
@@ -268,9 +263,7 @@ class MedicineDetailsScreen extends ConsumerWidget {
                                 onPressed: () {
                                   final cartNotifier = ref.read(cartNotifierProvider.notifier);
                                   
-                                  // Check if user is authenticated
                                   if (!cartNotifier.isAuthenticated) {
-                                    // User is not authenticated, show login prompt
                                     ToastHelper.showError(
                                       context,
                                       'Please login to order',
@@ -281,7 +274,6 @@ class MedicineDetailsScreen extends ConsumerWidget {
                                   
                                   cartNotifier.incrementQuantity(medicine.medicineId);
 
-                                  // If item is not in cart yet, add it
                                   final cartItems = ref.read(cartNotifierProvider).items;
                                   final exists = cartItems.any(
                                     (item) =>
@@ -305,7 +297,6 @@ class MedicineDetailsScreen extends ConsumerWidget {
 
                   SizedBox(height: 24.h),
 
-                  // Medicine Details Section
                   Text(
                     'Product Information',
                     style: TextStyle(
@@ -343,7 +334,6 @@ class MedicineDetailsScreen extends ConsumerWidget {
         ),
       ),
 
-      // Bottom Action Bar
       bottomNavigationBar: Container(
         padding: EdgeInsets.all(16.w),
         decoration: BoxDecoration(
@@ -366,17 +356,14 @@ class MedicineDetailsScreen extends ConsumerWidget {
               );
 
               if (!exists) {
-                // Try to add to cart, returns false if user is not authenticated
                 final success = cartNotifier.addToCart(medicine);
                 
                 if (success) {
-                  // Successfully added to cart
                   ToastHelper.showSuccess(
                     context,
                     '${medicine.name} added to cart',
                   );
                 } else {
-                  // User is not authenticated, show login prompt
                   ToastHelper.showError(
                     context,
                     'Please login to order',

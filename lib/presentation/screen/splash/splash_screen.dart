@@ -41,7 +41,6 @@ class _SplashScreenState extends State<SplashScreen> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                // Logo
                 Image.asset(
                   'assets/logo/app-logo.png',
                   width: 80.w,
@@ -50,7 +49,6 @@ class _SplashScreenState extends State<SplashScreen> {
 
                 SizedBox(height: 32.h),
 
-                // App Name
                 Text.rich(
                   TextSpan(
                     text: 'Sheba',
@@ -78,7 +76,6 @@ class _SplashScreenState extends State<SplashScreen> {
 
                 SizedBox(height: 12.h),
 
-                // Tagline
                 Text(
                   'Your AI Health Assistant',
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
@@ -95,7 +92,6 @@ class _SplashScreenState extends State<SplashScreen> {
 
                 SizedBox(height: 40.h),
 
-                // Loading indicator
                 Column(
                   children: [
                     SizedBox(

@@ -15,6 +15,9 @@ import 'package:sheba_ai/presentation/screen/profile/profile_screen.dart';
 import 'package:sheba_ai/presentation/screen/reminder/reminder_screen.dart';
 import 'package:sheba_ai/presentation/screen/splash/splash_screen.dart';
 import 'package:sheba_ai/presentation/screen/store/medicine_details_screen.dart';
+import 'package:sheba_ai/presentation/screen/skin_analysis/history/skin_analysis_history_detail_screen.dart';
+import 'package:sheba_ai/presentation/screen/skin_analysis/history/skin_analysis_history_screen.dart';
+import 'package:sheba_ai/presentation/screen/skin_analysis/skin_analysis_screen.dart';
 import 'package:sheba_ai/presentation/screen/store/store_screen.dart';
 
 class Routes {
@@ -30,6 +33,9 @@ class Routes {
   static const String medicineDetails = 'medicineDetails';
   static const String chat = 'chat';
   static const String reminder = 'reminder';
+  static const String skinAnalysis = 'skinAnalysis';
+  static const String skinAnalysisHistory = 'skinAnalysisHistory';
+  static const String skinAnalysisHistoryDetail = 'skinAnalysisHistoryDetail';
   static const String profile = 'profile';
   static const String cart = 'cart';
   static const String checkout = 'checkout';
@@ -63,6 +69,12 @@ class Routes {
             return const ChatScreen();
           case reminder:
             return const ReminderScreen();
+          case skinAnalysis:
+            return const SkinAnalysisScreen();
+          case skinAnalysisHistory:
+            return const SkinAnalysisHistoryScreen();
+          case skinAnalysisHistoryDetail:
+            return const SkinAnalysisHistoryDetailScreen();
           case profile:
             return const ProfileScreen();
           case cart:

@@ -12,5 +12,4 @@ final PrescriptionNotifierProvider prescriptionNotifierProvider =
   (ref) => PrescriptionNotifier(ref, ref.watch(authNotifierProvider)),
 );
 
-// State provider for selected image
 final selectedImageProvider = StateProvider<XFile?>((ref) => null);

@@ -1,4 +1,4 @@
-class ReminderModel {
+class Reminder {
   final String id;
   final String medicineName;
   final String dosage;
@@ -7,7 +7,7 @@ class ReminderModel {
   final DateTime time;
   bool isEnabled;
 
-  ReminderModel({
+  Reminder({
     required this.id,
     required this.medicineName,
     required this.dosage,
@@ -29,8 +29,8 @@ class ReminderModel {
     };
   }
 
-  factory ReminderModel.fromMap(Map<String, dynamic> map) {
-    return ReminderModel(
+  factory Reminder.fromMap(Map<String, dynamic> map) {
+    return Reminder(
       id: map['id'],
       medicineName: map['medicineName'],
       dosage: map['dosage'],

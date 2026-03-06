@@ -49,7 +49,6 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
 
     final state = ref.read(loginNotifierProvider);
     if (state is SuccessState) {
-      // Check email verification status before proceeding
       await ref
           .read(verifyEmailNotifierProvider.notifier)
           .checkVerification(username);
@@ -59,7 +58,6 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
         initial: () {},
         loading: () {},
         verified: () {
-          // Email verified — now update auth state to trigger navigation
           ref
               .read(authNotifierProvider.notifier)
               .updateAuthState(state.tokenData);
@@ -67,7 +65,6 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
               context, Routes.main, (route) => false);
         },
         unverified: () {
-          // Clear saved tokens so user isn't auto-logged-in on restart
           getIt<IdentityLocalDataSource>().clearTokens();
           ToastHelper.showError(context,
               'Please verify your email before signing in. Check your inbox.');

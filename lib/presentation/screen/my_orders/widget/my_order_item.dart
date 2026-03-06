@@ -69,11 +69,9 @@ class MyOrderItemCard extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Header Row
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    // Order Number
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -98,7 +96,6 @@ class MyOrderItemCard extends StatelessWidget {
                         ],
                       ),
                     ),
-                    // Status Badge
                     Container(
                       padding: EdgeInsets.symmetric(
                         horizontal: 12.w,
@@ -137,15 +134,12 @@ class MyOrderItemCard extends StatelessWidget {
 
                 SizedBox(height: 16.h),
 
-                // Divider
                 Divider(color: Colors.grey[200], height: 1),
 
                 SizedBox(height: 16.h),
 
-                // Order Details
                 Row(
                   children: [
-                    // Items Count
                     Expanded(
                       child: _buildInfoItem(
                         icon: Icons.shopping_bag_outlined,
@@ -155,7 +149,6 @@ class MyOrderItemCard extends StatelessWidget {
                       ),
                     ),
 
-                    // Total Price
                     Expanded(
                       child: _buildInfoItem(
                         icon: Icons.payments_outlined,
@@ -169,10 +162,8 @@ class MyOrderItemCard extends StatelessWidget {
 
                 SizedBox(height: 12.h),
 
-                // Payment Method & Date
                 Row(
                   children: [
-                    // Payment Method
                     Expanded(
                       child: _buildInfoItem(
                         icon: Icons.payment,
@@ -182,7 +173,6 @@ class MyOrderItemCard extends StatelessWidget {
                       ),
                     ),
 
-                    // Date
                     Expanded(
                       child: _buildInfoItem(
                         icon: Icons.access_time,
@@ -199,7 +189,6 @@ class MyOrderItemCard extends StatelessWidget {
 
                 SizedBox(height: 12.h),
 
-                // Payment Status
                 Row(
                   children: [
                     Icon(

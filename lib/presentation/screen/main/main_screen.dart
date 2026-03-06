@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:sheba_ai/presentation/screen/chat/chat_screen.dart';
+import 'package:sheba_ai/presentation/screen/main/notifier/provider.dart';
 import 'package:sheba_ai/presentation/screen/main/widget/bottom_nav_bar.dart';
 import 'package:sheba_ai/presentation/screen/prescription/prescription_screen.dart';
 import 'package:sheba_ai/presentation/screen/reminder/reminder_screen.dart';
+import 'package:sheba_ai/presentation/screen/skin_analysis/skin_analysis_screen.dart';
 import 'package:sheba_ai/presentation/screen/store/store_screen.dart';
 import 'package:sheba_ai/presentation/theme/color.dart';
 
-import 'notifier/providers.dart';
 
 class MainScreenArgs {
   final int initialIndex;
@@ -39,7 +39,7 @@ class _MainScreenState extends ConsumerState<MainScreen> {
       const StoreScreen(),
       // const ChatScreen(),
       const ReminderScreen(),
-
+      const SkinAnalysisScreen(),
     ];
   }
 

@@ -1,18 +1,18 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:sheba_ai/data/model/reminder_model.dart';
+import 'package:sheba_ai/domain/model/reminder/reminder.dart';
 import 'package:sheba_ai/domain/repository/reminder_repository.dart';
 import 'package:sheba_ai/injection.dart';
-import 'package:sheba_ai/service/notification_service.dart';
+import 'package:sheba_ai/data/datasource/remote/service/notification_service.dart';
 
 final reminderNotifierProvider =
-    StateNotifierProvider<ReminderNotifier, List<ReminderModel>>((ref) {
+    StateNotifierProvider<ReminderNotifier, List<Reminder>>((ref) {
   return ReminderNotifier(
     getIt<ReminderRepository>(),
     getIt<NotificationService>(),
   );
 });
 
-class ReminderNotifier extends StateNotifier<List<ReminderModel>> {
+class ReminderNotifier extends StateNotifier<List<Reminder>> {
   final ReminderRepository _repository;
   final NotificationService _notificationService;
 
@@ -25,7 +25,7 @@ class ReminderNotifier extends StateNotifier<List<ReminderModel>> {
     state = reminders;
   }
 
-  Future<void> addReminder(ReminderModel reminder) async {
+  Future<void> addReminder(Reminder reminder) async {
     await _repository.addReminder(reminder);
     if (reminder.isEnabled) {
       await _scheduleNotification(reminder);
@@ -33,7 +33,7 @@ class ReminderNotifier extends StateNotifier<List<ReminderModel>> {
     await loadReminders();
   }
 
-  Future<void> updateReminder(ReminderModel reminder) async {
+  Future<void> updateReminder(Reminder reminder) async {
     await _repository.updateReminder(reminder);
     await _notificationService.cancelNotification(reminder.id.hashCode);
     if (reminder.isEnabled) {
@@ -48,12 +48,12 @@ class ReminderNotifier extends StateNotifier<List<ReminderModel>> {
     await loadReminders();
   }
 
-  Future<void> toggleReminder(ReminderModel reminder) async {
+  Future<void> toggleReminder(Reminder reminder) async {
     reminder.isEnabled = !reminder.isEnabled;
     await updateReminder(reminder);
   }
 
-  Future<void> _scheduleNotification(ReminderModel reminder) async {
+  Future<void> _scheduleNotification(Reminder reminder) async {
     await _notificationService.scheduleNotification(
       id: reminder.id.hashCode,
       title: 'Medicine Reminder',

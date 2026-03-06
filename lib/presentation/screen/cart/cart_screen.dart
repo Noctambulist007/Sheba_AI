@@ -40,7 +40,6 @@ class _CartScreenState extends ConsumerState<CartScreen> {
           ? _buildEmptyCart()
           : Column(
               children: [
-                // Cart Items List
                 Expanded(
                   child: ListView.builder(
                     padding: EdgeInsets.all(16.w),
@@ -59,7 +58,6 @@ class _CartScreenState extends ConsumerState<CartScreen> {
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              // Medicine Icon
                               Container(
                                 width: 70.w,
                                 height: 70.h,
@@ -76,7 +74,6 @@ class _CartScreenState extends ConsumerState<CartScreen> {
                                 ),
                               ),
                               SizedBox(width: 12.w),
-                              // Medicine Details
                               Expanded(
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -110,10 +107,8 @@ class _CartScreenState extends ConsumerState<CartScreen> {
                                   ],
                                 ),
                               ),
-                              // Quantity Controls
                               Column(
                                 children: [
-                                  // Remove Button
                                   InkWell(
                                     onTap: () {
                                       ref
@@ -138,7 +133,6 @@ class _CartScreenState extends ConsumerState<CartScreen> {
                                     ),
                                   ),
                                   SizedBox(height: 12.h),
-                                  // Quantity Controls
                                   Row(
                                     children: [
                                       InkWell(
@@ -217,7 +211,6 @@ class _CartScreenState extends ConsumerState<CartScreen> {
                   ),
                 ),
 
-                // Coupon Code Section
                 Container(
                   padding: EdgeInsets.all(16.w),
                   decoration: BoxDecoration(
@@ -232,7 +225,6 @@ class _CartScreenState extends ConsumerState<CartScreen> {
                   ),
                   child: Column(
                     children: [
-                      // Coupon Input
                       Row(
                         children: [
                           Expanded(
@@ -296,7 +288,6 @@ class _CartScreenState extends ConsumerState<CartScreen> {
 
                       SizedBox(height: 16.h),
 
-                      // Price Summary
                       Column(
                         children: [
                           _buildPriceSummaryRow(

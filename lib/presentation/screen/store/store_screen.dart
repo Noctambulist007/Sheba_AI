@@ -148,13 +148,11 @@ class _StoreScreenState extends ConsumerState<StoreScreen> {
         ],
       ),
 
-      /// Single scrollable body with RefreshIndicator
       body: RefreshIndicator(
         onRefresh: _onRefresh,
         child: CustomScrollView(
           controller: _scrollController,
           slivers: [
-            // Search Bar
             SliverToBoxAdapter(
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
@@ -242,7 +240,6 @@ class _StoreScreenState extends ConsumerState<StoreScreen> {
             state.when(
               initial: () => const SliverToBoxAdapter(child: SizedBox.shrink()),
 
-              /// Loading shimmer
               loading: () => SliverPadding(
                 padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
                 sliver: SliverMasonryGrid.count(
@@ -254,7 +251,6 @@ class _StoreScreenState extends ConsumerState<StoreScreen> {
                 ),
               ),
 
-              /// Error State
               error: (msg) => SliverFillRemaining(
                 hasScrollBody: false,
                 child: Center(
@@ -278,7 +274,6 @@ class _StoreScreenState extends ConsumerState<StoreScreen> {
                 ),
               ),
 
-              /// Success state with scrolling grid
               success: (medicine, isLoadingMore, hasMore) {
                 if (medicine.isEmpty) {
                   return SliverFillRemaining(
@@ -331,17 +326,14 @@ class _StoreScreenState extends ConsumerState<StoreScreen> {
                         onAddToCart: () {
                           final cartNotifier = ref.read(cartNotifierProvider.notifier);
 
-                          // Try to add to cart, returns false if user is not authenticated
                           final success = cartNotifier.addToCart(item);
 
                           if (success) {
-                            // Successfully added to cart
                             ToastHelper.showSuccess(
                               context,
                               '${item.name} added to cart',
                             );
                           } else {
-                            // User is not authenticated, show login prompt
                             ToastHelper.showError(
                               context,
                               'Please login to order',
@@ -356,7 +348,6 @@ class _StoreScreenState extends ConsumerState<StoreScreen> {
               },
             ),
 
-            /// Loading more indicator
             SliverToBoxAdapter(
               child: state.maybeWhen(
                 success: (_, isLoadingMore, hasMore) => hasMore

@@ -80,7 +80,6 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Order Summary Section
                   _buildSectionCard(
                     title: 'Order Summary',
                     child: Column(
@@ -174,7 +173,6 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
 
                   SizedBox(height: 16.h),
 
-                  // Shipping Information Section
                   _buildSectionCard(
                     title: 'Shipping Information',
                     child: profileUiState.maybeWhen(
@@ -248,7 +246,6 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
 
                   SizedBox(height: 16.h),
 
-                  // Payment Method Section
                   _buildSectionCard(
                     title: 'Payment Method',
                     child: Column(
@@ -265,7 +262,6 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
 
                   SizedBox(height: 16.h),
 
-                  // Order Notes Section
                   _buildSectionCard(
                     title: 'Order Notes (Optional)',
                     child: FormBuilder(
@@ -287,7 +283,6 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
             ),
           ),
 
-          // Place Order Button
           Container(
             padding: EdgeInsets.all(16.w),
             decoration: BoxDecoration(

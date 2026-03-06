@@ -22,7 +22,6 @@ class MedicineItemShimmer extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Image placeholder
               Container(
                 height: 100.h,
                 width: double.infinity,
@@ -33,7 +32,6 @@ class MedicineItemShimmer extends StatelessWidget {
               ),
               SizedBox(height: 12.h),
 
-              // Medicine name
               Container(
                 height: 16.h,
                 width: double.infinity,
@@ -41,7 +39,6 @@ class MedicineItemShimmer extends StatelessWidget {
               ),
               SizedBox(height: 6.h),
 
-              // Strength & Form
               Row(
                 children: [
                   Expanded(
@@ -55,7 +52,6 @@ class MedicineItemShimmer extends StatelessWidget {
               ),
               SizedBox(height: 6.h),
 
-              // Manufacturer
               Container(
                 height: 12.h,
                 width: 100.w,
@@ -63,13 +59,10 @@ class MedicineItemShimmer extends StatelessWidget {
               ),
               SizedBox(height: 8.h),
 
-              // Price & Action row
               Row(
                 children: [
-                  // Price placeholder
                   Container(height: 18.h, width: 80.w, color: Colors.grey[300]),
                   const Spacer(),
-                  // Icon/action placeholder
                   Container(
                     height: 32.h,
                     width: 32.w,
