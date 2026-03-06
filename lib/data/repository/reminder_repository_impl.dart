@@ -1,5 +1,5 @@
 import 'package:sheba_ai/data/datasource/local/database_helper.dart';
-import 'package:sheba_ai/domain/model/reminder/reminder_model.dart';
+import 'package:sheba_ai/domain/model/reminder/reminder.dart';
 import 'package:sheba_ai/domain/repository/reminder_repository.dart';
 
 class ReminderRepositoryImpl implements ReminderRepository {
@@ -8,17 +8,17 @@ class ReminderRepositoryImpl implements ReminderRepository {
   ReminderRepositoryImpl() : _databaseHelper = DatabaseHelper();
 
   @override
-  Future<List<ReminderModel>> getReminders() async {
+  Future<List<Reminder>> getReminders() async {
     return _databaseHelper.getReminders();
   }
 
   @override
-  Future<void> addReminder(ReminderModel reminder) async {
+  Future<void> addReminder(Reminder reminder) async {
     await _databaseHelper.insertReminder(reminder);
   }
 
   @override
-  Future<void> updateReminder(ReminderModel reminder) async {
+  Future<void> updateReminder(Reminder reminder) async {
     await _databaseHelper.updateReminder(reminder);
   }
 

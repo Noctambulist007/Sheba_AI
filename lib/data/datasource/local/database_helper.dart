@@ -1,6 +1,6 @@
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
-import 'package:sheba_ai/domain/model/reminder/reminder_model.dart';
+import 'package:sheba_ai/domain/model/reminder/reminder.dart';
 import 'package:sheba_ai/domain/model/skin_analysis/skin_analysis_record.dart';
 
 class DatabaseHelper {
@@ -68,7 +68,7 @@ class DatabaseHelper {
     }
   }
 
-  Future<int> insertReminder(ReminderModel reminder) async {
+  Future<int> insertReminder(Reminder reminder) async {
     Database db = await database;
     return await db.insert(
       'reminders',
@@ -77,15 +77,15 @@ class DatabaseHelper {
     );
   }
 
-  Future<List<ReminderModel>> getReminders() async {
+  Future<List<Reminder>> getReminders() async {
     Database db = await database;
     final List<Map<String, dynamic>> maps = await db.query('reminders');
     return List.generate(maps.length, (i) {
-      return ReminderModel.fromMap(maps[i]);
+      return Reminder.fromMap(maps[i]);
     });
   }
 
-  Future<int> updateReminder(ReminderModel reminder) async {
+  Future<int> updateReminder(Reminder reminder) async {
     Database db = await database;
     return await db.update(
       'reminders',
