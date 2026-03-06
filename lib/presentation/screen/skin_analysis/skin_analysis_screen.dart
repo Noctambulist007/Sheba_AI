@@ -11,6 +11,7 @@ import 'package:sheba_ai/presentation/screen/skin_analysis/widget/image_preview_
 import 'package:sheba_ai/presentation/screen/skin_analysis/widget/image_source_dialog.dart';
 import 'package:sheba_ai/presentation/screen/skin_analysis/widget/upload_prompt_section.dart';
 import 'package:sheba_ai/presentation/theme/color.dart';
+import 'package:sheba_ai/presentation/util/routes.dart';
 import 'package:sheba_ai/presentation/util/toast_helper.dart';
 import 'package:sheba_ai/presentation/widget/custom_gradient_app_bar.dart';
 
@@ -66,7 +67,17 @@ class _SkinAnalysisScreenState extends ConsumerState<SkinAnalysisScreen> {
 
     return Scaffold(
       backgroundColor: AppColors.background,
-      appBar: const CustomGradientAppBar(title: 'Skin Check'),
+      appBar: CustomGradientAppBar(
+        title: 'Skin Check',
+        customActions: [
+          IconButton(
+            icon: const Icon(Icons.history_rounded, color: Colors.white),
+            tooltip: 'History',
+            onPressed: () =>
+                Navigator.pushNamed(context, Routes.skinAnalysisHistory),
+          ),
+        ],
+      ),
       body: SingleChildScrollView(
         physics: const AlwaysScrollableScrollPhysics(),
         child: Column(
