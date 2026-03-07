@@ -73,11 +73,17 @@ class Failure with _$Failure {
               message: 'No Internet connection',
             );
           case DioErrorType.badResponse:
+            final responseData = exception.response?.data as Map<String, dynamic>?;
+            final error = responseData?['error'];
+            final details = responseData?['details'];
+            
+            String message = error ?? exception.response?.statusMessage ?? 'Bad response from API server';
+            if (details != null && details.toString().isNotEmpty) {
+              message = '$message\n\nDetails: $details';
+            }
+
             return Failure.serverException(
-              message:
-                  (exception.response?.data as Map<String, dynamic>?)?['error'] ??
-                  exception.response?.statusMessage ??
-                  'Bad response from API server',
+              message: message,
               statusCode: exception.response?.statusCode ?? 400,
               data: exception.response?.data,
             );
