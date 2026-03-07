@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:sheba_ai/domain/model/skin_analysis/skin_analysis_result.dart';
@@ -109,7 +110,10 @@ class AnalysisResultsSection extends StatelessWidget {
 
   List<_AnalysisSection> _parseSections(String text) {
     final sections = <_AnalysisSection>[];
-    final sectionPattern = RegExp(r'\*\*([^*]+)\*\*\s*:?\s*');
+    final sectionPattern = RegExp(
+      r'^\s*\*\*([^*]+)\*\*\s*:?\s*',
+      multiLine: true,
+    );
     final matches = sectionPattern.allMatches(text).toList();
 
     if (matches.isEmpty) {
@@ -157,7 +161,7 @@ class AnalysisResultsSection extends StatelessWidget {
     if (lower.contains('severity')) {
       return _SectionMeta(Icons.speed_rounded, AppColors.warning);
     }
-    if (lower.contains('first-aid') || lower.contains('urgent')) {
+    if (lower.contains('action') || lower.contains('immediate')) {
       return _SectionMeta(Icons.local_hospital_rounded, AppColors.error);
     }
     if (lower.contains('home remed') || lower.contains('over-the-counter')) {
@@ -172,7 +176,7 @@ class AnalysisResultsSection extends StatelessWidget {
     if (lower.contains('additional') || lower.contains('recommendation')) {
       return _SectionMeta(Icons.tips_and_updates_rounded, AppColors.accent);
     }
-    if (lower.contains('confidence') || lower.contains('uncertainty')) {
+    if (lower.contains('confidence') || lower.contains('uncertainty') || lower.contains('likely')) {
       return _SectionMeta(Icons.analytics_rounded, AppColors.infoDark);
     }
     if (lower.contains('source')) {
@@ -309,13 +313,33 @@ class _SectionCard extends StatelessWidget {
               ),
               SizedBox(height: 14.h),
             ],
-            Text(
-              section.content,
-              style: TextStyle(
-                fontSize: 14.sp,
-                color: AppColors.grayscaleTextBody.withValues(alpha: 0.9),
-                height: 1.65,
-                fontWeight: FontWeight.w400,
+            MarkdownBody(
+              data: section.content,
+              styleSheet: MarkdownStyleSheet(
+                p: TextStyle(
+                  fontSize: 14.sp,
+                  color: AppColors.grayscaleTextBody.withValues(alpha: 0.9),
+                  height: 1.65,
+                  fontWeight: FontWeight.w400,
+                ),
+                h1: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold, color: AppColors.grayscaleTextTitle),
+                h2: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold, color: AppColors.grayscaleTextTitle),
+                h3: TextStyle(fontSize: 15.sp, fontWeight: FontWeight.bold, color: AppColors.grayscaleTextTitle),
+                h4: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.bold, color: AppColors.grayscaleTextTitle),
+                h5: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.bold, color: AppColors.grayscaleTextTitle),
+                h6: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.bold, color: AppColors.grayscaleTextTitle),
+                listBullet: TextStyle(
+                  color: AppColors.primary,
+                  fontSize: 14.sp,
+                ),
+                strong: TextStyle(
+                  fontWeight: FontWeight.w700,
+                  color: AppColors.grayscaleTextTitle,
+                ),
+                em: TextStyle(
+                  fontStyle: FontStyle.italic,
+                  color: AppColors.grayscaleTextBody,
+                ),
               ),
             ),
           ],

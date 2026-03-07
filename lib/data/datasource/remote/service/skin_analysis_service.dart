@@ -1,10 +1,11 @@
 import 'dart:io';
 import 'package:flutter/foundation.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:google_generative_ai/google_generative_ai.dart';
 import 'package:sheba_ai/domain/model/skin_analysis/skin_analysis_result.dart';
 
 class SkinAnalysisService {
-  static const String _apiKey = 'AIzaSyA3UT4oxoOhH_S6qhMw37LNR-oTOHlP0Ek';
+  static final String _apiKey = dotenv.get('GEMINI_API_KEY', fallback: '');
 
   late final List<GenerativeModel> _models;
 
@@ -121,47 +122,24 @@ class SkinAnalysisService {
   }
 
   static const String _medicalPrompt = '''
-You are an expert medical-assistant AI that reviews images of visible skin conditions, wounds, burns, and rashes. Be cautious, conservative, and explicit about uncertainty. Provide safe, practical, non-prescriptive guidance only. Always include a clear, prominent disclaimer that your reply is not medical advice and that users should consult a licensed healthcare professional for diagnosis and treatment. When you cannot determine a condition with confidence, say so and present likely possibilities with confidence levels.
+You are an expert medical AI reviewing a skin image. Provide extremely brief, high-impact, and safe guidance.
+Use stylish Markdown (bullet points, bolding). **Keep each section under 15 words.**
 
-Please analyze the provided skin image and respond with the following structure:
+Please respond with EXACTLY this structure and nothing else:
 
-**Disclaimer:** This is AI-generated informational guidance only and not a medical diagnosis. Consult a licensed healthcare professional for medical advice and treatment.
+**Disclaimer:** AI insight only. Not a medical diagnosis. Consult a doctor.
 
-**Short summary** (1-2 sentences): State what you see and your top 1-2 most likely diagnostic possibilities, with a confidence percentage for each (e.g., "Eczema — 45%").
+**Short summary:** (1 very short sentence of what you see)
 
 **Diagnosis details:**
-- Most likely condition name(s) (list up to 3 possibilities, each with a short rationale and confidence %).
-- Key visual signs that guided your assessment (color, borders, discharge, texture, symmetry, distribution).
+- **Likely:** (Name, Confidence %)
+- **Signs:** (3-4 words max)
 
-**Severity assessment:**
-- Severity level: Mild / Moderate / Severe.
-- Explain why (signs that indicate severity).
+**Immediate actions:**
+- (1 short bullet on what to do)
+- (1 short bullet on what to avoid)
 
-**Immediate first-aid / urgent actions (if any):**
-- What to do now (clear, step-by-step, short actions).
-- What to avoid doing immediately (do not apply X, do not cut/squeeze, avoid home remedies that increase infection risk).
-
-**Primary safe home remedies and over-the-counter options (3-5 items):**
-- For each: name, how to use it (dosage/frequency if relevant), duration to try, and one-line rationale.
-- Include commonly available OTC products where appropriate (e.g., topical antiseptic, emollients, 1% hydrocortisone for short-term use), but do NOT recommend prescription drugs.
-
-**Warning signs that require immediate professional care:**
-- List red flags (spread, fever, severe pain, pus, signs of systemic infection, rapidly worsening).
-- For each red flag say why it is concerning.
-
-**Suggested follow-up timeframe:**
-- When to see primary care / dermatologist / emergency (e.g., "See a doctor within 48 hours if X", "Seek emergency care now if Y").
-
-**Additional recommendations:**
-- Practical self-care tips (hygiene, dressing, pain control).
-- One-sentence note on likely differential diagnoses to consider.
-- Suggested short patient-facing summary (3-4 lines) that can be shown in the app UI.
-
-**Confidence & uncertainty:**
-- Overall confidence level for the analysis (Low / Medium / High) and a brief explanation of limitations (image quality, lighting, no history).
-- Follow-up questions you would ask the user to improve the assessment (e.g., duration, pain, fever, recent travel, medication, allergies, photos of surrounding area).
-
-**Sources:**
-- If you cite guidelines or recommendations, mention the source and year. If not available, say "no direct guideline cited".
+**Warning signs:**
+- (1-2 red flags in 3-4 words max)
 ''';
 }
