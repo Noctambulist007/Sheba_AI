@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:sheba_ai/injection.dart';
 import 'package:sheba_ai/sheba_ai.dart';
 
@@ -9,6 +10,9 @@ import 'package:sheba_ai/sheba_ai.dart';
 Future<void> main() async {
   //
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Load environment variables
+  await dotenv.load(fileName: ".env");
 
   //
   SystemChrome.setSystemUIOverlayStyle(
